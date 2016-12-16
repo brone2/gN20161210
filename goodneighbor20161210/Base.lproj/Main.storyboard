@@ -1372,6 +1372,7 @@
                                         <state key="normal" title="Terms of Service"/>
                                         <connections>
                                             <action selector="didTapPastRequests:" destination="Eev-yu-jSf" eventType="touchUpInside" id="vUq-Kz-n9q"/>
+                                            <segue destination="xQN-wi-1DR" kind="show" id="BKy-1I-qB0"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -1638,6 +1639,67 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IRJ-CS-udX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1684" y="3407.9460269865071"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="Bm4-Oz-ZgT">
+            <objects>
+                <viewController id="xQN-wi-1DR" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="IuY-PC-WDK"/>
+                        <viewControllerLayoutGuide type="bottom" id="lQH-rR-4RM"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="cEB-L0-zoC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Terms of Service" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HLK-cs-Tbg">
+                                <rect key="frame" x="115" y="28" width="146" height="21"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                <color key="textColor" red="1" green="0.90196078431372551" blue="0.24705882352941178" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" fixedFrame="YES" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bds-fh-rjt">
+                                <rect key="frame" x="52" y="88" width="270" height="309"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <string key="text">The use of goodneighbor delivery is strictly confined to requesting items to be delivered to you that you can legally purchase yourself, and that could in no way be interpreted as being of a sexual, violent, or otherwise objectionable nature. The only pictures which are permitted to be posted within the app are 1) a photo of yourself to serve as your profile picture 2) photos of the products which you are requesting. </string>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="1" green="0.90196078431372551" blue="0.24705882352941178" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Any violation of this agreement will result in the immediate removal of the user account." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6kE-xy-89R">
+                                <rect key="frame" x="47" y="376" width="295" height="122"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="1" green="0.90196078431372551" blue="0.24705882352941178" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C2e-Jl-S8j" customClass="customButton" customModule="goodneighbor20161210" customModuleProvider="target">
+                                <rect key="frame" x="122" y="534" width="131" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="1" green="0.90196078431372551" blue="0.24705882352941178" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="Back">
+                                    <color key="titleColor" red="0.062745098039215685" green="0.49411764705882355" blue="0.81960784313725488" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <segue destination="Eev-yu-jSf" kind="show" id="GNN-17-SLS"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.062745098039215685" green="0.49803921568627452" blue="0.81960784313725488" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="HLK-cs-Tbg" firstAttribute="centerX" secondItem="cEB-L0-zoC" secondAttribute="centerX" id="ROc-cb-wkO"/>
+                            <constraint firstItem="HLK-cs-Tbg" firstAttribute="top" secondItem="IuY-PC-WDK" secondAttribute="bottom" constant="8" id="nwY-te-h2O"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qSG-d2-M0p" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2410.4000000000001" y="3411.5442278860573"/>
         </scene>
         <!--loginViewController-->
         <scene sceneID="I7E-V8-bgr">
@@ -2024,10 +2086,10 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Ipa-WE-6yj"/>
-        <segue reference="2ZP-X1-tRF"/>
+        <segue reference="GNN-17-SLS"/>
         <segue reference="5ag-bU-vFb"/>
         <segue reference="Uy6-Ur-myb"/>
-        <segue reference="i3w-Ip-Vic"/>
+        <segue reference="nzL-4F-Ybh"/>
         <segue reference="wei-YH-Wj5"/>
     </inferredMetricsTieBreakers>
 </document>
