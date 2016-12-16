@@ -37,7 +37,7 @@ class changeLocationViewController: UIViewController, CLLocationManagerDelegate,
         
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(6), execute: {
             
-            self.performSegue(withIdentifier: "replaceMapToMe", sender: nil)
+            self.performSegue(withIdentifier: "replaceMapToBuilding", sender: nil)
             
         })
         

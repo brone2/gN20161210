@@ -107,7 +107,10 @@ class loginViewController: UIViewController, UIImagePickerControllerDelegate, UI
                             })
                         }
                         
-                        let childUpdates = ["/users/\(user!.uid)/name":self.nameLabel.text!,"/users/\(user!.uid)/cellPhoneNumber":"0","/users/\(user!.uid)/deliveryCount":0, "/users/\(user!.uid)/recieveCount":0, "/users/\(user!.uid)/tokenCount":3,"/users/\(user!.uid)/email":self.emailLabel.text!] as [String : Any]
+                        let childUpdates = ["/users/\(user!.uid)/name":self.nameLabel.text!,"/users/\(user!.uid)/cellPhoneNumber":"0","/users/\(user!.uid)/buildingName":"N/A","/users/\(user!.uid)/deliveryCount":0, "/users/\(user!.uid)/recieveCount":0, "/users/\(user!.uid)/tokenCount":3,"/users/\(user!.uid)/email":self.emailLabel.text!] as [String : Any]
+                        
+                        print(childUpdates)
+                        
                         //,"/users/\(user!.uid)/profilePicReference":downloadUrl!
                         //Update
                         self.databaseRef.updateChildValues(childUpdates)

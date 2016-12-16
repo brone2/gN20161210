@@ -131,6 +131,10 @@ class buildingNameView: UIViewController, UITableViewDelegate,UITableViewDataSou
             
             self.databaseRef.updateChildValues(childUpdates)
             
+            let childUpdates2 = ["/users/\((FIRAuth.auth()?.currentUser?.uid)!)/buildingName":self.buildingNameEntered!] as [String : Any]
+            
+            self.databaseRef.updateChildValues(childUpdates2)
+            
             self.performSegue(withIdentifier: "buildingToRadius", sender: nil)
             
 
