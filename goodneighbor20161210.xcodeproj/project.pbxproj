@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		AA26570F4C6289AFF0D3D243 /* Pods_goodneighbor20161210.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE9BC30A54DB8E9F4050CFA2 /* Pods_goodneighbor20161210.framework */; };
+		E5084FDB1E03EDE400D1F388 /* buildingNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5084FDA1E03EDE400D1F388 /* buildingNameView.swift */; };
 		E536496A1DFAF8B500920EA2 /* myCurrentDeliveriesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53649691DFAF8B500920EA2 /* myCurrentDeliveriesCell.swift */; };
 		E53649701DFAFA4B00920EA2 /* grayTelephone.png in Resources */ = {isa = PBXBuildFile; fileRef = E536496C1DFAFA4B00920EA2 /* grayTelephone.png */; };
 		E53649711DFAFA4B00920EA2 /* grayTextBubble.png in Resources */ = {isa = PBXBuildFile; fileRef = E536496D1DFAFA4B00920EA2 /* grayTextBubble.png */; };
@@ -61,6 +62,7 @@
 /* Begin PBXFileReference section */
 		19D5BAF537E0EF0AC23B9F0B /* Pods-goodneighbor20161210.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-goodneighbor20161210.debug.xcconfig"; path = "Pods/Target Support Files/Pods-goodneighbor20161210/Pods-goodneighbor20161210.debug.xcconfig"; sourceTree = "<group>"; };
 		42BB8615B2CD128EBDB209C1 /* Pods-goodneighbor20161210.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-goodneighbor20161210.release.xcconfig"; path = "Pods/Target Support Files/Pods-goodneighbor20161210/Pods-goodneighbor20161210.release.xcconfig"; sourceTree = "<group>"; };
+		E5084FDA1E03EDE400D1F388 /* buildingNameView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = buildingNameView.swift; sourceTree = "<group>"; };
 		E53649691DFAF8B500920EA2 /* myCurrentDeliveriesCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = myCurrentDeliveriesCell.swift; sourceTree = "<group>"; };
 		E536496C1DFAFA4B00920EA2 /* grayTelephone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grayTelephone.png; sourceTree = "<group>"; };
 		E536496D1DFAFA4B00920EA2 /* grayTextBubble.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grayTextBubble.png; sourceTree = "<group>"; };
@@ -290,6 +292,7 @@
 				E5E19F721DF96FCC00994E5F /* initialViewController.swift */,
 				E5E19F951DF982C200994E5F /* loginViewController.swift */,
 				E5E19FA61DF9902300994E5F /* locationViewController.swift */,
+				E5084FDA1E03EDE400D1F388 /* buildingNameView.swift */,
 				E5B461BC1DFDE6A400DCEC51 /* deliveryRadiusView.swift */,
 			);
 			name = IntroViews;
@@ -484,6 +487,7 @@
 				E53649771DFB013500920EA2 /* shoppingListCell.swift in Sources */,
 				E5E19F961DF982C200994E5F /* loginViewController.swift in Sources */,
 				E5E19FAB1DF99A6400994E5F /* shoppingList.swift in Sources */,
+				E5084FDB1E03EDE400D1F388 /* buildingNameView.swift in Sources */,
 				E53649811DFC733600920EA2 /* submitPhoneNumberView.swift in Sources */,
 				E5E19F731DF96FCC00994E5F /* initialViewController.swift in Sources */,
 				E5E19FA71DF9902300994E5F /* locationViewController.swift in Sources */,

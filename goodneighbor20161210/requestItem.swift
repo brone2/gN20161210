@@ -25,6 +25,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
     var loggedInUserData:NSDictionary?
     var requesterLatitude:CLLocationDegrees?
     var requesterLongitude:CLLocationDegrees?
+    var requesterBuildingName:String?
     var requesterTokenCount:Int?
     var isAccepted = false
     var imageData:Data?
@@ -74,6 +75,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
             
             self.requesterLatitude = self.loggedInUserData?["latitude"] as! CLLocationDegrees?
             
+            self.requesterBuildingName = self.loggedInUserData?["buildingName"] as? String
             
             
         }
@@ -315,6 +317,11 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         let longitudePath = "/request/\(key)/longitude"
         let longitudeValue = self.requesterLongitude! as CLLocationDegrees
         
+        
+        let buildingNamePath = "/request/\(key)/buildingName"
+       // let buildingNamePathValue = self.requesterBuildingName! as String
+        let buildingNamePathValue = "hello"
+        
         let latitudePath = "/request/\(key)/latitude"
         let latitudeValue = self.requesterLatitude! as CLLocationDegrees
         
@@ -345,7 +352,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         self.saveKeyPath = requestKeyPath
         self.saveKey = keyValue
         
-        let childUpdates:Dictionary<String, Any> = [timeStampPath: [".sv": "timestamp"],profilePicReferencePath: profilePicReferenceValue!, requesterCellPath: requesterCellValue,pricePath: priceLabelValue, itemNamePath: itemNameValue,tokenPath: tokensLabelValue,descriptionPath:descriptionLabelValue,requesterNamePath:requesterNameValue,deliverToPath:deliverToValue,longitudePath:longitudeValue,latitudePath:latitudeValue,requestedTimePath:requestedTimeValue!,requesterUIDPath:requesterUIDValue,isAcceptedPath:isAcceptedValue,isCompletePath:isCompleteValue,requestKeyPath:keyValue]
+        let childUpdates:Dictionary<String, Any> = [timeStampPath: [".sv": "timestamp"],profilePicReferencePath: profilePicReferenceValue!, requesterCellPath: requesterCellValue,pricePath: priceLabelValue, buildingNamePath: buildingNamePathValue, itemNamePath: itemNameValue,tokenPath: tokensLabelValue,descriptionPath:descriptionLabelValue,requesterNamePath:requesterNameValue,deliverToPath:deliverToValue,longitudePath:longitudeValue,latitudePath:latitudeValue,requestedTimePath:requestedTimeValue!,requesterUIDPath:requesterUIDValue,isAcceptedPath:isAcceptedValue,isCompletePath:isCompleteValue,requestKeyPath:keyValue]
         
         if self.imageData != nil{
         self.databaseRef.updateChildValues(childUpdates)

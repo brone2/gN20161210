@@ -182,7 +182,17 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             let cell:myCurrentDeliveriesCell = tableView.dequeueReusableCell(withIdentifier: "myDeliveriesCell", for: indexPath) as! myCurrentDeliveriesCell
             
             cell.deliverToLabel.text = self.sectionData[indexPath.section]![indexPath.row]?["deliverTo"] as? String
+            
+            
+            let buildingCheck = self.sectionData[indexPath.section]![indexPath.row]?["buildingName"] as? String
+            
+            if buildingCheck != "N/A" {
+                
+                cell.distanceLabel.text = String("Lives \(self.sectionData[indexPath.section]![indexPath.row]?["distanceFromUser"] as! String) mi away \(buildingCheck)")
+                
+            } else {
             cell.distanceLabel.text = String("Lives \(self.sectionData[indexPath.section]![indexPath.row]?["distanceFromUser"] as! String) mi away from you")
+            }
             cell.nameLabel.text = self.sectionData[indexPath.section]![indexPath.row]?["itemName"] as? String
             cell.deliveringTo.text = String("Delivering to \(self.sectionData[indexPath.section]![indexPath.row]?["requesterName"] as! String)")
             
@@ -310,7 +320,17 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             cell.distanceLabel.text = self.sectionData[indexPath.section]![indexPath.row]?["latitude"] as? String
             cell.nameLabel.text = self.sectionData[indexPath.section]![indexPath.row]?["itemName"] as? String
             
+            let buildingCheck = self.sectionData[indexPath.section]![indexPath.row]?["buildingName"] as? String
+            
+            if buildingCheck != "N/A" {
+                
+                cell.distanceLabel.text = String("Lives \(self.sectionData[indexPath.section]![indexPath.row]?["distanceFromUser"] as! String) mi away \(buildingCheck)")
+                
+            } else {
+                
             cell.distanceLabel.text = String("Lives \(self.sectionData[indexPath.section]![indexPath.row]?["distanceFromUser"] as! String) mi away from you")
+                
+            }
             
             let tokenCountHelp:Int? = self.sectionData[indexPath.section]![indexPath.row]?["tokensOffered"] as? Int
             

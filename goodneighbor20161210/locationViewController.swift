@@ -37,7 +37,7 @@ class locationViewController: UIViewController, CLLocationManagerDelegate, MKMap
         
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(6), execute: {
             
-            self.performSegue(withIdentifier: "mapToRadius", sender: nil)
+            self.performSegue(withIdentifier: "mapToBuilding", sender: nil)
             
         })
         
@@ -59,6 +59,8 @@ class locationViewController: UIViewController, CLLocationManagerDelegate, MKMap
             let span = MKCoordinateSpan(latitudeDelta: latDelta, longitudeDelta: lonDelta)
             //Set location into new variable
             let location = CLLocationCoordinate2D(latitude: latitude!, longitude: longitude!)
+            myLocation = CLLocation(latitude: latitude!, longitude: longitude!
+            )
             
             let region = MKCoordinateRegion(center: location, span: span)
             

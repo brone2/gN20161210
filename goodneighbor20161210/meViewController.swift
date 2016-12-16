@@ -11,6 +11,7 @@ import Firebase
 import FirebaseAuth
 import FirebaseDatabase
 
+var globalLoggedInUserId: String!
 
 class meViewController: UIViewController {
     
@@ -37,6 +38,7 @@ class meViewController: UIViewController {
         super.viewDidLoad()
         
        self.loggedInUserId = FIRAuth.auth()?.currentUser?.uid
+       globalLoggedInUserId = self.loggedInUserId
         
        viewPastDeliveriesButton.contentHorizontalAlignment = .left
        viewPastRequestButton.contentHorizontalAlignment = .left
