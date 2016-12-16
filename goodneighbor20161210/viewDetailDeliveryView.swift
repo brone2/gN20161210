@@ -35,7 +35,21 @@ class viewDetailDeliveryView: UIViewController, UITextViewDelegate, UITextFieldD
         self.requestByLabel.text = String("Requested by \(self.myCurrentDeliveries[self.selectedRowIndex]?["requesterName"] as! String)")
         self.productNameLabel.text = String("Item name: \(self.myCurrentDeliveries[self.selectedRowIndex]?["itemName"] as! String)")
         // self.distanceLabel.text = String("Located \(self.shoppingListCurrentRequests[self.selectedRowIndex]?["latitude"] as! String) away from you")
-        self.distanceLabel.text = String("Located \(self.myCurrentDeliveries[self.selectedRowIndex]?["distanceFromUser"] as! String) mi away from you")
+        
+        //self.distanceLabel.text = String("Located \(self.myCurrentDeliveries[self.selectedRowIndex]?["distanceFromUser"] as! String) mi away from you")
+        
+        let buildingCheck = self.self.myCurrentDeliveries[self.selectedRowIndex]?["buildingName"] as? String
+        
+        if buildingCheck != "N/A" {
+            
+            self.distanceLabel.text = String("Located \(self.self.myCurrentDeliveries[self.selectedRowIndex]?["distanceFromUser"] as! String) mi away in \(buildingCheck!)")
+            
+        } else {
+            
+            self.distanceLabel.text = String("Located \(self.self.myCurrentDeliveries[self.selectedRowIndex]?["distanceFromUser"] as! String) mi away from you")
+            
+        }
+        
         self.descriptionTextView.text = self.myCurrentDeliveries[self.selectedRowIndex]?["description"] as! String
         
         

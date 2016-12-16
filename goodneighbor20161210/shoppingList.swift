@@ -188,7 +188,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             
             if buildingCheck != "N/A" {
                 
-                cell.distanceLabel.text = String("Lives \(self.sectionData[indexPath.section]![indexPath.row]?["distanceFromUser"] as! String) mi away \(buildingCheck)")
+                cell.distanceLabel.text = String("Lives \(self.sectionData[indexPath.section]![indexPath.row]?["distanceFromUser"] as! String) mi away in \(buildingCheck!)")
                 
             } else {
             cell.distanceLabel.text = String("Lives \(self.sectionData[indexPath.section]![indexPath.row]?["distanceFromUser"] as! String) mi away from you")
@@ -324,7 +324,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             
             if buildingCheck != "N/A" {
                 
-                cell.distanceLabel.text = String("Lives \(self.sectionData[indexPath.section]![indexPath.row]?["distanceFromUser"] as! String) mi away \(buildingCheck)")
+                cell.distanceLabel.text = String("Lives \(self.sectionData[indexPath.section]![indexPath.row]?["distanceFromUser"] as! String) mi away in \(buildingCheck!)")
                 
             } else {
                 

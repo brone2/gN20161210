@@ -38,7 +38,19 @@ class viewDetailGeneralShoppingList: UIViewController, UITextViewDelegate, UITex
         self.requestedByLabel.text = String("Requested by \(self.shoppingListCurrentRequests[self.selectedRowIndex]?["requesterName"] as! String)")
          self.productNameLabel.text = String("\(self.shoppingListCurrentRequests[self.selectedRowIndex]?["itemName"] as! String)")
        // self.distanceLabel.text = String("Located \(self.shoppingListCurrentRequests[self.selectedRowIndex]?["latitude"] as! String) away from you")
+        
+        let buildingCheck = self.shoppingListCurrentRequests[self.selectedRowIndex]?["buildingName"] as? String
+        
+        if buildingCheck != "N/A" {
+            
+             self.distanceLabel.text = String("Located \(self.shoppingListCurrentRequests[self.selectedRowIndex]?["distanceFromUser"] as! String) mi away in \(buildingCheck!)")
+            
+        } else {
+
         self.distanceLabel.text = String("Located \(self.shoppingListCurrentRequests[self.selectedRowIndex]?["distanceFromUser"] as! String) mi away from you")
+            
+        }
+        
         self.decriptionTextView.text = self.shoppingListCurrentRequests[self.selectedRowIndex]?["description"] as! String
         
         
