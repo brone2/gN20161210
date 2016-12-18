@@ -21,8 +21,12 @@ class meViewController: UIViewController {
     var deliveryCount = 0
     var recieveCount = 0
     
+    @IBOutlet var termsOfServiceButton: UIButton!
+    @IBOutlet var changePhoneNumberButton: UIButton!
+    @IBOutlet var changeDeliveryRadiusButton: UIButton!
     @IBOutlet var viewPastDeliveriesButton: UIButton!
     @IBOutlet var viewPastRequestButton: UIButton!
+    @IBOutlet var resetHomeLocationButton: UIButton!
     
     var myPastRecieve = [NSDictionary?]()
     var myPastDeliveries = [NSDictionary?]()
@@ -40,8 +44,12 @@ class meViewController: UIViewController {
        self.loggedInUserId = FIRAuth.auth()?.currentUser?.uid
        globalLoggedInUserId = self.loggedInUserId
         
-       viewPastDeliveriesButton.contentHorizontalAlignment = .left
-       viewPastRequestButton.contentHorizontalAlignment = .left
+        self.termsOfServiceButton.contentHorizontalAlignment = .left
+        self.changePhoneNumberButton.contentHorizontalAlignment = .left
+        self.viewPastDeliveriesButton.contentHorizontalAlignment = .left
+        self.changeDeliveryRadiusButton.contentHorizontalAlignment = .left
+        self.resetHomeLocationButton.contentHorizontalAlignment = .left
+        self.viewPastRequestButton.contentHorizontalAlignment = .left
         
         self.databaseRef.child("users").child(self.loggedInUserId!).observeSingleEvent(of: .value) { (snapshot:FIRDataSnapshot) in
             
@@ -51,8 +59,8 @@ class meViewController: UIViewController {
             let tempRecieve = snapshot?["recieveCount"] as? Int
             self.recieveCount = Int(tempRecieve!)
             
-            self.viewPastRequestButton.setTitle("View past request (\(self.recieveCount))", for: [])
-            self.viewPastDeliveriesButton.setTitle("View past deliveries (\(self.deliveryCount))", for: [])
+            self.viewPastRequestButton.setTitle("View past requests (\(self.recieveCount))", for: .normal)
+            self.viewPastDeliveriesButton.setTitle("View past deliveries (\(self.deliveryCount))", for: .normal)
         }
         
         
@@ -156,7 +164,7 @@ class meViewController: UIViewController {
     }
 
     @IBAction func didTapChangeDeliveryRadius(_ sender: Any) {
-        
+       /*
         var radiusNumberTextField: UITextField?
         
         let alertController = UIAlertController(
@@ -211,7 +219,7 @@ class meViewController: UIViewController {
         
         
         self.present(alertController, animated: true, completion: nil)
-        
+        */
     }
     
     

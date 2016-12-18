@@ -76,6 +76,11 @@ class viewDetailGeneralShoppingList: UIViewController, UITextViewDelegate, UITex
             
         }
 
+        let imageTap:UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapMediaInTweet(_:)))
+        let imageTap2:UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapMediaInTweet(_:)))
+        
+        self.profilePicImage.addGestureRecognizer(imageTap2)
+        self.productImage.addGestureRecognizer(imageTap)
        
         
     }
@@ -172,5 +177,25 @@ class viewDetailGeneralShoppingList: UIViewController, UITextViewDelegate, UITex
 
     func seger (){
      self.performSegue(withIdentifier: "detailToGeneralRefreshSegue", sender: nil)
+    }
+    
+    func didTapMediaInTweet(_ sender: UITapGestureRecognizer) {
+        let imageView = sender.view as! UIImageView
+        let newImageView = UIImageView(image: imageView.image)
+        
+        newImageView.frame = self.view.frame
+        
+        newImageView.backgroundColor = UIColor.black
+        newImageView.contentMode = .scaleAspectFit
+        newImageView.isUserInteractionEnabled = true
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.dismissFullScreenImage))
+        
+        newImageView.addGestureRecognizer(tap)
+        self.view.addSubview(newImageView)
+        
+    }
+    func dismissFullScreenImage(sender: UITapGestureRecognizer){
+        sender.view?.removeFromSuperview()
     }
 }

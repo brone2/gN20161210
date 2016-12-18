@@ -24,7 +24,7 @@ var currentTokenCount: Int!
 
 class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource, MFMessageComposeViewControllerDelegate  {
     
-    let tableHeaderArray = ["My Current Deliveries","My Current Requests","Community Requests"]
+    var tableHeaderArray = ["My Current Deliveries","My Current Requests","Community Requests"]
     
     let storageRef = FIRStorage.storage().reference()
     let databaseRef = FIRDatabase.database().reference()
@@ -128,7 +128,10 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
     
     
     func numberOfSections(in tableView: UITableView) -> Int {
+        
+       
         return sectionData.count
+        
         
     }
     
@@ -170,8 +173,20 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+   
         
-        return(self.sectionData[section]?.count)!
+        if section != 2 {
+        return((self.sectionData[section]?.count))!
+        } else {
+            if (self.sectionData[0]?.count) == 0 && (self.sectionData[1]?.count) == 0 && (self.sectionData[2]?.count) == 0 {
+                return 1
+            } else {
+                  return((self.sectionData[section]?.count))!
+            }
+
+            
+        }
+       
         
     }
     
@@ -247,7 +262,6 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             if isAccepted == false {
                 
                 cell.deliveringToLabel.text = "Not yet accepted"
-                //cell.requestedTimeLabel.text = String("Requested at \(self.sectionData[indexPath.section]![indexPath.row]?["requestedTime"] as! String)")
                 
                 cell.cancelCompleteButton.addTarget(self, action: #selector(self.didTapCancelButton(_:)), for: .touchUpInside)
                 
@@ -256,12 +270,6 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                 cell.cancelCompleteButton.setTitle("Cancel Request", for: [])
                 cell.cancelCompleteButton.contentHorizontalAlignment = .left
                 cell.cancelCompleteButton.setTitleColor(UIColor.red, for: [])
-                
-                //cell.profilePic.layer.cornerRadius = 27.5
-                //cell.profilePic.layer.masksToBounds = true
-                //cell.profilePic.contentMode = .scaleAspectFit
-                //cell.profilePic.layer.borderWidth = 2.0
-                // cell.profilePic.layer.borderColor = UIColor(red: 16/255, green: 126/255, blue: 207/255, alpha: 1).cgColor
                 
                 if tokenCountHelp == 1 {
                     cell.coinImage.image = UIImage(named: "blackWhite1Coin")
@@ -315,6 +323,13 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         } else { //if is community request
             
             let cell:shoppingListCell = tableView.dequeueReusableCell(withIdentifier: "shoppingListCell", for: indexPath) as! shoppingListCell
+            
+            if (self.sectionData[indexPath.section]?.count) == 0 {
+                cell.nameLabel.text = "No Current Request in your community"
+                cell.distanceLabel.text = "Select the pencil icon and add one!"
+                cell.deliverToLabel.text = ""
+                return cell
+            }
             
             cell.deliverToLabel.text = self.sectionData[indexPath.section]![indexPath.row]?["deliverTo"] as? String
             cell.distanceLabel.text = self.sectionData[indexPath.section]![indexPath.row]?["latitude"] as? String
@@ -372,15 +387,18 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         
-        let headers = tableHeaderArray[section]
+    let headers = tableHeaderArray[section]
         
-        let emptyCheck = self.sectionData[section]! as! [NSDictionary]
-        
+    let emptyCheck = self.sectionData[section]! as! [NSDictionary]
+ 
         if emptyCheck == [] && section != 2 {
+            
             return nil
+            
         }
+      
+    return headers
         
-        return headers
     }
     
     

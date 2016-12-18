@@ -170,6 +170,8 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
             
             alertDeliveryComplete.addAction(UIAlertAction(title: "ok", style: .default, handler: { (action) in
                 
+            self.performSegue(withIdentifier: "detailToGeneralRefreshSegue", sender: nil)
+                
         }))
              self.present(alertDeliveryComplete, animated: true, completion: nil)
             

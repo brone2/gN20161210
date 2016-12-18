@@ -33,7 +33,7 @@ class viewDetailDeliveryView: UIViewController, UITextViewDelegate, UITextFieldD
 
         self.loggedInUserId = FIRAuth.auth()?.currentUser?.uid
         self.requestByLabel.text = String("Requested by \(self.myCurrentDeliveries[self.selectedRowIndex]?["requesterName"] as! String)")
-        self.productNameLabel.text = String("Item name: \(self.myCurrentDeliveries[self.selectedRowIndex]?["itemName"] as! String)")
+        self.productNameLabel.text = String("\(self.myCurrentDeliveries[self.selectedRowIndex]?["itemName"] as! String)")
         // self.distanceLabel.text = String("Located \(self.shoppingListCurrentRequests[self.selectedRowIndex]?["latitude"] as! String) away from you")
         
         //self.distanceLabel.text = String("Located \(self.myCurrentDeliveries[self.selectedRowIndex]?["distanceFromUser"] as! String) mi away from you")
@@ -74,6 +74,12 @@ class viewDetailDeliveryView: UIViewController, UITextViewDelegate, UITextFieldD
             self.productImage.image = UIImage(data: data!)
             
         }
+        
+        let imageTap:UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapMediaInTweet(_:)))
+        let imageTap2:UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapMediaInTweet(_:)))
+        
+        self.profilePicImage.addGestureRecognizer(imageTap2)
+        self.productImage.addGestureRecognizer(imageTap)
 
     }
 
@@ -86,14 +92,24 @@ class viewDetailDeliveryView: UIViewController, UITextViewDelegate, UITextFieldD
         self.dismiss(animated: true, completion: nil)
     }
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    func didTapMediaInTweet(_ sender: UITapGestureRecognizer) {
+        let imageView = sender.view as! UIImageView
+        let newImageView = UIImageView(image: imageView.image)
+        
+        newImageView.frame = self.view.frame
+        
+        newImageView.backgroundColor = UIColor.black
+        newImageView.contentMode = .scaleAspectFit
+        newImageView.isUserInteractionEnabled = true
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.dismissFullScreenImage))
+        
+        newImageView.addGestureRecognizer(tap)
+        self.view.addSubview(newImageView)
+        
     }
-    */
+    func dismissFullScreenImage(sender: UITapGestureRecognizer){
+        sender.view?.removeFromSuperview()
+    }
 
 }

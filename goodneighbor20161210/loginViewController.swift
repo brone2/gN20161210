@@ -42,7 +42,7 @@ class loginViewController: UIViewController, UIImagePickerControllerDelegate, UI
     @IBOutlet var image: UIImageView!
     var loggedInUserData: AnyObject?
     var databaseRef = FIRDatabase.database().reference()
-    var loginHelp = 0
+    var loginHelp = 1
     var url: String?
     var proPicURL: String?
     var proPic = 0
@@ -50,10 +50,12 @@ class loginViewController: UIViewController, UIImagePickerControllerDelegate, UI
     var loggedInUserId: String?
    
     
-    @IBAction func didTapSignUp(_ sender: Any) {
+    @IBAction func didTapSignUp(_ sender: UIButton) {
         
         self.loginHelp = 2
        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            
         if self.proPic != 1 {
             
             let alertNoPic = UIAlertController(title: "Please add profile picture", message: "", preferredStyle: UIAlertControllerStyle.alert)
@@ -123,12 +125,13 @@ class loginViewController: UIViewController, UIImagePickerControllerDelegate, UI
         
     }
     }
-
+    }
     
     @IBAction func didTapLogInButton(_ sender: Any) {
         
-        print("hey boss")
+       
         self.loginHelp = 2
+        print("hey boss")
         FIRAuth.auth()?.signIn(withEmail: self.emailLabel.text!, password: self.passwordLabel.text!, completion: { (user, error) in
             if error != nil{
                 self.errorLabel.text = error?.localizedDescription
@@ -191,8 +194,9 @@ class loginViewController: UIViewController, UIImagePickerControllerDelegate, UI
     override func viewDidLoad() {
         super.viewDidLoad()
         
-       // try! FIRAuth.auth()?.signOut()
-        //
+  
+     try! FIRAuth.auth()?.signOut()
+        
         let imageTap:UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapImageIcon(_:)))
         image.addGestureRecognizer(imageTap)
        
@@ -201,7 +205,7 @@ class loginViewController: UIViewController, UIImagePickerControllerDelegate, UI
   let loginButton = FBSDKLoginButton()
   view.addSubview(loginButton)
         //frame's are obselete, please use constraints instead because its 2016 after all
-   loginButton.frame = CGRect(x: 16, y: 600, width: view.frame.width - 32, height: 50)
+   loginButton.frame = CGRect(x: 16, y: 540, width: view.frame.width - 32, height: 50)
         
     loginButton.delegate = self
     }
@@ -254,7 +258,7 @@ class loginViewController: UIViewController, UIImagePickerControllerDelegate, UI
         if self.loginHelp == 1 {
         
         FIRAuth.auth()?.addStateDidChangeListener({ (auth, user) in
-            
+            print("TRRRRRRRR")
             if let currentUser = user {
                 if self.loginHelp == 1 {
                     let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
@@ -268,7 +272,7 @@ class loginViewController: UIViewController, UIImagePickerControllerDelegate, UI
                         
                         self.loggedInUserData = snapshot.value as? NSDictionary
                         
-                        
+                        print(self.loginHelp)
                         loggedInUserName = self.loggedInUserData?["name"] as! String
                         myProfilePicRef = self.loggedInUserData?["profilePicReference"] as! String
                         myCellNumber = self.loggedInUserData?["cellPhoneNumber"] as! String
@@ -294,13 +298,17 @@ class loginViewController: UIViewController, UIImagePickerControllerDelegate, UI
         
         }
         
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            self.loginHelp = 2
+            print(self.loginHelp)
     }
-    
+    }
 
     
     func signUp(){
     
-         self.loginHelp = 2
+        self.loginHelp = 2
         print("whoooooooo")
         
         if self.proPic != 1 {

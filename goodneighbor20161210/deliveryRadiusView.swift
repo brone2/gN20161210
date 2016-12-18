@@ -21,13 +21,17 @@ class deliveryRadiusView: UIViewController {
     var loggedInUserData: AnyObject?
     
     var databaseRef = FIRDatabase.database().reference()
-    var deliveryRadius:Float = 0.5000
+    var deliveryRadius:Float = 0.499789
     
     var activityIndicator = UIActivityIndicatorView()
     
     @IBAction func didTapContinue(_ sender: Any) {
         
-        self.databaseRef.child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("deliveryRadius").setValue(self.deliveryRadius)
+        self.deliveryRadius += 0.00043
+        
+        print(self.deliveryRadius)
+        
+    self.databaseRef.child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("deliveryRadius").setValue(self.deliveryRadius)
         
         self.loggedInUserId = FIRAuth.auth()?.currentUser?.uid
         
@@ -73,7 +77,7 @@ class deliveryRadiusView: UIViewController {
         let feetStringDeliveryRadius = String(format: "%.0f", feetDeliveryRadius)
         
         distanceLabel.text = "\(stringDeliveryRadius)"
-        print(feetStringDeliveryRadius)
+        print(self.deliveryRadius)
         feetLabel.text = "(\(feetStringDeliveryRadius) ft)"
         
     }
@@ -83,6 +87,7 @@ class deliveryRadiusView: UIViewController {
         
         slider.minimumValue = 0.010000
         slider.maximumValue = 1.0000
+        self.deliveryRadius = 0.499789
 
         // Do any additional setup after loading the view.
     }

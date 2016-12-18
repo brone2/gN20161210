@@ -37,7 +37,7 @@ class locationViewController: UIViewController, CLLocationManagerDelegate, MKMap
         
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(6), execute: {
             
-            self.performSegue(withIdentifier: "mapToBuilding", sender: nil)
+            self.performSegue(withIdentifier: "mapToHomeChoice", sender: nil)
             
         })
         

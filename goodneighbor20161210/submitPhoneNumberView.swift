@@ -22,8 +22,6 @@ class submitPhoneNumberView: UIViewController, UITextFieldDelegate {
     var saveKey: String?
 
     @IBOutlet var directionsLabel: UILabel!
-    @IBOutlet var phoneText3: UITextField!
-    @IBOutlet var phoneText2: UITextField!
     @IBOutlet var phoneText1: UITextField!
 
     override func viewDidAppear(_ animated: Bool) {
@@ -36,15 +34,13 @@ class submitPhoneNumberView: UIViewController, UITextFieldDelegate {
         
         if self.selectSubmit == 0 {
         
-        if (self.phoneText1.text != nil && self.phoneText2.text != nil && self.phoneText3.text != nil)
-        {
-        self.phoneNumber1 = String("\(self.phoneText1.text!)\(self.phoneText2.text!)\(self.phoneText1.text!)")
+        if (self.phoneText1.text != nil)        {
+        self.phoneNumber1 = String(self.phoneText1.text!)
         }
             self.selectSubmit = 1
             
             self.phoneText1.text = ""
-            self.phoneText2.text = ""
-            self.phoneText3.text = ""
+            
             self.directionsLabel.text = "Please re-enter phone number"
             
             return
@@ -53,9 +49,9 @@ class submitPhoneNumberView: UIViewController, UITextFieldDelegate {
         
         if self.selectSubmit == 1 {
             
-            if (phoneText1.text != nil && phoneText2.text != nil && phoneText3.text != nil)
+            if (phoneText1.text != nil)
             {
-                self.phoneNumber2 = String("\(phoneText1.text!)\(phoneText2.text!)\(phoneText1.text!)")
+                self.phoneNumber2 = String("\(phoneText1.text!)")
             }
             
             if self.phoneNumber1 != self.phoneNumber2 {
@@ -67,8 +63,6 @@ class submitPhoneNumberView: UIViewController, UITextFieldDelegate {
                     self.selectSubmit = 0
                     
                     self.phoneText1.text = ""
-                    self.phoneText2.text = ""
-                    self.phoneText3.text = ""
                     self.directionsLabel.text = "Please enter phone number"
                     
                     return
@@ -77,7 +71,13 @@ class submitPhoneNumberView: UIViewController, UITextFieldDelegate {
             } else {
             
             myCellNumber = self.phoneNumber2
-            self.databaseRef.child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("cellPhoneNumber").setValue(self.phoneNumber2)
+                
+            myCellNumber = myCellNumber.replacingOccurrences(of: "(", with: "")
+            myCellNumber = myCellNumber.replacingOccurrences(of: "-", with: "")
+            myCellNumber = myCellNumber.replacingOccurrences(of: ")", with: "")
+                
+                
+            self.databaseRef.child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("cellPhoneNumber").setValue(myCellNumber)
                 
             self.databaseRef.child("request").child(self.saveKey!).child("requesterCell").setValue(myCellNumber)
                 
@@ -85,7 +85,7 @@ class submitPhoneNumberView: UIViewController, UITextFieldDelegate {
                 
                 alertDeliveryComplete.addAction(UIAlertAction(title: "ok", style: .default, handler: { (action) in
                     
-                    self.performSegue(withIdentifier: "returnToRequest", sender: nil)
+                    self.performSegue(withIdentifier: "phoneToGeneralRefreshSegue", sender: nil)
                     
                 }))
                 self.present(alertDeliveryComplete, animated: true, completion: nil)
