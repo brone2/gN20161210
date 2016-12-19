@@ -195,7 +195,7 @@ class loginViewController: UIViewController, UIImagePickerControllerDelegate, UI
         super.viewDidLoad()
         
   
-     try! FIRAuth.auth()?.signOut()
+     //try! FIRAuth.auth()?.signOut()
         
         let imageTap:UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapImageIcon(_:)))
         image.addGestureRecognizer(imageTap)
@@ -205,7 +205,7 @@ class loginViewController: UIViewController, UIImagePickerControllerDelegate, UI
   let loginButton = FBSDKLoginButton()
   view.addSubview(loginButton)
         //frame's are obselete, please use constraints instead because its 2016 after all
-   loginButton.frame = CGRect(x: 16, y: 540, width: view.frame.width - 32, height: 50)
+   loginButton.frame = CGRect(x: 16, y: 520, width: view.frame.width - 32, height: 50)
         
     loginButton.delegate = self
     }

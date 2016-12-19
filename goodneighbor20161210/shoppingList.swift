@@ -61,6 +61,8 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
     override func viewDidLoad() {
         super.viewDidLoad()
         
+         self.sectionData = [0:self.myCurrentDeliveries,1:self.myCurrentRequests,2:self.shoppingListCurrentRequests]
+        
         self.loggedInUserId = FIRAuth.auth()?.currentUser?.uid
             
             self.databaseRef.child("request").observe(.childAdded) { (snapshot: FIRDataSnapshot) in
@@ -174,10 +176,17 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
    
+        print("look here")
+        print(self.sectionData[0]?.count)
+        print(self.sectionData[2]?.count)
+        print(self.sectionData[1]?.count)
+        
         
         if section != 2 {
         return((self.sectionData[section]?.count))!
+            
         } else {
+            
             if (self.sectionData[0]?.count) == 0 && (self.sectionData[1]?.count) == 0 && (self.sectionData[2]?.count) == 0 {
                 return 1
             } else {
@@ -187,7 +196,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             
         }
        
-        
+     self.table.reloadData()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -326,7 +335,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             
             if (self.sectionData[indexPath.section]?.count) == 0 {
                 cell.nameLabel.text = "No Current Request in your community"
-                cell.distanceLabel.text = "Select the pencil icon and add one!"
+                cell.distanceLabel.text = "Select the pencil below and add one!"
                 cell.deliverToLabel.text = ""
                 return cell
             }
@@ -410,6 +419,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
     
     override func viewDidAppear(_ animated: Bool) {
         self.table.reloadData()
+        print(self.sectionData)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
