@@ -886,7 +886,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please deliver to*" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iqK-gl-Yco">
-                                <rect key="frame" x="16" y="360.5" width="127" height="18.5"/>
+                                <rect key="frame" x="16" y="359.5" width="127" height="19.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -1134,7 +1134,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Jtj-O6-yGk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="927" y="1266"/>
+            <point key="canvasLocation" x="273" y="1244"/>
         </scene>
         <!--Tokens-->
         <scene sceneID="O7M-iK-ZbE">
@@ -2320,11 +2320,11 @@
         <image name="shoppingList3.jpg" width="1000" height="139"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="snf-E1-HOD"/>
+        <segue reference="Qr0-po-IJb"/>
         <segue reference="9gD-sH-e4F"/>
-        <segue reference="XaY-MG-wUe"/>
-        <segue reference="3Gq-Kg-BQY"/>
-        <segue reference="i3w-Ip-Vic"/>
-        <segue reference="Xlf-EA-jFq"/>
         <segue reference="eT3-9b-yu6"/>
+        <segue reference="i3w-Ip-Vic"/>
+        <segue reference="3Gq-Kg-BQY"/>
     </inferredMetricsTieBreakers>
 </document>
