@@ -155,9 +155,6 @@ class buildingNameView: UIViewController, UITableViewDelegate,UITableViewDataSou
 
         
         
-        
-        
-        
     }
 
     override func didReceiveMemoryWarning() {

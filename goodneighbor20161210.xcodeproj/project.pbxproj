@@ -59,6 +59,8 @@
 		E5E19FC11DF9A0A900994E5F /* saveImage2.png in Resources */ = {isa = PBXBuildFile; fileRef = E5E19FC01DF9A0A900994E5F /* saveImage2.png */; };
 		E5E19FC51DF9A16E00994E5F /* customButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E19FC41DF9A16E00994E5F /* customButton.swift */; };
 		E5E19FC71DF9F17B00994E5F /* myTokensView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E19FC61DF9F17B00994E5F /* myTokensView.swift */; };
+		E5E724D81E0AEF30007E9E6F /* facebookLoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E724D71E0AEF30007E9E6F /* facebookLoginController.swift */; };
+		E5E724DA1E0B0CDC007E9E6F /* myCurrentRequestPopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E724D91E0B0CDC007E9E6F /* myCurrentRequestPopUp.swift */; };
 		E5EC9AF41E06335100310A6D /* meChangeRadius.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EC9AF31E06335100310A6D /* meChangeRadius.swift */; };
 /* End PBXBuildFile section */
 
@@ -119,6 +121,8 @@
 		E5E19FC01DF9A0A900994E5F /* saveImage2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = saveImage2.png; sourceTree = "<group>"; };
 		E5E19FC41DF9A16E00994E5F /* customButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = customButton.swift; sourceTree = "<group>"; };
 		E5E19FC61DF9F17B00994E5F /* myTokensView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = myTokensView.swift; sourceTree = "<group>"; };
+		E5E724D71E0AEF30007E9E6F /* facebookLoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = facebookLoginController.swift; sourceTree = "<group>"; };
+		E5E724D91E0B0CDC007E9E6F /* myCurrentRequestPopUp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = myCurrentRequestPopUp.swift; sourceTree = "<group>"; };
 		E5EC9AF31E06335100310A6D /* meChangeRadius.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = meChangeRadius.swift; sourceTree = "<group>"; };
 		FE9BC30A54DB8E9F4050CFA2 /* Pods_goodneighbor20161210.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_goodneighbor20161210.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -191,6 +195,7 @@
 			isa = PBXGroup;
 			children = (
 				E536497B1DFB21F200920EA2 /* viewDetailGeneralShoppingList.swift */,
+				E5E724D91E0B0CDC007E9E6F /* myCurrentRequestPopUp.swift */,
 				E5B461BE1DFE62FD00DCEC51 /* viewDetailDeliveryView.swift */,
 			);
 			name = PopUps;
@@ -303,6 +308,7 @@
 				E5E19FA61DF9902300994E5F /* locationViewController.swift */,
 				E5084FDA1E03EDE400D1F388 /* buildingNameView.swift */,
 				E5B461BC1DFDE6A400DCEC51 /* deliveryRadiusView.swift */,
+				E5E724D71E0AEF30007E9E6F /* facebookLoginController.swift */,
 			);
 			name = IntroViews;
 			sourceTree = "<group>";
@@ -503,6 +509,7 @@
 				E5084FDD1E04576900D1F388 /* meChangeBuildingName.swift in Sources */,
 				E5E19FA71DF9902300994E5F /* locationViewController.swift in Sources */,
 				E5B461B71DFDC23B00DCEC51 /* pastActivityCompleted.swift in Sources */,
+				E5E724D81E0AEF30007E9E6F /* facebookLoginController.swift in Sources */,
 				E53649751DFAFE3A00920EA2 /* myCurrentRequestsCell.swift in Sources */,
 				E5B461B91DFDCB6100DCEC51 /* mePastCompletedCell.swift in Sources */,
 				E536497C1DFB21F200920EA2 /* viewDetailGeneralShoppingList.swift in Sources */,
@@ -510,6 +517,7 @@
 				E5E19FC51DF9A16E00994E5F /* customButton.swift in Sources */,
 				E5E19FB61DF99CA300994E5F /* requestItem.swift in Sources */,
 				E5E19F5D1DF96C0100994E5F /* AppDelegate.swift in Sources */,
+				E5E724DA1E0B0CDC007E9E6F /* myCurrentRequestPopUp.swift in Sources */,
 				E5E19F651DF96C0100994E5F /* goodneighbor20161210.xcdatamodeld in Sources */,
 				E536496A1DFAF8B500920EA2 /* myCurrentDeliveriesCell.swift in Sources */,
 				E5B461CA1DFFAAC500DCEC51 /* changeLocationViewController.swift in Sources */,

@@ -15,7 +15,6 @@ import MessageUI.MFMailComposeViewController
 
 class viewDetailGeneralShoppingList: UIViewController, UITextViewDelegate, UITextFieldDelegate, MFMessageComposeViewControllerDelegate {
     
-    
     @IBOutlet var decriptionTextView: UITextView!
     @IBOutlet var requestedByLabel: UILabel!
     @IBOutlet var profilePicImage: UIImageView!
@@ -27,7 +26,6 @@ class viewDetailGeneralShoppingList: UIViewController, UITextViewDelegate, UITex
     var loggedInUserId:String!
     var acceptedTime = NSDate()
     var databaseRef = FIRDatabase.database().reference()
-    
     var shoppingListCurrentRequests = [NSDictionary?]()
     var selectedRowIndex:Int!
 
@@ -36,7 +34,7 @@ class viewDetailGeneralShoppingList: UIViewController, UITextViewDelegate, UITex
         
         self.loggedInUserId = FIRAuth.auth()?.currentUser?.uid
         self.requestedByLabel.text = String("Requested by \(self.shoppingListCurrentRequests[self.selectedRowIndex]?["requesterName"] as! String)")
-         self.productNameLabel.text = String("\(self.shoppingListCurrentRequests[self.selectedRowIndex]?["itemName"] as! String)")
+        self.productNameLabel.text = String("\(self.shoppingListCurrentRequests[self.selectedRowIndex]?["itemName"] as! String)")
        // self.distanceLabel.text = String("Located \(self.shoppingListCurrentRequests[self.selectedRowIndex]?["latitude"] as! String) away from you")
         
         let buildingCheck = self.shoppingListCurrentRequests[self.selectedRowIndex]?["buildingName"] as? String
@@ -111,10 +109,8 @@ class viewDetailGeneralShoppingList: UIViewController, UITextViewDelegate, UITex
             self.present(alertFin, animated: true, completion: nil)
             
         }))
+        
         self.present(alert, animated: true, completion: nil)
-        
-        
-
         
     }
     
