@@ -124,30 +124,33 @@ class viewDetailGeneralShoppingList: UIViewController, UITextViewDelegate, UITex
         }))
         
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
-    
+     /*
         self.databaseRef.child("request").child((self.shoppingListCurrentRequests[self.selectedRowIndex]?["requestKey"] as? String)!).child("isAccepted").setValue(true)
          
         self.databaseRef.child("request").child((self.shoppingListCurrentRequests[self.selectedRowIndex]?["requestKey"] as? String)!).child("accepterUID").setValue(self.loggedInUserId)
             
         self.databaseRef.child("request").child((self.shoppingListCurrentRequests[self.selectedRowIndex]?["requestKey"] as? String)!).child("accepterName").setValue(loggedInUserName)
+            
         self.databaseRef.child("request").child((self.shoppingListCurrentRequests[self.selectedRowIndex]?["requestKey"] as? String)!).child("accepterProfilePicRef").setValue(myProfilePicRef)
-            
-            
-            
+   */
+       
+        let childUpdates = ["/request/\((self.shoppingListCurrentRequests[self.selectedRowIndex]?["requestKey"] as? String)!)/isAccepted":true,"/request/\((self.shoppingListCurrentRequests[self.selectedRowIndex]?["requestKey"] as? String)!)/accepterUID":self.loggedInUserId,"/request/\((self.shoppingListCurrentRequests[self.selectedRowIndex]?["requestKey"] as? String)!)/accepterName":loggedInUserName, "/request/\((self.shoppingListCurrentRequests[self.selectedRowIndex]?["requestKey"] as? String)!)/accepterProfilePicRef":myProfilePicRef] as [String : Any]
+ 
+        self.databaseRef.updateChildValues(childUpdates)
+ 
             let requesterCell = self.shoppingListCurrentRequests[self.selectedRowIndex]?["requesterCell"] as? String
             let requesterName = self.shoppingListCurrentRequests[self.selectedRowIndex]?["requesterName"] as? String
             let itemName = self.shoppingListCurrentRequests[self.selectedRowIndex]?["itemName"] as? String
             let itemPrice = self.shoppingListCurrentRequests[self.selectedRowIndex]?["price"] as? String
             
             let textMessage = "Hey \(requesterName!), I should be able to deliver to you \(itemName!) if I can find it for a price equal to or less than \(itemPrice!). Please message me back confirming you will fully recompensate me the price of the item up to or equal than \(itemPrice!). Thanks, \(loggedInUserName!) "
-            print(textMessage)
+           // print(textMessage)
             
             if (MFMessageComposeViewController.canSendText()) {
                 let controller = MFMessageComposeViewController();
                 controller.body = textMessage;
                 controller.recipients = [requesterCell!]
                 controller.messageComposeDelegate = self;
-                print("AAAAAAAA")
                 self.present(controller, animated: true, completion: nil)
             }
             

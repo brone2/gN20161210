@@ -31,7 +31,6 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
     var loggedInUserId:String!
     var currentUserName:String!
     var loggedInUserData: AnyObject?
-    
     var acceptorUserData: AnyObject?
     
     var myCurrentDeliveries = [NSDictionary?]()
@@ -46,24 +45,50 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
     var requesterRecieveCount:Int?
     var accepterDeliveryCount: Int?
     
-    
     @IBOutlet weak var table: UITableView!
-    /*
-     func returnMyDistance(myLocation: CLLocation, userLatitude:CLLocationDegrees,userLongitude: CLLocationDegrees) -> Int {
-     
-     let userLocation = CLLocation(latitude: userLatitude, longitude: userLongitude)
-     
-     let distanceInMeters = myLocation.distance(from: userLocation)
-     
-     return Int(distanceInMeters)
-     }
-     */
+    
+    func childBeChanged(){
+        
+        self.databaseRef.child("request").observe(.childChanged) { (snapshot: FIRDataSnapshot) in
+         
+            let key = snapshot.key
+            let snapshot = snapshot.value as! NSDictionary
+           
+            for sectionIndex in 0..<self.sectionData.count{
+              
+                for valIndex in 0..<((self.sectionData[sectionIndex]?.count)! as Int) {
+                    
+                    let testKey = self.sectionData[sectionIndex]?[valIndex]?["requestKey"] as! String
+                    if testKey == key {
+                        
+                        let userLatitude = snapshot["latitude"] as? CLLocationDegrees
+                        let userLongitude = snapshot["longitude"] as? CLLocationDegrees
+                        let userLocation = CLLocation(latitude: userLatitude!, longitude: userLongitude!)
+                        let distanceInMeters = myLocation!.distance(from: userLocation)
+                        let distanceMiles = distanceInMeters/1609.344897
+                        let distanceMilesFloat = Float(distanceMiles)
+                        let requestDict = snapshot as! NSMutableDictionary
+                        let distanceMilesFloatString = String(format: "%.2f", distanceMilesFloat)
+                        requestDict["distanceFromUser"] = distanceMilesFloatString
+                        
+                    self.sectionData[sectionIndex]?[valIndex] = requestDict
+                    self.table.reloadData()
+                        
+                    }
+                }
+            }
+        }
+    }
+  
+ 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.sectionData = [0:self.myCurrentDeliveries,1:self.myCurrentRequests,2:self.shoppingListCurrentRequests]
         
         self.loggedInUserId = FIRAuth.auth()?.currentUser?.uid
+        
+        self.childBeChanged()
         
         self.databaseRef.child("request").observe(.childAdded) { (snapshot: FIRDataSnapshot) in
             
@@ -203,6 +228,8 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             
             let cell:myCurrentDeliveriesCell = tableView.dequeueReusableCell(withIdentifier: "myDeliveriesCell", for: indexPath) as! myCurrentDeliveriesCell
             
+            let isCompleted:Bool = self.sectionData[indexPath.section]![indexPath.row]?["isComplete"] as! Bool
+            
             cell.deliverToLabel.text = self.sectionData[indexPath.section]![indexPath.row]?["deliverTo"] as? String
             
             let buildingCheck = self.sectionData[indexPath.section]![indexPath.row]?["buildingName"] as? String
@@ -218,7 +245,15 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             }
             
             cell.nameLabel.text = self.sectionData[indexPath.section]![indexPath.row]?["itemName"] as? String
-            cell.deliveringTo.text = String("Delivering to \(self.sectionData[indexPath.section]![indexPath.row]?["requesterName"] as! String)")
+            
+            if isCompleted == false {
+                print("HEEEEE")
+                cell.deliveringTo.text = String("Delivering to \(self.sectionData[indexPath.section]![indexPath.row]?["requesterName"] as! String)")
+            } else {
+                print("AAAAAAA")
+                 cell.deliveringTo.text = "This request is complete!"
+            }
+            
             
             let tokenCountHelp:Int = (self.sectionData[indexPath.section]![indexPath.row]?["tokensOffered"] as? Int)!
             
@@ -267,12 +302,15 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             
             let isAccepted:Bool = self.sectionData[indexPath.section]![indexPath.row]?["isAccepted"] as! Bool
             
+            let isCompleted:Bool = self.sectionData[indexPath.section]![indexPath.row]?["isComplete"] as! Bool
+            
             cell.cancelCompleteButton.tag = indexPath.row
             
             if isAccepted == false {
                 
                 cell.deliveringToLabel.text = "Not yet accepted"
                 
+                cell.cancelCompleteButton.removeTarget(nil, action: nil, for: .allEvents)
                 cell.cancelCompleteButton.addTarget(self, action: #selector(self.didTapCancelButton(_:)), for: .touchUpInside)
                 
                 cell.chatImage.image = UIImage(named: "grayTextBubble.png")
@@ -302,7 +340,8 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                 cell.profilePic.layer.borderWidth = 2.0
                 cell.profilePic.layer.borderColor = UIColor(red: 16/255, green: 126/255, blue: 207/255, alpha: 1).cgColor
                 
-                print(sectionData)
+              //  print(sectionData)
+                cell.cancelCompleteButton.removeTarget(nil, action: nil, for: .allEvents)
                 cell.cancelCompleteButton.addTarget(self, action: #selector(self.didTapCompleteButton(_:)), for: .touchUpInside)
                 
                 //let me = self.sectionData[indexPath.section]![indexPath.row]?["distanceFromUser"] as? String
@@ -310,10 +349,16 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                 
                 // cell.distanceLabel.text = "ok"
                 //String("Lives \(self.sectionData[indexPath.section]![indexPath.row]?["distanceFromUser"] as? String) away from you")
+                if isCompleted == false {
+                     cell.cancelCompleteButton.setTitle("Mark Request as Complete", for: [])
+                } else {
+                    cell.cancelCompleteButton.setTitle("This request is complete!", for: [])
+                }
                 
                 cell.chatImage.image = UIImage(named: "greenTextBubble.png")
+              
                 cell.phoneImage.image = UIImage(named: "greenTelephone.png")
-                cell.cancelCompleteButton.setTitle("Mark Request as Complete", for: [])
+               
                 cell.cancelCompleteButton.contentHorizontalAlignment = .left
                 cell.cancelCompleteButton.setTitleColor(UIColor(red:0.054902, green: 0.376471, blue:0.61568, alpha:1.0), for: [])
                 
@@ -459,7 +504,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
     
     func didTapCancelButton(_ sender: UIButton)  {
         
-        if sender.titleLabel?.text != "Request has been deleted" {
+        if sender.titleLabel?.text == "Cancel Request" {
             
             let alertCancel = UIAlertController(title: "Cancel Request", message: "Are you sure you want to cancel this request? ", preferredStyle: UIAlertControllerStyle.alert)
             
@@ -496,8 +541,11 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         }))
         
         alertComplete.addAction(UIAlertAction(title: "Complete", style: .default, handler: { (action) in
-            
+            print("Selected COMPLETE")
             sender.setTitle("This request is complete!", for: [])
+            sender.isEnabled = false
+            print("Selected COMPLETE1")
+            
             let index = sender.tag
             let accepterUIDToken = self.sectionData[1]![index]?["accepterUID"] as? String
             let requesterUIDToken = self.sectionData[1]![index]?["requesterUID"] as? String
@@ -536,57 +584,6 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         self.present(alertComplete, animated: true, completion: nil)
         
     }
-    /*
-     func childAddedList (){
-     let snapshot = snapshot.value as! NSDictionary
-     
-     let snapID = snapshot["requesterUID"] as? String
-     let snapAccepted = snapshot["isAccepted"] as? Bool
-     let snapCompleted = snapshot["isComplete"] as? Bool
-     let accepterID = snapshot["accepterUID"] as? String
-     
-     
-     let userLatitude = snapshot["latitude"] as? CLLocationDegrees
-     let userLongitude = snapshot["longitude"] as? CLLocationDegrees
-     
-     
-     let userLocation = CLLocation(latitude: userLatitude!, longitude: userLongitude!)
-     let distanceInMeters = myLocation!.distance(from: userLocation)
-     let distanceMiles = distanceInMeters/1609.344897
-     let distanceMilesFloat = Float(distanceMiles)
-     
-     
-     //Filter out all request outside geolocation
-     if distanceMilesFloat < myRadius! {
-     
-     let requestDict = snapshot as! NSMutableDictionary
-     let distanceMilesFloatString = String(format: "%.2f", distanceMilesFloat)
-     requestDict["distanceFromUser"] = distanceMilesFloatString
-     
-     //General shopping list requests, those that are not already accepted and not sent by you
-     if(snapID != self.loggedInUserId && snapAccepted != true ){
-     self.shoppingListCurrentRequests.append(requestDict)
-     //self.table.insertRows(at: [IndexPath(row: 0, section: 2)], with: UITableViewRowAnimation.automatic)
-     }
-     
-     //My request
-     if(snapID == self.loggedInUserId && snapCompleted != true ){
-     self.myCurrentRequests.append(requestDict)
-     //self.table.insertRows(at: [IndexPath(row: 0, section: 1)], with: UITableViewRowAnimation.automatic)
-     }
-     
-     //My Deliveries
-     if(accepterID == self.loggedInUserId && snapCompleted != true ){
-     self.myCurrentDeliveries.append(requestDict)
-     //  self.table.insertRows(at: [IndexPath(row: 0, section: 0)], with: UITableViewRowAnimation.automatic)
-     }
-     self.sectionData = [0:self.myCurrentDeliveries,1:self.myCurrentRequests,2:self.shoppingListCurrentRequests]
-     //  self.table.insertRows(at: [IndexPath(row: 0, section: rowToUpdate)], with: UITableViewRowAnimation.automatic)
-     
-     self.table.reloadData()
-     
-     }
-     }*/
     
     
     func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {

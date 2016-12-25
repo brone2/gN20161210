@@ -17,6 +17,7 @@ class deliveryRadiusView: UIViewController {
     @IBOutlet var distanceLabel: UILabel!
     @IBOutlet var slider: UISlider!
     @IBOutlet var feetLabel: UILabel!
+    
     var loggedInUserId:String!
     var loggedInUserData: AnyObject?
     

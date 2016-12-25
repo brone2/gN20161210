@@ -29,14 +29,15 @@ class initialViewController: UIViewController {
     var timer = Timer()
     var loggedInUserId: String?
     
-    
-    override var prefersStatusBarHidden: Bool {
+        override var prefersStatusBarHidden: Bool {
         return true
     } 
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+  // try! FIRAuth.auth()?.signOut()
+
         self.databaseRef = FIRDatabase.database().reference()
 
         

@@ -34,6 +34,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
     var profilePicReference:String!
     var saveKeyPath: String?
     var saveKey: String?
+    var downloadUrlAbsoluteString: String?
     
  
     @IBOutlet weak var twoTokenImage: UIImageView!
@@ -290,14 +291,15 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
                 
                 //*May be an issue later that this child is being updated ahead of all the other ones in childUpdates, may throw timing elsewhere
                 let downloadUrl = metadata!.downloadURL()
-                self.databaseRef.child("request").child(key).child("image_request").setValue(downloadUrl!.absoluteString)
+                self.downloadUrlAbsoluteString = downloadUrl!.absoluteString
+               // self.databaseRef.child("request").child(key).child("image_request").setValue(downloadUrl!.absoluteString)
                 
             }
         })
         }
     
         //Save text
-        
+    
         let pricePath = "/request/\(key)/price"
         let priceLabelValue = self.priceLabel.text! as String
         
@@ -354,16 +356,28 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         self.saveKeyPath = requestKeyPath
         self.saveKey = keyValue
         
-        let childUpdates:Dictionary<String, Any> = [timeStampPath: [".sv": "timestamp"],profilePicReferencePath: profilePicReferenceValue!, requesterCellPath: requesterCellValue,pricePath: priceLabelValue, buildingNamePath: buildingNamePathValue, itemNamePath: itemNameValue,tokenPath: tokensLabelValue,descriptionPath:descriptionLabelValue,requesterNamePath:requesterNameValue,deliverToPath:deliverToValue,longitudePath:longitudeValue,latitudePath:latitudeValue,requestedTimePath:requestedTimeValue!,requesterUIDPath:requesterUIDValue,isAcceptedPath:isAcceptedValue,isCompletePath:isCompleteValue,requestKeyPath:keyValue]
+       /* let childUpdates:Dictionary<String, Any> = [timeStampPath: [".sv": "timestamp"],profilePicReferencePath: profilePicReferenceValue!, requesterCellPath: requesterCellValue,pricePath: priceLabelValue, buildingNamePath: buildingNamePathValue, itemNamePath: itemNameValue,tokenPath: tokensLabelValue,descriptionPath:descriptionLabelValue,requesterNamePath:requesterNameValue,deliverToPath:deliverToValue,longitudePath:longitudeValue,latitudePath:latitudeValue,requestedTimePath:requestedTimeValue!,requesterUIDPath:requesterUIDValue,isAcceptedPath:isAcceptedValue,isCompletePath:isCompleteValue,requestKeyPath:keyValue]
+        */
+    
         
         if self.imageData != nil{
+            
+            let downloadUrlAbsoluteStringPath = "/request/\(key)/downloadUrlAbsoluteString"
+            let downloadUrlAbsoluteStringValue = self.downloadUrlAbsoluteString
+            
+            let childUpdates:Dictionary<String, Any> = [timeStampPath: [".sv": "timestamp"],profilePicReferencePath: profilePicReferenceValue!,downloadUrlAbsoluteStringPath:downloadUrlAbsoluteStringValue!, requesterCellPath: requesterCellValue,pricePath: priceLabelValue, buildingNamePath: buildingNamePathValue, itemNamePath: itemNameValue,tokenPath: tokensLabelValue,descriptionPath:descriptionLabelValue,requesterNamePath:requesterNameValue,deliverToPath:deliverToValue,longitudePath:longitudeValue,latitudePath:latitudeValue,requestedTimePath:requestedTimeValue!,requesterUIDPath:requesterUIDValue,isAcceptedPath:isAcceptedValue,isCompletePath:isCompleteValue,requestKeyPath:keyValue]
+            
         self.databaseRef.updateChildValues(childUpdates)
+            
+            
             if myCellNumber == "0"{
                 self.performSegue(withIdentifier: "goToPhone", sender: nil)
             } else {
         self.requestReset()
             }
-        } else{
+        }
+        else // No image
+        {
             
         let alertNoPic = UIAlertController(title: "No Product Image Entered", message: "Providing an image of the product will make it easier for your neighbor to correctly fulfill your request. Please add a product image from you phone if possible", preferredStyle: UIAlertControllerStyle.alert)
             
@@ -371,12 +385,21 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
                 return
             }))
             alertNoPic.addAction(UIAlertAction(title: "Post without picture", style: .default, handler: { (action) in
+                
+                let childUpdates:Dictionary<String, Any> = [timeStampPath: [".sv": "timestamp"],profilePicReferencePath: profilePicReferenceValue!, requesterCellPath: requesterCellValue,pricePath: priceLabelValue, buildingNamePath: buildingNamePathValue, itemNamePath: itemNameValue,tokenPath: tokensLabelValue,descriptionPath:descriptionLabelValue,requesterNamePath:requesterNameValue,deliverToPath:deliverToValue,longitudePath:longitudeValue,latitudePath:latitudeValue,requestedTimePath:requestedTimeValue!,requesterUIDPath:requesterUIDValue,isAcceptedPath:isAcceptedValue,isCompletePath:isCompleteValue,requestKeyPath:keyValue]
+
+                
                 self.databaseRef.updateChildValues(childUpdates)
+                
+                
                 if myCellNumber == "0"{
                     self.performSegue(withIdentifier: "goToPhone", sender: nil)
                 } else {
                 self.requestReset()
                 }
+                
+                
+                
             }))
             self.present(alertNoPic, animated: true, completion: nil)
             
