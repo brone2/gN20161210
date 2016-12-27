@@ -47,6 +47,35 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
     
     @IBOutlet weak var table: UITableView!
     
+    func childBeDeleted() {
+        
+        self.databaseRef.child("request").observe(.childRemoved) { (snapshot: FIRDataSnapshot) in
+            
+            let key = snapshot.key
+         
+            for sectionIndex in 0..<self.sectionData.count{
+                
+                for valIndex in (0..<((self.sectionData[sectionIndex]?.count)! as Int)).reversed() {
+                    
+                    let testKey = self.sectionData[sectionIndex]?[valIndex]?["requestKey"] as! String
+                    
+                    print(self.sectionData[sectionIndex])
+                    
+                    if testKey == key {
+                     
+                    self.sectionData[sectionIndex]?.remove(at: valIndex)
+                    self.table.reloadData()
+                        
+                        
+                    }
+                
+                }
+                
+            }
+            
+        }
+    }
+    
     func childBeChanged(){
         
         self.databaseRef.child("request").observe(.childChanged) { (snapshot: FIRDataSnapshot) in
@@ -59,17 +88,22 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                 for valIndex in 0..<((self.sectionData[sectionIndex]?.count)! as Int) {
                     
                     let testKey = self.sectionData[sectionIndex]?[valIndex]?["requestKey"] as! String
+                    
                     if testKey == key {
                         
+                        //distance must be manually solved because not stored in firebase
                         let userLatitude = snapshot["latitude"] as? CLLocationDegrees
                         let userLongitude = snapshot["longitude"] as? CLLocationDegrees
                         let userLocation = CLLocation(latitude: userLatitude!, longitude: userLongitude!)
                         let distanceInMeters = myLocation!.distance(from: userLocation)
                         let distanceMiles = distanceInMeters/1609.344897
                         let distanceMilesFloat = Float(distanceMiles)
-                        let requestDict = snapshot as! NSMutableDictionary
-                        let distanceMilesFloatString = String(format: "%.2f", distanceMilesFloat)
+                        let requestDict = snapshot as! NSMutableDictionary //request dict holds updated data
+                        let distanceMilesFloatString = String(format: "%.2f", distanceMilesFloat) //manually adding calculated distance from user
+                        //isAccepted updated to take off this request immediately, isComplete is not so people can see isComplete message
+                        requestDict["isAccepted"] = snapshot["isAccepted"] as? Bool
                         requestDict["distanceFromUser"] = distanceMilesFloatString
+                        print(requestDict)
                         
                     self.sectionData[sectionIndex]?[valIndex] = requestDict
                     self.table.reloadData()
@@ -89,6 +123,8 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         self.loggedInUserId = FIRAuth.auth()?.currentUser?.uid
         
         self.childBeChanged()
+        
+        self.childBeDeleted()
         
         self.databaseRef.child("request").observe(.childAdded) { (snapshot: FIRDataSnapshot) in
             
@@ -170,8 +206,27 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             }
             
             if indexPath.section == 2 {
-                self.selectedRowIndex = indexPath.row
-                self.performSegue(withIdentifier: "generalToDetail", sender: nil)
+                
+                //Need to handle live update issue where another user accepts delivery but it remains on screen
+                let isAccepted:Bool = self.sectionData[indexPath.section]![indexPath.row]?["isAccepted"] as! Bool
+                
+                if isAccepted == false {
+                    
+                    self.selectedRowIndex = indexPath.row
+                    self.performSegue(withIdentifier: "generalToDetail", sender: nil)
+                    
+                } else{
+                    
+                    
+                    let alertCancel = UIAlertController(title: "Request already accepted", message: "A different goodneighbor has accepted this request. Please choose another!", preferredStyle: UIAlertControllerStyle.alert)
+                    
+                    alertCancel.addAction(UIAlertAction(title: "No", style: .default, handler: { (action) in
+                        //nothing happens
+                    }))
+                    
+                    self.present(alertCancel, animated: true, completion: nil)
+                    
+                }
             }
             
         }
@@ -410,16 +465,13 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             if tokenCountHelp == 2 {
                 cell.coinImage.image = UIImage(named: "2FullToken.png")
             }
-            
             DispatchQueue.main.async{
                 if let image = self.sectionData[indexPath.section]![indexPath.row]?["profilePicReference"] as? String {
                     
                     let url = URL(string: image)
-                    
                     cell.profilePic!.sd_setImage(with: url, placeholderImage: UIImage(named:"saveImage2.png")!)
                     
                 }}
-            
             cell.profilePic.layer.cornerRadius = 27.5
             cell.profilePic.layer.masksToBounds = true
             cell.profilePic.contentMode = .scaleAspectFit
@@ -427,7 +479,9 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             cell.profilePic.layer.borderColor = UIColor(red: 16/255, green: 126/255, blue: 207/255, alpha: 1).cgColor
             
             return cell
+            
         }
+        
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -515,6 +569,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             alertCancel.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
                 
                 sender.setTitle("Request has been deleted", for: [])
+                sender.isEnabled = false
                 
                 let index = sender.tag
                 let requestKey = self.sectionData[1]![index]?["requestKey"] as? String

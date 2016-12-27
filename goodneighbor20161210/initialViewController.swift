@@ -29,7 +29,7 @@ class initialViewController: UIViewController {
     var timer = Timer()
     var loggedInUserId: String?
     
-        override var prefersStatusBarHidden: Bool {
+    override var prefersStatusBarHidden: Bool {
         return true
     } 
 

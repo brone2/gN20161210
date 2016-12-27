@@ -35,7 +35,7 @@ class changeLocationViewController: UIViewController, CLLocationManagerDelegate,
         
         locationManager.startUpdatingLocation()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(6), execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(4), execute: {
             
             self.performSegue(withIdentifier: "replaceMapToBuilding", sender: nil)
             
@@ -59,6 +59,8 @@ class changeLocationViewController: UIViewController, CLLocationManagerDelegate,
             let span = MKCoordinateSpan(latitudeDelta: latDelta, longitudeDelta: lonDelta)
             //Set location into new variable
             let location = CLLocationCoordinate2D(latitude: latitude!, longitude: longitude!)
+            
+            myLocation = CLLocation(latitude: latitude!, longitude: longitude!)
             
             let region = MKCoordinateRegion(center: location, span: span)
             
