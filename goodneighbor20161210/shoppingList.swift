@@ -59,20 +59,23 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                     
                     let testKey = self.sectionData[sectionIndex]?[valIndex]?["requestKey"] as! String
                     
-                    print(self.sectionData[sectionIndex])
-                    
                     if testKey == key {
                      
                     self.sectionData[sectionIndex]?.remove(at: valIndex)
+    
+                    //Updating the community deliveries array for sake of real time update
+                    //ISSUE IS HERE BECAUSE NEED TO HAVE GENERAL SECTION DATA UPDATED
+                        if sectionIndex == 2 {
+                    self.shoppingListCurrentRequests = self.sectionData[sectionIndex] as! [NSDictionary]
+                        } else if sectionIndex == 1{
+                    self.myCurrentRequests = self.sectionData[sectionIndex] as! [NSDictionary]
+                        }
+                        
                     self.table.reloadData()
                         
-                        
                     }
-                
                 }
-                
             }
-            
         }
     }
     
@@ -114,7 +117,6 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         }
     }
   
- 
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -126,20 +128,18 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         
         self.childBeDeleted()
         
-        self.databaseRef.child("request").observe(.childAdded) { (snapshot: FIRDataSnapshot) in
-            
+     self.databaseRef.child("request").observe(.childAdded) { (snapshot: FIRDataSnapshot) in
+        
             let snapshot = snapshot.value as! NSDictionary
             
             let snapID = snapshot["requesterUID"] as? String
             let snapAccepted = snapshot["isAccepted"] as? Bool
             let snapCompleted = snapshot["isComplete"] as? Bool
             let accepterID = snapshot["accepterUID"] as? String
-            
-            
+        
             let userLatitude = snapshot["latitude"] as? CLLocationDegrees
             let userLongitude = snapshot["longitude"] as? CLLocationDegrees
-            
-            
+        
             let userLocation = CLLocation(latitude: userLatitude!, longitude: userLongitude!)
             let distanceInMeters = myLocation!.distance(from: userLocation)
             let distanceMiles = distanceInMeters/1609.344897
@@ -179,7 +179,6 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         }
     }
     
-    
     func numberOfSections(in tableView: UITableView) -> Int {
         
         return sectionData.count
@@ -215,12 +214,11 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                     self.selectedRowIndex = indexPath.row
                     self.performSegue(withIdentifier: "generalToDetail", sender: nil)
                     
-                } else{
-                    
+                } else {
                     
                     let alertCancel = UIAlertController(title: "Request already accepted", message: "A different goodneighbor has accepted this request. Please choose another!", preferredStyle: UIAlertControllerStyle.alert)
                     
-                    alertCancel.addAction(UIAlertAction(title: "No", style: .default, handler: { (action) in
+                    alertCancel.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
                         //nothing happens
                     }))
                     
@@ -228,7 +226,6 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                     
                 }
             }
-            
         }
     }
     
@@ -272,8 +269,6 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             } else {
                 return((self.sectionData[section]?.count))!
             }
-            
-            
         }
     }
     
@@ -388,21 +383,16 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                         let url = URL(string: image)
                         cell.profilePic!.sd_setImage(with: url, placeholderImage: UIImage(named:"saveImage2.png")!)
                     }}
-                //here
+            
                 cell.profilePic.layer.cornerRadius = 27.5
                 cell.profilePic.layer.masksToBounds = true
                 cell.profilePic.contentMode = .scaleAspectFit
                 cell.profilePic.layer.borderWidth = 2.0
                 cell.profilePic.layer.borderColor = UIColor(red: 16/255, green: 126/255, blue: 207/255, alpha: 1).cgColor
-                
-              //  print(sectionData)
+                           
                 cell.cancelCompleteButton.removeTarget(nil, action: nil, for: .allEvents)
                 cell.cancelCompleteButton.addTarget(self, action: #selector(self.didTapCompleteButton(_:)), for: .touchUpInside)
                 
-                //let me = self.sectionData[indexPath.section]![indexPath.row]?["distanceFromUser"] as? String
-                
-                
-                // cell.distanceLabel.text = "ok"
                 //String("Lives \(self.sectionData[indexPath.section]![indexPath.row]?["distanceFromUser"] as? String) away from you")
                 if isCompleted == false {
                      cell.cancelCompleteButton.setTitle("Mark Request as Complete", for: [])
@@ -433,6 +423,8 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         } else { //if is community request
             
             let cell:shoppingListCell = tableView.dequeueReusableCell(withIdentifier: "shoppingListCell", for: indexPath) as! shoppingListCell
+            
+            print(self.sectionData)
             
             if (self.sectionData[indexPath.section]?.count) == 0 {
                 cell.nameLabel.text = "No Current Request in your community"
@@ -485,13 +477,11 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        
         if indexPath.section == 2 {
             return 75
         } else {
             return 105
         }
-        
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -505,9 +495,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             return nil
             
         }
-        
         return headers
-        
     }
     
     
@@ -569,7 +557,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             alertCancel.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
                 
                 sender.setTitle("Request has been deleted", for: [])
-                sender.isEnabled = false
+                //sender.isEnabled = false
                 
                 let index = sender.tag
                 let requestKey = self.sectionData[1]![index]?["requestKey"] as? String
@@ -578,7 +566,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                 self.databaseRef.updateChildValues(childUpdates)
                 
             }))
-            self.present(alertCancel, animated: true, completion: nil)
+         self.present(alertCancel, animated: true, completion: nil)
         }
     }
     
@@ -598,7 +586,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         alertComplete.addAction(UIAlertAction(title: "Complete", style: .default, handler: { (action) in
             print("Selected COMPLETE")
             sender.setTitle("This request is complete!", for: [])
-            sender.isEnabled = false
+            //sender.isEnabled = false
             print("Selected COMPLETE1")
             
             let index = sender.tag
