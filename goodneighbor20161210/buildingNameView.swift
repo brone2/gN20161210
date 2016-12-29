@@ -80,7 +80,6 @@ class buildingNameView: UIViewController, UITableViewDelegate,UITableViewDataSou
         
         self.performSegue(withIdentifier: "buildingToRadius", sender: nil)
         
-        
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

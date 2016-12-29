@@ -77,8 +77,6 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
             self.requesterLatitude = self.loggedInUserData?["latitude"] as! CLLocationDegrees?
             
             self.requesterBuildingName = self.loggedInUserData?["buildingName"] as? String
-            
-            
         }
         
         //Get date and time information
@@ -117,19 +115,11 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         self.priceLabel.textColor = UIColor.black
     }
     
-    
-    
-    
     @IBAction func didTapRequest(_ sender: Any) {
         
     self.databaseRef.child("users").child(self.loggedInUser!).observeSingleEvent(of: .value) { (snapshot:FIRDataSnapshot) in
         
         currentTokenCount = self.loggedInUserData?["tokenCount"] as? Int
-        
-        print(currentTokenCount)
-        print("tokcur")
-        
-        
         
         if self.priceLabel.text == "" || self.priceLabel.text == "" || self.priceLabel.text == "$" || self.descriptionTextView.text! == "" {
             let alertNotEnough = UIAlertController(title: "Missing Required Fields", message: "Please fill out all required fields", preferredStyle: UIAlertControllerStyle.alert)
@@ -139,9 +129,6 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
             }))
             self.present(alertNotEnough, animated: true, completion: nil)
         }
-        
-
-        
         
         if self.tokensOffered > currentTokenCount {
             
@@ -192,9 +179,6 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         }
         
     }
-
-    
-    
 
     func didTapOneToken(_ sender: UITapGestureRecognizer) {
         

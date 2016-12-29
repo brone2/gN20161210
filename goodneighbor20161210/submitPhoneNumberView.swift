@@ -75,8 +75,6 @@ class submitPhoneNumberView: UIViewController, UITextFieldDelegate {
             myCellNumber = myCellNumber.replacingOccurrences(of: "(", with: "")
             myCellNumber = myCellNumber.replacingOccurrences(of: "-", with: "")
             myCellNumber = myCellNumber.replacingOccurrences(of: ")", with: "")
-                
-                
             self.databaseRef.child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("cellPhoneNumber").setValue(myCellNumber)
                 
             self.databaseRef.child("request").child(self.saveKey!).child("requesterCell").setValue(myCellNumber)

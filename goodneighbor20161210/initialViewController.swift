@@ -36,7 +36,7 @@ class initialViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-  // try! FIRAuth.auth()?.signOut()
+ //try! FIRAuth.auth()?.signOut()
 
         self.databaseRef = FIRDatabase.database().reference()
 
@@ -67,7 +67,7 @@ class initialViewController: UIViewController {
     
     func checkUser(){
         
-     //try! FIRAuth.auth()?.signOut()
+    //try! FIRAuth.auth()?.signOut()
         
             FIRAuth.auth()?.addStateDidChangeListener({ (auth, user) in
                 

@@ -1575,6 +1575,16 @@
                                     <constraint firstAttribute="height" constant="42" id="ziu-Xg-V18"/>
                                 </constraints>
                             </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0 members of your community use goodneighbor" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EdM-5G-qwB">
+                                <rect key="frame" x="42" y="568" width="290" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="290" id="0HS-RL-il5"/>
+                                    <constraint firstAttribute="height" constant="21" id="s9p-6C-71K"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.92156862745098034" green="0.92156862745098034" blue="0.94509803921568625" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -1585,6 +1595,7 @@
                             <constraint firstItem="Lfv-oa-UEq" firstAttribute="leading" secondItem="lIM-Eb-4dP" secondAttribute="leading" id="6JB-Nu-jGd"/>
                             <constraint firstItem="Xwi-Ve-ppu" firstAttribute="leading" secondItem="lIM-Eb-4dP" secondAttribute="leading" constant="-2" id="8vy-yx-adB"/>
                             <constraint firstItem="8jO-AI-3eD" firstAttribute="leading" secondItem="ucT-Ly-ltT" secondAttribute="leading" id="9fN-wv-NH5"/>
+                            <constraint firstItem="EdM-5G-qwB" firstAttribute="centerX" secondItem="lIM-Eb-4dP" secondAttribute="centerX" id="DJH-aI-qZA"/>
                             <constraint firstItem="gNZ-c4-A5j" firstAttribute="top" secondItem="ucT-Ly-ltT" secondAttribute="bottom" constant="8" symbolic="YES" id="Dui-lK-Mu4"/>
                             <constraint firstAttribute="bottom" secondItem="gNZ-c4-A5j" secondAttribute="bottom" constant="329" id="Fdo-V4-gwE"/>
                             <constraint firstItem="ucT-Ly-ltT" firstAttribute="leading" secondItem="lIM-Eb-4dP" secondAttribute="leading" id="GcQ-OP-6pe"/>
@@ -1595,6 +1606,7 @@
                             <constraint firstAttribute="trailing" secondItem="6Oh-dW-VFU" secondAttribute="trailing" id="RPi-hN-oRG"/>
                             <constraint firstAttribute="trailing" secondItem="8jO-AI-3eD" secondAttribute="trailing" id="Uii-BH-pke"/>
                             <constraint firstItem="2hD-vS-k1f" firstAttribute="leading" secondItem="lIM-Eb-4dP" secondAttribute="leading" id="XqU-TB-0jW"/>
+                            <constraint firstItem="6Oh-dW-VFU" firstAttribute="top" secondItem="EdM-5G-qwB" secondAttribute="bottom" constant="34" id="YK6-KC-GZV"/>
                             <constraint firstItem="8jO-AI-3eD" firstAttribute="top" secondItem="Mjy-fw-FCR" secondAttribute="bottom" constant="7" id="aCF-Ea-o1C"/>
                             <constraint firstAttribute="trailing" secondItem="ucT-Ly-ltT" secondAttribute="trailing" id="aDE-bt-ti7"/>
                             <constraint firstAttribute="bottom" secondItem="ucT-Ly-ltT" secondAttribute="bottom" constant="379" id="aKd-yY-yR8"/>
@@ -1618,6 +1630,7 @@
                         <outlet property="changePhoneNumberButton" destination="vMZ-dP-eKO" id="vVa-Sw-hvU"/>
                         <outlet property="resetHomeLocationButton" destination="Kti-ta-qbu" id="wwH-GC-gye"/>
                         <outlet property="termsOfServiceButton" destination="TFU-ID-BgE" id="hMY-lG-eSm"/>
+                        <outlet property="userInMyRadiusLabel" destination="EdM-5G-qwB" id="42I-hS-Zlh"/>
                         <outlet property="viewPastDeliveriesButton" destination="vgH-RJ-gtY" id="0zG-UR-8Uz"/>
                         <outlet property="viewPastRequestButton" destination="0Lf-2Q-fPK" id="2ei-aJ-2zJ"/>
                         <segue destination="mT1-mA-T6X" kind="show" identifier="goToPast" id="fTJ-7f-K9n"/>
@@ -1781,7 +1794,7 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="PVC-H7-K5m"/>
-                                    <barButtonItem title="Back" id="3IM-gu-3dG">
+                                    <barButtonItem title="Skip" id="3IM-gu-3dG">
                                         <connections>
                                             <segue destination="Eev-yu-jSf" kind="show" id="Mfz-lo-Q21"/>
                                         </connections>
@@ -2519,11 +2532,11 @@
         <image name="shoppingList3.jpg" width="1000" height="139"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="Mfz-lo-Q21"/>
+        <segue reference="Uy6-Ur-myb"/>
+        <segue reference="Ipa-WE-6yj"/>
+        <segue reference="5ag-bU-vFb"/>
         <segue reference="i3w-Ip-Vic"/>
-        <segue reference="9gD-sH-e4F"/>
-        <segue reference="eNf-UG-29a"/>
-        <segue reference="Xlf-EA-jFq"/>
-        <segue reference="eT3-9b-yu6"/>
         <segue reference="46Q-Of-GCr"/>
         <segue reference="wei-YH-Wj5"/>
     </inferredMetricsTieBreakers>

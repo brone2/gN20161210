@@ -194,7 +194,7 @@ class loginViewController: UIViewController, UIImagePickerControllerDelegate, UI
         super.viewDidLoad()
         
   
-    //try! FIRAuth.auth()?.signOut()
+   //  try! FIRAuth.auth()?.signOut()
         
         let imageTap:UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapImageIcon(_:)))
         image.addGestureRecognizer(imageTap)

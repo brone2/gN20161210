@@ -45,6 +45,8 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
     var requesterRecieveCount:Int?
     var accepterDeliveryCount: Int?
     
+    var chatUser = 0
+    
     @IBOutlet weak var table: UITableView!
     
     func childBeDeleted() {
@@ -145,7 +147,6 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             let distanceMiles = distanceInMeters/1609.344897
             let distanceMilesFloat = Float(distanceMiles)
             
-            
             //Filter out all request outside geolocation
             if distanceMilesFloat < myRadius! {
                 
@@ -155,26 +156,26 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                 
                 //General shopping list requests, those that are not already accepted and not sent by you
                 if(snapID != self.loggedInUserId && snapAccepted != true ){
+             
                     self.shoppingListCurrentRequests.append(requestDict)
-                    //self.table.insertRows(at: [IndexPath(row: 0, section: 2)], with: UITableViewRowAnimation.automatic)
+                    
+                    self.shoppingListCurrentRequests.sort{ Double($0?["distanceFromUser"] as! String)! < Double($1?["distanceFromUser"] as! String)! }
+                  
                 }
                 
                 //My request
                 if(snapID == self.loggedInUserId && snapCompleted != true ){
                     self.myCurrentRequests.append(requestDict)
-                    //self.table.insertRows(at: [IndexPath(row: 0, section: 1)], with: UITableViewRowAnimation.automatic)
                 }
                 
                 //My Deliveries
                 if(accepterID == self.loggedInUserId && snapCompleted != true ){
                     self.myCurrentDeliveries.append(requestDict)
-                    //  self.table.insertRows(at: [IndexPath(row: 0, section: 0)], with: UITableViewRowAnimation.automatic)
+               
                 }
                 self.sectionData = [0:self.myCurrentDeliveries,1:self.myCurrentRequests,2:self.shoppingListCurrentRequests]
-                //  self.table.insertRows(at: [IndexPath(row: 0, section: rowToUpdate)], with: UITableViewRowAnimation.automatic)
                 
                 self.table.reloadData()
-                
             }
         }
     }
@@ -297,10 +298,8 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             cell.nameLabel.text = self.sectionData[indexPath.section]![indexPath.row]?["itemName"] as? String
             
             if isCompleted == false {
-                print("HEEEEE")
                 cell.deliveringTo.text = String("Delivering to \(self.sectionData[indexPath.section]![indexPath.row]?["requesterName"] as! String)")
             } else {
-                print("AAAAAAA")
                  cell.deliveringTo.text = "This request is complete!"
             }
             
@@ -376,7 +375,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                     cell.coinImage.image = UIImage(named: "blackWhite2Coin")
                 }
                 
-            } else {
+            } else { //isAccepted == true
                 
                 DispatchQueue.main.async{
                     if let image = self.sectionData[indexPath.section]![indexPath.row]?["accepterProfilePicRef"] as? String {
@@ -389,11 +388,11 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                 cell.profilePic.contentMode = .scaleAspectFit
                 cell.profilePic.layer.borderWidth = 2.0
                 cell.profilePic.layer.borderColor = UIColor(red: 16/255, green: 126/255, blue: 207/255, alpha: 1).cgColor
-                           
+                
                 cell.cancelCompleteButton.removeTarget(nil, action: nil, for: .allEvents)
                 cell.cancelCompleteButton.addTarget(self, action: #selector(self.didTapCompleteButton(_:)), for: .touchUpInside)
                 
-                //String("Lives \(self.sectionData[indexPath.section]![indexPath.row]?["distanceFromUser"] as? String) away from you")
+              
                 if isCompleted == false {
                      cell.cancelCompleteButton.setTitle("Mark Request as Complete", for: [])
                 } else {
@@ -401,8 +400,14 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                 }
                 
                 cell.chatImage.image = UIImage(named: "greenTextBubble.png")
+                cell.chatImage.tag = indexPath.row
+                let chatImageTap2:UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.didTapChatImageRequest(_:)))
+                cell.chatImage.addGestureRecognizer(chatImageTap2)
               
                 cell.phoneImage.image = UIImage(named: "greenTelephone.png")
+                cell.phoneImage.tag = indexPath.row
+                let phoneImageTap:UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.didTapPhoneImageRequest(_:)))
+                cell.phoneImage.addGestureRecognizer(phoneImageTap)
                
                 cell.cancelCompleteButton.contentHorizontalAlignment = .left
                 cell.cancelCompleteButton.setTitleColor(UIColor(red:0.054902, green: 0.376471, blue:0.61568, alpha:1.0), for: [])
@@ -491,17 +496,15 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         let emptyCheck = self.sectionData[section]! as! [NSDictionary]
         
         if emptyCheck == [] && section != 2 {
-            
             return nil
-            
         }
+        
         return headers
     }
     
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     
@@ -512,6 +515,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
+    
     
     func didTapChatImage(_ gesture: UITapGestureRecognizer)  {
         
@@ -542,7 +546,38 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         }
         
     }
+
     
+    func didTapPhoneImageRequest(_ gesture: UITapGestureRecognizer)  {
+        
+        let imageTag = gesture.view!.tag
+        
+        let requesterCell = self.sectionData[1]![imageTag]?["requesterCell"] as? String
+        
+        if let url = URL(string: "tel://\(requesterCell!)") {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
+        
+    }
+    
+    func didTapChatImageRequest(_ gesture: UITapGestureRecognizer)  {
+        
+        let imageTag = gesture.view!.tag
+        
+        
+        let requesterCell = self.sectionData[1]![imageTag]?["accepterCell"] as? String
+        let requesterName = self.sectionData[1]![imageTag]?["accepterName"] as? String
+        
+        let textMessage = "Hey \(requesterName!), "
+        
+        if (MFMessageComposeViewController.canSendText()) {
+            let controller = MFMessageComposeViewController();
+            controller.body = textMessage;
+            controller.recipients = [requesterCell!]
+            controller.messageComposeDelegate = self;
+            self.present(controller, animated: true, completion: nil)
+        }
+    }
     
     func didTapCancelButton(_ sender: UIButton)  {
         
@@ -557,7 +592,6 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             alertCancel.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
                 
                 sender.setTitle("Request has been deleted", for: [])
-                //sender.isEnabled = false
                 
                 let index = sender.tag
                 let requestKey = self.sectionData[1]![index]?["requestKey"] as? String
@@ -619,6 +653,8 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                     self.databaseRef.child("users").child(requesterUIDToken!).child("recieveCount").setValue(self.requesterRecieveCount!)
                     
                     self.databaseRef.child("request").child(requestKey!).child("isComplete").setValue(true)
+                    
+                    //Next Step move the request to completedRequestNode
                     
                 }
             }
