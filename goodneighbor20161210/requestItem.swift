@@ -340,10 +340,6 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         self.saveKeyPath = requestKeyPath
         self.saveKey = keyValue
         
-       /* let childUpdates:Dictionary<String, Any> = [timeStampPath: [".sv": "timestamp"],profilePicReferencePath: profilePicReferenceValue!, requesterCellPath: requesterCellValue,pricePath: priceLabelValue, buildingNamePath: buildingNamePathValue, itemNamePath: itemNameValue,tokenPath: tokensLabelValue,descriptionPath:descriptionLabelValue,requesterNamePath:requesterNameValue,deliverToPath:deliverToValue,longitudePath:longitudeValue,latitudePath:latitudeValue,requestedTimePath:requestedTimeValue!,requesterUIDPath:requesterUIDValue,isAcceptedPath:isAcceptedValue,isCompletePath:isCompleteValue,requestKeyPath:keyValue]
-        */
-    
-        
         if self.imageData != nil{
             
             let downloadUrlAbsoluteStringPath = "/request/\(key)/downloadUrlAbsoluteString"

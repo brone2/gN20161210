@@ -618,16 +618,42 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         }))
         
         alertComplete.addAction(UIAlertAction(title: "Complete", style: .default, handler: { (action) in
-            print("Selected COMPLETE")
             sender.setTitle("This request is complete!", for: [])
-            //sender.isEnabled = false
-            print("Selected COMPLETE1")
             
             let index = sender.tag
             let accepterUIDToken = self.sectionData[1]![index]?["accepterUID"] as? String
             let requesterUIDToken = self.sectionData[1]![index]?["requesterUID"] as? String
             let tokensToTransfer = self.sectionData[1]![index]?["tokensOffered"] as? Int
             let requestKey = self.sectionData[1]![index]?["requestKey"] as? String
+            
+            //Move the request to completedRequestNode
+            let itemName = self.sectionData[1]![index]?["itemName"] as? String
+            let requestedTime = self.sectionData[1]![index]?["requestedTime"] as? String
+            let profilePicReference = self.sectionData[1]![index]?["profilePicReference"] as? String
+            let accepterName = self.sectionData[1]![index]?["accepterName"] as? String
+            let accepterProfilePicRef = self.sectionData[1]![index]?["profilePicReference"] as? String
+            let requesterName = self.sectionData[1]![index]?["requesterName"] as? String
+            let requesterUID = self.sectionData[1]![index]?["requesterUID"] as? String
+            let timeStamp = self.sectionData[1]![index]?["timeStamp"] as? Int
+            let price = self.sectionData[1]![index]?["price"] as? String
+            
+            let accepterNamePath = "/requestComplete/\(requestKey!)/accepterName"
+            let accepterProfilePicRefPath = "/requestComplete/\(requestKey!)/accepterProfilePicRef"
+            let accepterUIDPath = "/requestComplete/\(requestKey!)/accepterUID"
+            let itemNamePath = "/requestComplete/\(requestKey!)/itemName"
+            let pricePath = "/requestComplete/\(requestKey!)/price"
+            let profilePicReferencePath = "/requestComplete/\(requestKey!)/profilePicReference"
+            let requestedTimePath = "/requestComplete/\(requestKey!)/requestedTime"
+            let requesterNamePath = "/requestComplete/\(requestKey!)/requesterName"
+            let requesterUIDPath = "/requestComplete/\(requestKey!)/requesterUID"
+            let timeStampPath = "/requestComplete/\(requestKey!)/timeStamp"
+            let tokensOfferedPath = "/requestComplete/\(requestKey!)/tokensOffered"
+            let keyPath = "/requestComplete/\(requestKey!)/requestKey"
+            
+            let childUpdateMoveNode:Dictionary<String, Any> = [accepterNamePath:accepterName!,accepterProfilePicRefPath:accepterProfilePicRef!,accepterUIDPath:accepterUIDToken!,itemNamePath:itemName!,pricePath:price!,profilePicReferencePath:profilePicReference!,requestedTimePath:requestedTime!,requesterNamePath:requesterName!,requesterUIDPath:requesterUID!,
+            timeStampPath:timeStamp!,tokensOfferedPath:tokensToTransfer!,keyPath:requestKey!]
+            
+            self.databaseRef.updateChildValues(childUpdateMoveNode)
             
             self.databaseRef.child("users").child(accepterUIDToken!).observeSingleEvent(of: .value) { (snapshot:FIRDataSnapshot) in
                 
@@ -647,15 +673,21 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                     self.requesterRecieveCount! += 1
                     self.accepterDeliveryCount! += 1
                     
-                    self.databaseRef.child("users").child(accepterUIDToken!).child("tokenCount").setValue(self.accepterTokenCount!)
+                /*self.databaseRef.child("users").child(accepterUIDToken!).child("tokenCount").setValue(self.accepterTokenCount!)
                     self.databaseRef.child("users").child(requesterUIDToken!).child("tokenCount").setValue(self.requesterTokenCount!)
                     self.databaseRef.child("users").child(accepterUIDToken!).child("deliveryCount").setValue(self.accepterDeliveryCount!)
                     self.databaseRef.child("users").child(requesterUIDToken!).child("recieveCount").setValue(self.requesterRecieveCount!)
+                    */
                     
+                    //Save the updated token counts and delivery/recieved counts
+                    let childUpdates = ["/users/\(accepterUIDToken!)/tokenCount":self.accepterTokenCount!,"/users/\(requesterUIDToken!)/tokenCount":self.requesterTokenCount!,"/users/\(accepterUIDToken!)/deliveryCount":self.accepterDeliveryCount!,"/users/\(requesterUIDToken!)/recieveCount":self.self.requesterRecieveCount!] as [String : Any]
+                        
+                    self.databaseRef.updateChildValues(childUpdates)
+                        
                     self.databaseRef.child("request").child(requestKey!).child("isComplete").setValue(true)
                     
-                    //Next Step move the request to completedRequestNode
-                    
+                   
+                
                 }
             }
             

@@ -61,6 +61,7 @@
 		E5E19FC71DF9F17B00994E5F /* myTokensView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E19FC61DF9F17B00994E5F /* myTokensView.swift */; };
 		E5E724D81E0AEF30007E9E6F /* facebookLoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E724D71E0AEF30007E9E6F /* facebookLoginController.swift */; };
 		E5E724DA1E0B0CDC007E9E6F /* myCurrentRequestPopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E724D91E0B0CDC007E9E6F /* myCurrentRequestPopUp.swift */; };
+		E5E724FE1E15D6E4007E9E6F /* couponMaintenanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E724FD1E15D6E4007E9E6F /* couponMaintenanceView.swift */; };
 		E5EC9AF41E06335100310A6D /* meChangeRadius.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EC9AF31E06335100310A6D /* meChangeRadius.swift */; };
 /* End PBXBuildFile section */
 
@@ -123,6 +124,7 @@
 		E5E19FC61DF9F17B00994E5F /* myTokensView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = myTokensView.swift; sourceTree = "<group>"; };
 		E5E724D71E0AEF30007E9E6F /* facebookLoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = facebookLoginController.swift; sourceTree = "<group>"; };
 		E5E724D91E0B0CDC007E9E6F /* myCurrentRequestPopUp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = myCurrentRequestPopUp.swift; sourceTree = "<group>"; };
+		E5E724FD1E15D6E4007E9E6F /* couponMaintenanceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = couponMaintenanceView.swift; sourceTree = "<group>"; };
 		E5EC9AF31E06335100310A6D /* meChangeRadius.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = meChangeRadius.swift; sourceTree = "<group>"; };
 		FE9BC30A54DB8E9F4050CFA2 /* Pods_goodneighbor20161210.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_goodneighbor20161210.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -213,13 +215,14 @@
 		E5B461B31DFDBE9C00DCEC51 /* me Views */ = {
 			isa = PBXGroup;
 			children = (
-				E536497D1DFB6C1A00920EA2 /* meViewController.swift */,
 				E5B461B61DFDC23B00DCEC51 /* pastActivityCompleted.swift */,
 				E5B461B81DFDCB6100DCEC51 /* mePastCompletedCell.swift */,
 				E5084FDC1E04576900D1F388 /* meChangeBuildingName.swift */,
 				E5B461C91DFFAAC500DCEC51 /* changeLocationViewController.swift */,
 				E5084FDE1E046A0600D1F388 /* termsViewController.swift */,
 				E5EC9AF31E06335100310A6D /* meChangeRadius.swift */,
+				E5E724FD1E15D6E4007E9E6F /* couponMaintenanceView.swift */,
+				E536497D1DFB6C1A00920EA2 /* meViewController.swift */,
 			);
 			name = "me Views";
 			sourceTree = "<group>";
@@ -500,6 +503,7 @@
 				E5E19FC71DF9F17B00994E5F /* myTokensView.swift in Sources */,
 				E5B461BD1DFDE6A400DCEC51 /* deliveryRadiusView.swift in Sources */,
 				E53649771DFB013500920EA2 /* shoppingListCell.swift in Sources */,
+				E5E724FE1E15D6E4007E9E6F /* couponMaintenanceView.swift in Sources */,
 				E5E19F961DF982C200994E5F /* loginViewController.swift in Sources */,
 				E5E19FAB1DF99A6400994E5F /* shoppingList.swift in Sources */,
 				E5EC9AF41E06335100310A6D /* meChangeRadius.swift in Sources */,

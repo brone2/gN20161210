@@ -32,6 +32,7 @@ class meViewController: UIViewController {
     @IBOutlet var viewPastDeliveriesButton: UIButton!
     @IBOutlet var viewPastRequestButton: UIButton!
     @IBOutlet var resetHomeLocationButton: UIButton!
+    @IBOutlet var couponRedemptionButton: UIButton!
     
     var myPastRecieve = [NSDictionary?]()
     var myPastDeliveries = [NSDictionary?]()
@@ -55,6 +56,7 @@ class meViewController: UIViewController {
         self.changeDeliveryRadiusButton.contentHorizontalAlignment = .left
         self.resetHomeLocationButton.contentHorizontalAlignment = .left
         self.viewPastRequestButton.contentHorizontalAlignment = .left
+        self.couponRedemptionButton.contentHorizontalAlignment = .left
         
         self.databaseRef.child("users").child(self.loggedInUserId!).observeSingleEvent(of: .value) { (snapshot:FIRDataSnapshot) in
             
@@ -68,21 +70,22 @@ class meViewController: UIViewController {
             self.viewPastDeliveriesButton.setTitle("View past deliveries (\(self.deliveryCount))", for: .normal)
         }
         
-        
-        self.databaseRef.child("request").observe(.childAdded) { (snapshot2: FIRDataSnapshot) in
+    //now pulling from completedRequest
+        //self.databaseRef.child("request").observe(.childAdded) { (snapshot2: FIRDataSnapshot) in
+          self.databaseRef.child("requestComplete").observe(.childAdded) { (snapshot2: FIRDataSnapshot) in
             
             let snapshot2 = snapshot2.value as! NSDictionary
             let snapRecieveId = snapshot2["requesterUID"] as? String
             let snapDeliverId = snapshot2["accepterUID"] as? String
-            let snapComplete = snapshot2["isComplete"] as? Bool
+           // let snapComplete = snapshot2["isComplete"] as? Bool
             
             //Past Recieved
-            if(snapRecieveId == self.loggedInUserId && snapComplete == true){
+            if(snapRecieveId == self.loggedInUserId){// && snapComplete == true){
                 self.myPastRecieve.append(snapshot2)
             }
             
             //Past Delivered
-            if(snapDeliverId == self.loggedInUserId && snapComplete == true){
+            if(snapDeliverId == self.loggedInUserId){// && snapComplete == true){
                 self.myPastDeliveries.append(snapshot2)
             }
         }
@@ -113,6 +116,14 @@ class meViewController: UIViewController {
     }
 
     
+    @IBAction func didTapCouponRedemption(_ sender: UIButton) {
+        
+        
+        
+        
+        
+    }
+    
     
     @IBAction func didTapPastRequests(_ sender: UIButton) {
         
@@ -122,6 +133,7 @@ class meViewController: UIViewController {
         self.performSegue(withIdentifier: "goToPast", sender: nil)
         
     }
+    
     @IBAction func didTapPastDeliveries(_ sender: UIButton) {
         
         print(self.myPastDeliveries)
