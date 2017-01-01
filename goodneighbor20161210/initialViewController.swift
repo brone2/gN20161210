@@ -18,6 +18,8 @@ var myLocation: CLLocation?
 var myRadius: Float?
 var autoLoginHelp: Int = 0
 
+var isSmallScreen = false
+
 class initialViewController: UIViewController {
     
     var loggedInUserData: AnyObject?
@@ -36,7 +38,20 @@ class initialViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-  //try! FIRAuth.auth()?.signOut()
+ //try! FIRAuth.auth()?.signOut()
+        
+        let screenSize: CGRect = UIScreen.main.bounds
+        let screenWidth = screenSize.width
+        let screenHeight = screenSize.height
+        
+        if screenHeight < 570.0 {
+            
+            isSmallScreen = true
+            
+        }
+        
+        print(screenHeight)
+        print("ZZZZZ")
 
         self.databaseRef = FIRDatabase.database().reference()
 

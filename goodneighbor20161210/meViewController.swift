@@ -107,7 +107,7 @@ class meViewController: UIViewController {
                 
                 self.usersInMyRadius += 1
                 
-                self.userInMyRadiusLabel.text = "\(self.usersInMyRadius - 1) members of your community use goodneighbor"
+                self.userInMyRadiusLabel.text = "\(self.usersInMyRadius - 1) members of your community use goodneighbor!"
                 
             }   
         }
@@ -185,8 +185,9 @@ class meViewController: UIViewController {
             if let phoneNumber = phoneNumberTextField?.text {
                 self.enteredPhoneNumber = phoneNumber
             }
-            
             self.databaseRef.child("users").child(self.loggedInUserId!).child("cellPhoneNumber").setValue(self.enteredPhoneNumber)
+            
+                myCellNumber = self.enteredPhoneNumber
             
         }
         

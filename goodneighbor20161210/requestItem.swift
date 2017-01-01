@@ -44,9 +44,30 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
     @IBOutlet weak var nameLabel: UITextField!
     @IBOutlet weak var image: UIImageView!
     @IBOutlet weak var locationButton: UIButton!
+    
+    
+    @IBOutlet var detailInfoLabel: UILabel!
+    @IBOutlet var tokensOfferedLabel: UILabel!
+    @IBOutlet var deliverToLabel: UILabel!
+    @IBOutlet var maxPayLabel: UILabel!
+    @IBOutlet var itemNameLabel: UILabel!
+    
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if isSmallScreen == true {
+            print("ooo")
+            self.image.isHidden = true
+            let smallFont:CGFloat = 12.0
+            self.detailInfoLabel.font = UIFont.systemFont(ofSize: smallFont)
+            self.tokensOfferedLabel.font = UIFont.systemFont(ofSize: smallFont)
+            self.deliverToLabel.font = UIFont.systemFont(ofSize: smallFont)
+            self.maxPayLabel.font = UIFont.systemFont(ofSize: smallFont)
+            self.itemNameLabel.font = UIFont.systemFont(ofSize: smallFont)
+            
+        }
         
         self.nameLabel.delegate = self
         self.priceLabel.delegate = self
