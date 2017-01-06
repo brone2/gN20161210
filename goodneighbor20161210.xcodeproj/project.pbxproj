@@ -248,7 +248,6 @@
 		E5E19F5B1DF96C0100994E5F /* goodneighbor20161210 */ = {
 			isa = PBXGroup;
 			children = (
-				E5B461C01DFEA37000DCEC51 /* goodneighbor20161210.entitlements */,
 				E5B461B31DFDBE9C00DCEC51 /* me Views */,
 				E536497F1DFC6EAD00920EA2 /* Request Delivery */,
 				E53649681DFAF88F00920EA2 /* Shopping List */,
@@ -262,6 +261,7 @@
 				E5E19F681DF96C0100994E5F /* LaunchScreen.storyboard */,
 				E5E19FA21DF9873600994E5F /* GoogleService-Info.plist */,
 				E5E19F6B1DF96C0100994E5F /* Info.plist */,
+				E5B461C01DFEA37000DCEC51 /* goodneighbor20161210.entitlements */,
 				E5E19F631DF96C0100994E5F /* goodneighbor20161210.xcdatamodeld */,
 			);
 			path = goodneighbor20161210;

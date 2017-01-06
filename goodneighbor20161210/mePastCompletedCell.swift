@@ -14,6 +14,7 @@ class mePastCompletedCell: UITableViewCell {
     @IBOutlet var personNameLabel: UILabel!
     @IBOutlet var requestedTimeLabel: UILabel!
     @IBOutlet var nameLabel: UILabel!
+    @IBOutlet var complaintButton: UIButton!
     @IBOutlet var profilePic: UIImageView!
     
     override func awakeFromNib() {

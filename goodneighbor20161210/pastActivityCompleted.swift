@@ -32,11 +32,8 @@ class pastActivityCompleted: UIViewController, UITableViewDelegate,UITableViewDa
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        
         
         navBar.topItem!.title = self.navBarTitle
-        print(relevantPastInfo)
         
     }
     
@@ -53,6 +50,8 @@ class pastActivityCompleted: UIViewController, UITableViewDelegate,UITableViewDa
         let cell:mePastCompletedCell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! mePastCompletedCell
         
         cell.nameLabel.text = self.relevantPastInfo[indexPath.row]?["itemName"] as? String
+        
+        cell.complaintButton.tag = indexPath.row
         
         cell.requestedTimeLabel.text = "Requested on \(self.relevantPastInfo[indexPath.row]?["requestedTime"] as! String)"
         
@@ -111,6 +110,100 @@ class pastActivityCompleted: UIViewController, UITableViewDelegate,UITableViewDa
         return cell
         
     }
+    
+    
+    @IBAction func didTapFileComplaint(_ sender: UIButton) {
+        
+        let indexTag = sender.tag
+        
+        let myActionSheet = UIAlertController(title:"File Complaint",message:"Please let us know the issue encountered during the delivery",preferredStyle: UIAlertControllerStyle.actionSheet)
+        
+        let aptLobby = UIAlertAction(title: "Payment issues", style: UIAlertActionStyle.default) { (action) in
+            self.saveComplaint(issue: "Payment issues",indexTag: indexTag)
+        }
+        
+        let myFloor = UIAlertAction(title: "Failed to meet at agreed location", style: UIAlertActionStyle.default) { (action) in
+            self.saveComplaint(issue: "Failed to meet at agreed location",indexTag: indexTag)
+        }
+        
+        let myDoor = UIAlertAction(title: "Rude/offensive", style: UIAlertActionStyle.default) { (action) in
+            self.saveComplaint(issue: "Rude/offensive",indexTag: indexTag)
+        }
+        
+        let buildingDesk = UIAlertAction(title: "Not on Time", style: UIAlertActionStyle.default) { (action) in
+            self.saveComplaint(issue: "Not on Time",indexTag: indexTag)
+        }
+        
+        let neighborChoice = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel) { (action) in
+            
+        }
+        
+        myActionSheet.addAction(myDoor)
+        myActionSheet.addAction(myFloor)
+        myActionSheet.addAction(aptLobby)
+        myActionSheet.addAction(buildingDesk)
+        myActionSheet.addAction(neighborChoice)
+        
+        self.present(myActionSheet, animated: true, completion: nil)
+        
+        
+    }
+    
+    func saveComplaint(issue: String, indexTag: Int) {
+        
+        let alertComplaintComplete = UIAlertController(title: "File Complaint", message: "A complaint against the selected user will be filed", preferredStyle: UIAlertControllerStyle.alert)
+        
+        alertComplaintComplete.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (action) in
+            return
+        }))
+        
+        alertComplaintComplete.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
+            
+        let key = self.databaseRef.child("complaint").childByAutoId().key
+        
+        if self.navBarTitle == "Completed Deliveries" {
+            
+            let complaintAgainst = self.relevantPastInfo[indexTag]?["requesterUID"] as! String
+            let complaintBy = self.relevantPastInfo[indexTag]?["accepterUID"] as! String
+            
+            let complaintAgainstPath = "/complaint/\(key)/complaintAgainst"
+            let complaintByPath = "/complaint/\(key)/complaintBy"
+            let keyPath = "/complaint/\(key)/key"
+            let complaintType = "/complaint/\(key)/type"
+            
+            let childUpdateComplaint:Dictionary<String, Any> = [complaintAgainstPath:complaintAgainst,complaintByPath:complaintBy,keyPath:key,complaintType:issue]
+            
+            self.databaseRef.updateChildValues(childUpdateComplaint)
+
+            
+        }
+        else
+        {
+            
+            let complaintAgainst = self.relevantPastInfo[indexTag]?["accepterName"] as! String
+            let complaintBy = self.relevantPastInfo[indexTag]?["requesterName"] as! String
+            
+            let complaintAgainstPath = "/complaint/\(key)/complaintAgainst"
+            let complaintByPath = "/complaint/\(key)/complaintBy"
+            let keyPath = "/complaint/\(key)/key"
+            let complaintType = "/complaint/\(key)/type"
+            
+            let childUpdateComplaint:Dictionary<String, Any> = [complaintAgainstPath:complaintAgainst,complaintByPath:complaintBy,keyPath:key,complaintType:issue]
+            
+            self.databaseRef.updateChildValues(childUpdateComplaint)
+
+            
+        }
+            
+        }))
+    
+        self.present(alertComplaintComplete, animated: true, completion: nil)
+        
+    }
+    
+
+    
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

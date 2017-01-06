@@ -111,17 +111,9 @@ class meViewController: UIViewController {
                 
             }   
         }
-        
-        
     }
 
-    
     @IBAction func didTapCouponRedemption(_ sender: UIButton) {
-        
-        
-        
-        
-        
     }
     
     
@@ -131,7 +123,6 @@ class meViewController: UIViewController {
         self.navBarTitle = "Completed Requests"
         
         self.performSegue(withIdentifier: "goToPast", sender: nil)
-        
     }
     
     @IBAction func didTapPastDeliveries(_ sender: UIButton) {

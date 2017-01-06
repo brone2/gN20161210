@@ -22,6 +22,8 @@ class viewDetailGeneralShoppingList: UIViewController, UITextViewDelegate, UITex
     @IBOutlet var productImage: UIImageView!
     @IBOutlet var distanceLabel: UILabel!
     
+    @IBOutlet var flagButton: UIButton!
+    
     var currentUserName:String!
     var loggedInUserId:String!
     var acceptedTime = NSDate()
@@ -32,10 +34,13 @@ class viewDetailGeneralShoppingList: UIViewController, UITextViewDelegate, UITex
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.flagButton.contentHorizontalAlignment = .left
+        
+        
         self.loggedInUserId = FIRAuth.auth()?.currentUser?.uid
         self.requestedByLabel.text = String("Requested by \(self.shoppingListCurrentRequests[self.selectedRowIndex]?["requesterName"] as! String)")
         self.productNameLabel.text = String("\(self.shoppingListCurrentRequests[self.selectedRowIndex]?["itemName"] as! String)")
-       // self.distanceLabel.text = String("Located \(self.shoppingListCurrentRequests[self.selectedRowIndex]?["latitude"] as! String) away from you")
+ 
         
         let buildingCheck = self.shoppingListCurrentRequests[self.selectedRowIndex]?["buildingName"] as? String
         
@@ -66,7 +71,8 @@ class viewDetailGeneralShoppingList: UIViewController, UITextViewDelegate, UITex
         self.profilePicImage.layer.borderWidth = 2.0
         self.profilePicImage.layer.borderColor = UIColor(red: 16/255, green: 126/255, blue: 207/255, alpha: 1).cgColor
         
-        if let image = self.shoppingListCurrentRequests[self.selectedRowIndex]?["image_request"] as? String {
+        //if let image = self.shoppingListCurrentRequests[self.selectedRowIndex]?["image_request"] as? String {
+        if let image = self.shoppingListCurrentRequests[self.selectedRowIndex]?["productImage"] as? String {
             
             let data = try? Data(contentsOf: URL(string: image)!)
             
@@ -117,7 +123,7 @@ class viewDetailGeneralShoppingList: UIViewController, UITextViewDelegate, UITex
 
     @IBAction func didTapAccept(_ sender: Any) {
         
-        let alert = UIAlertController(title: "Accept Delivery", message: "Please only accept this if you know you will be able to deliver this item within the next two hours. It will be the responsibility of the reciever to repay you upon delivery ", preferredStyle: UIAlertControllerStyle.alert)
+        let alert = UIAlertController(title: "Accept Delivery", message: "Please only accept this if you know you will be able to deliver this item within the next two hours. It will be the responsibility of the recievor to repay you upon delivery ", preferredStyle: UIAlertControllerStyle.alert)
         
         alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (action) in
             //nothing happens

@@ -38,7 +38,7 @@ class initialViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
- //try! FIRAuth.auth()?.signOut()
+//try! FIRAuth.auth()?.signOut()
         
         let screenSize: CGRect = UIScreen.main.bounds
         let screenWidth = screenSize.width
@@ -49,13 +49,9 @@ class initialViewController: UIViewController {
             isSmallScreen = true
             
         }
-        
-        print(screenHeight)
-        print("ZZZZZ")
 
         self.databaseRef = FIRDatabase.database().reference()
 
-        
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(initialViewController.startTimer), userInfo: nil, repeats: true)
     }
     

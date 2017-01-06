@@ -148,13 +148,14 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             let distanceMilesFloat = Float(distanceMiles)
             
             //Filter out all request outside geolocation
-            if distanceMilesFloat < myRadius! {
+            //if distanceMilesFloat < myRadius! {
                 
                 let requestDict = snapshot as! NSMutableDictionary
                 let distanceMilesFloatString = String(format: "%.2f", distanceMilesFloat)
                 requestDict["distanceFromUser"] = distanceMilesFloatString
                 
                 //General shopping list requests, those that are not already accepted and not sent by you
+                if distanceMilesFloat < myRadius! {
                 if(snapID != self.loggedInUserId && snapAccepted != true ){
              
                     self.shoppingListCurrentRequests.append(requestDict)
@@ -162,7 +163,8 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                     self.shoppingListCurrentRequests.sort{ Double($0?["distanceFromUser"] as! String)! < Double($1?["distanceFromUser"] as! String)! }
                   
                 }
-                
+                }
+        
                 //My request
                 if(snapID == self.loggedInUserId && snapCompleted != true ){
                     self.myCurrentRequests.append(requestDict)
@@ -176,7 +178,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                 self.sectionData = [0:self.myCurrentDeliveries,1:self.myCurrentRequests,2:self.shoppingListCurrentRequests]
                 
                 self.table.reloadData()
-            }
+            
         }
     }
     
@@ -300,7 +302,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             if isCompleted == false {
                 cell.deliveringTo.text = String("Delivering to \(self.sectionData[indexPath.section]![indexPath.row]?["requesterName"] as! String)")
             } else {
-                 cell.deliveringTo.text = "This request is complete!"
+                 cell.deliveringTo.text = "Request is complete!"
             }
             
             
@@ -392,12 +394,14 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                 cell.cancelCompleteButton.removeTarget(nil, action: nil, for: .allEvents)
                 cell.cancelCompleteButton.addTarget(self, action: #selector(self.didTapCompleteButton(_:)), for: .touchUpInside)
                 
-              
+                
                 if isCompleted == false {
-                     cell.cancelCompleteButton.setTitle("Mark Request as Complete", for: [])
+                     cell.cancelCompleteButton.setTitle("Mark as Complete", for: [])
                 } else {
-                    cell.cancelCompleteButton.setTitle("This request is complete!", for: [])
+                    cell.cancelCompleteButton.setTitle("Request is complete!", for: [])
+                    cell.cancelCompleteButton.isEnabled = false
                 }
+                
                 
                 cell.chatImage.image = UIImage(named: "greenTextBubble.png")
                 cell.chatImage.tag = indexPath.row
@@ -432,8 +436,14 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             print(self.sectionData)
             
             if (self.sectionData[indexPath.section]?.count) == 0 {
-                cell.nameLabel.text = "No Current Request in your community"
+                cell.nameLabel.text = "No current requests in your community"
+                if isSmallScreen{
+                   
+                    cell.distanceLabel.text = "Select pencil below and add one!"
+                    
+                } else {
                 cell.distanceLabel.text = "Select the pencil below and add one!"
+                }
                 cell.deliverToLabel.text = ""
                 return cell
             }
@@ -618,7 +628,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         }))
         
         alertComplete.addAction(UIAlertAction(title: "Complete", style: .default, handler: { (action) in
-            sender.setTitle("This request is complete!", for: [])
+            sender.setTitle("Request is complete!", for: [])
             
             let index = sender.tag
             let accepterUIDToken = self.sectionData[1]![index]?["accepterUID"] as? String

@@ -36,6 +36,8 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
     var saveKey: String?
     var downloadUrlAbsoluteString: String?
     
+    @IBOutlet var oneTokenLabel: UILabel!
+    @IBOutlet var twoTokenLabel: UILabel!
  
     @IBOutlet weak var twoTokenImage: UIImageView!
     @IBOutlet weak var oneTokenImage: UIImageView!
@@ -58,7 +60,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         super.viewDidLoad()
         
         if isSmallScreen == true {
-            print("ooo")
+            
             self.image.isHidden = true
             let smallFont:CGFloat = 12.0
             self.detailInfoLabel.font = UIFont.systemFont(ofSize: smallFont)
@@ -66,7 +68,8 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
             self.deliverToLabel.font = UIFont.systemFont(ofSize: smallFont)
             self.maxPayLabel.font = UIFont.systemFont(ofSize: smallFont)
             self.itemNameLabel.font = UIFont.systemFont(ofSize: smallFont)
-            
+            self.oneTokenLabel.font = UIFont.systemFont(ofSize: smallFont)
+            self.twoTokenLabel.font = UIFont.systemFont(ofSize: smallFont)
         }
         
         self.nameLabel.delegate = self
@@ -145,7 +148,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         if self.priceLabel.text == "" || self.priceLabel.text == "" || self.priceLabel.text == "$" || self.descriptionTextView.text! == "" {
             let alertNotEnough = UIAlertController(title: "Missing Required Fields", message: "Please fill out all required fields", preferredStyle: UIAlertControllerStyle.alert)
             
-            alertNotEnough.addAction(UIAlertAction(title: "ok", style: .default, handler: { (action) in
+            alertNotEnough.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
                 return
             }))
             self.present(alertNotEnough, animated: true, completion: nil)
@@ -155,7 +158,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
             
             let alertNotEnough = UIAlertController(title: "Make some deliveries!", message: "Unfortunately, you do not have enough tokens for this request. Solve this problem by helping your neighbors with some deliveries!", preferredStyle: UIAlertControllerStyle.alert)
             
-            alertNotEnough.addAction(UIAlertAction(title: "ok", style: .default, handler: { (action) in
+            alertNotEnough.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
                 
             }))
             self.present(alertNotEnough, animated: true, completion: nil)
@@ -165,24 +168,24 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (action) in
         }))
         
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
+       alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
             
             
-        self.uploadRequest()
+        self.prepareUploadRequest()
             
        /*
         if myCellNumber == "0"{
             self.performSegue(withIdentifier: "goToPhone", sender: nil)
         }*/
             
-        let alertDeliveryComplete = UIAlertController(title: "Request posted!", message: "Your delivery request has been posted to the neighberhood shopping List! Please be alert for a neighbor reaching out to deliver this item", preferredStyle: UIAlertControllerStyle.alert)
+       /* let alertDeliveryComplete = UIAlertController(title: "Request posted!", message: "Your delivery request has been posted to the neighberhood shopping List! Please be alert for a neighbor reaching out to deliver this item", preferredStyle: UIAlertControllerStyle.alert)
             
             alertDeliveryComplete.addAction(UIAlertAction(title: "ok", style: .default, handler: { (action) in
                 
-            self.performSegue(withIdentifier: "detailToGeneralRefreshSegue", sender: nil)
+            self.segueToShoppingList()
                 
         }))
-             self.present(alertDeliveryComplete, animated: true, completion: nil)
+             self.present(alertDeliveryComplete, animated: true, completion: nil)*/
             
         }))
         self.present(alert, animated: true, completion: nil)
@@ -247,15 +250,49 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
             sender.setTitle("Front Desk", for: [])
         }
         
-        let neighborChoice = UIAlertAction(title: "What works best for neighbor", style: UIAlertActionStyle.default) { (action) in
-            sender.setTitle("Neighbor can decide", for: [])
+        let otherChoice = UIAlertAction(title: "Other", style: UIAlertActionStyle.default) { (action) in
+            
+            var enterLocationTextField: UITextField?
+            
+            let alertController = UIAlertController(
+                title: "Enter Delivery Location",
+                message: "",
+                preferredStyle: UIAlertControllerStyle.alert)
+            
+            let cancelAction = UIAlertAction(
+            title: "Cancel", style: UIAlertActionStyle.default) {
+                (action) -> Void in
+            }
+            
+            let completeAction = UIAlertAction(
+            title: "Enter", style: UIAlertActionStyle.default) {
+                (action) -> Void in
+                
+                if let deliveryLocation = enterLocationTextField?.text {
+                    sender.setTitle(deliveryLocation, for: [])
+                }
+                
+            }
+            
+            alertController.addTextField {
+                (txtUsername) -> Void in
+                enterLocationTextField = txtUsername
+                enterLocationTextField!.placeholder = "ex: Outside Olin Library"
+            }
+            
+            alertController.addAction(cancelAction)
+            alertController.addAction(completeAction)
+            
+            
+            self.present(alertController, animated: true, completion: nil)
+            
         }
         
         myActionSheet.addAction(myDoor)
         myActionSheet.addAction(myFloor)
         myActionSheet.addAction(aptLobby)
         myActionSheet.addAction(buildingDesk)
-        myActionSheet.addAction(neighborChoice)
+        myActionSheet.addAction(otherChoice)
         
         self.present(myActionSheet, animated: true, completion: nil)
     }
@@ -272,7 +309,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         self.view.endEditing(true)
     }
     
-    func uploadRequest() {
+    func prepareUploadRequest() {
         
         //Begin request upload
         //Save Request to firebase
@@ -286,22 +323,27 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         metadata.contentType = "image/png"
         
         if self.imageData  != nil{
-        let profilePicStorageRef = self.storageRef.child("request/\(key)/image_request")
         
+        let profilePicStorageRef = self.storageRef.child("productImages/\(key)/image_request")
+          
         _ = profilePicStorageRef.put(self.imageData!, metadata: metadata,  completion: { (metadata, error) in
             
             if error != nil{
                 
             }else{
                 
-                //*May be an issue later that this child is being updated ahead of all the other ones in childUpdates, may throw timing elsewhere
                 let downloadUrl = metadata!.downloadURL()
                 self.downloadUrlAbsoluteString = downloadUrl!.absoluteString
-               // self.databaseRef.child("request").child(key).child("image_request").setValue(downloadUrl!.absoluteString)
-                
+                self.finalizeUploadRequest(key: key)
             }
         })
+        } else {
+            self.finalizeUploadRequest(key: key)
         }
+    }
+    
+    //Make this a seperate function because of multi threading issue with saving the image to firebase
+    func finalizeUploadRequest(key: String) {
     
         //Save text
     
@@ -328,8 +370,8 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         
         
         let buildingNamePath = "/request/\(key)/buildingName"
-       // let buildingNamePathValue = self.requesterBuildingName! as String
-        let buildingNamePathValue = "hello"
+        let buildingNamePathValue = self.requesterBuildingName! as String
+        //let buildingNamePathValue = "hello"
         
         let latitudePath = "/request/\(key)/latitude"
         let latitudeValue = self.requesterLatitude! as CLLocationDegrees
@@ -363,23 +405,26 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         
         if self.imageData != nil{
             
-            let downloadUrlAbsoluteStringPath = "/request/\(key)/downloadUrlAbsoluteString"
+            let downloadUrlAbsoluteStringPath = "/request/\(key)/productImage"
             let downloadUrlAbsoluteStringValue = self.downloadUrlAbsoluteString
             
             let childUpdates:Dictionary<String, Any> = [timeStampPath: [".sv": "timestamp"],profilePicReferencePath: profilePicReferenceValue!,downloadUrlAbsoluteStringPath:downloadUrlAbsoluteStringValue!, requesterCellPath: requesterCellValue,pricePath: priceLabelValue, buildingNamePath: buildingNamePathValue, itemNamePath: itemNameValue,tokenPath: tokensLabelValue,descriptionPath:descriptionLabelValue,requesterNamePath:requesterNameValue,deliverToPath:deliverToValue,longitudePath:longitudeValue,latitudePath:latitudeValue,requestedTimePath:requestedTimeValue!,requesterUIDPath:requesterUIDValue,isAcceptedPath:isAcceptedValue,isCompletePath:isCompleteValue,requestKeyPath:keyValue]
             
         self.databaseRef.updateChildValues(childUpdates)
             
-            
-            if myCellNumber == "0"{
+        if myCellNumber == "0"{
                 self.performSegue(withIdentifier: "goToPhone", sender: nil)
             } else {
+            
         self.requestReset()
+            
             }
         }
-        else // No image
-        {
             
+        else if self.imageData == nil && isSmallScreen == false // No image and not iphone 5
+            
+        {
+   
         let alertNoPic = UIAlertController(title: "No Product Image Entered", message: "Providing an image of the product will make it easier for your neighbor to correctly fulfill your request. Please add a product image from you phone if possible", preferredStyle: UIAlertControllerStyle.alert)
             
         alertNoPic.addAction(UIAlertAction(title: "Return to request", style: .default, handler: { (action) in
@@ -389,22 +434,34 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
                 
                 let childUpdates:Dictionary<String, Any> = [timeStampPath: [".sv": "timestamp"],profilePicReferencePath: profilePicReferenceValue!, requesterCellPath: requesterCellValue,pricePath: priceLabelValue, buildingNamePath: buildingNamePathValue, itemNamePath: itemNameValue,tokenPath: tokensLabelValue,descriptionPath:descriptionLabelValue,requesterNamePath:requesterNameValue,deliverToPath:deliverToValue,longitudePath:longitudeValue,latitudePath:latitudeValue,requestedTimePath:requestedTimeValue!,requesterUIDPath:requesterUIDValue,isAcceptedPath:isAcceptedValue,isCompletePath:isCompleteValue,requestKeyPath:keyValue]
 
-                
                 self.databaseRef.updateChildValues(childUpdates)
-                
                 
                 if myCellNumber == "0"{
                     self.performSegue(withIdentifier: "goToPhone", sender: nil)
                 } else {
                 self.requestReset()
                 }
-                
-                
-                
             }))
             self.present(alertNoPic, animated: true, completion: nil)
+        }
+        
+        
+        else if self.imageData == nil && isSmallScreen == true // No image and is iphone 5
+        
+        {
+            
+            let childUpdates:Dictionary<String, Any> = [timeStampPath: [".sv": "timestamp"],profilePicReferencePath: profilePicReferenceValue!, requesterCellPath: requesterCellValue,pricePath: priceLabelValue, buildingNamePath: buildingNamePathValue, itemNamePath: itemNameValue,tokenPath: tokensLabelValue,descriptionPath:descriptionLabelValue,requesterNamePath:requesterNameValue,deliverToPath:deliverToValue,longitudePath:longitudeValue,latitudePath:latitudeValue,requestedTimePath:requestedTimeValue!,requesterUIDPath:requesterUIDValue,isAcceptedPath:isAcceptedValue,isCompletePath:isCompleteValue,requestKeyPath:keyValue]
+            
+            self.databaseRef.updateChildValues(childUpdates)
+            
+            if myCellNumber == "0"{
+                self.performSegue(withIdentifier: "goToPhone", sender: nil)
+            } else {
+                self.requestReset()
+            }
             
         }
+        
         
     }
     
@@ -416,7 +473,15 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         self.descriptionTextView.text = ""
         self.image.image = UIImage(named: "saveImage2.png")
         
-        self.segueToShoppingList()
+        
+        let alertDeliveryComplete = UIAlertController(title: "Request posted!", message: "Your delivery request has been posted to the neighberhood shopping List! Please be alert for a neighbor reaching out to deliver this item", preferredStyle: UIAlertControllerStyle.alert)
+        
+        alertDeliveryComplete.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
+            
+            self.segueToShoppingList()
+            
+        }))
+        self.present(alertDeliveryComplete, animated: true, completion: nil)
     }
     
     func segueToShoppingList() {
@@ -438,6 +503,11 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
             return false
         }
         return true
+    }
+    
+    
+    func checkLocationOnRequest()  {
+        //check if location there at matches home
     }
     
 }

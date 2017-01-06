@@ -48,7 +48,7 @@ class myCurrentRequestPopUp: UIViewController, UITextViewDelegate, UITextFieldDe
         self.profilePicImage.layer.borderWidth = 2.0
         self.profilePicImage.layer.borderColor = UIColor(red: 16/255, green: 126/255, blue: 207/255, alpha: 1).cgColor
         
-        if let image = self.myCurrentRequests[self.selectedRowIndex]?["image_request"] as? String {
+        if let image = self.myCurrentRequests[self.selectedRowIndex]?["productImage"] as? String {
             
             let data = try? Data(contentsOf: URL(string: image)!)
             
