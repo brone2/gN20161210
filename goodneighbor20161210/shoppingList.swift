@@ -436,7 +436,9 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             print(self.sectionData)
             
             if (self.sectionData[indexPath.section]?.count) == 0 {
+                
                 cell.nameLabel.text = "No current requests in your community"
+                
                 if isSmallScreen{
                    
                     cell.distanceLabel.text = "Select pencil below and add one!"
@@ -552,7 +554,11 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         let requesterCell = self.sectionData[0]![imageTag]?["requesterCell"] as? String
         
         if let url = URL(string: "tel://\(requesterCell!)") {
-            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            if #available(iOS 10.0, *) {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            } else {
+                UIApplication.shared.openURL(url)
+            }
         }
         
     }
@@ -562,10 +568,14 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         
         let imageTag = gesture.view!.tag
         
-        let requesterCell = self.sectionData[1]![imageTag]?["requesterCell"] as? String
+        let requesterCell = self.sectionData[1]![imageTag]?["accepterCell"] as? String
         
         if let url = URL(string: "tel://\(requesterCell!)") {
-            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            if #available(iOS 10.0, *) {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            } else {
+                UIApplication.shared.openURL(url)
+            }
         }
         
     }
@@ -641,7 +651,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             let requestedTime = self.sectionData[1]![index]?["requestedTime"] as? String
             let profilePicReference = self.sectionData[1]![index]?["profilePicReference"] as? String
             let accepterName = self.sectionData[1]![index]?["accepterName"] as? String
-            let accepterProfilePicRef = self.sectionData[1]![index]?["profilePicReference"] as? String
+            let accepterProfilePicRef = self.sectionData[1]![index]?["accepterProfilePicRef"] as? String
             let requesterName = self.sectionData[1]![index]?["requesterName"] as? String
             let requesterUID = self.sectionData[1]![index]?["requesterUID"] as? String
             let timeStamp = self.sectionData[1]![index]?["timeStamp"] as? Int

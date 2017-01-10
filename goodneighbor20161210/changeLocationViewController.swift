@@ -35,9 +35,17 @@ class changeLocationViewController: UIViewController, CLLocationManagerDelegate,
         
         locationManager.startUpdatingLocation()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(4), execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(6), execute: {
             
-            self.performSegue(withIdentifier: "replaceMapToBuilding", sender: nil)
+            let alert = UIAlertController(title: "Delivery Location Set", message: "Thank you! Your delivery location has been set to your current location.", preferredStyle: UIAlertControllerStyle.alert)
+            
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
+                
+                self.performSegue(withIdentifier: "replaceMapToBuilding", sender: nil)
+                
+            }))
+            
+            self.present(alert, animated: true, completion: nil)
             
         })
         

@@ -78,7 +78,7 @@ class initialViewController: UIViewController {
     
     func checkUser(){
         
-   // try! FIRAuth.auth()?.signOut()
+   //try! FIRAuth.auth()?.signOut()
         
             FIRAuth.auth()?.addStateDidChangeListener({ (auth, user) in
                 

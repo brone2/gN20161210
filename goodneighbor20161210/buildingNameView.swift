@@ -66,6 +66,12 @@ class buildingNameView: UIViewController, UITableViewDelegate,UITableViewDataSou
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        if self.buildingsNearMe.count == 0 {
+            
+            self.storeBuilding()
+            
+        } else {
+            
         let selectedRowIndex = indexPath.row
         
         let buildingLatitude = self.buildingsNearMe[selectedRowIndex]?["latitude"]
@@ -80,10 +86,17 @@ class buildingNameView: UIViewController, UITableViewDelegate,UITableViewDataSou
         
         self.performSegue(withIdentifier: "buildingToRadius", sender: nil)
         
+        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        if self.buildingsNearMe.count == 0 {
+            return 1
+        } else {
         return self.buildingsNearMe.count
+        }
+        
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -94,7 +107,13 @@ class buildingNameView: UIViewController, UITableViewDelegate,UITableViewDataSou
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         
-        cell.textLabel?.text = self.buildingsNearMe[indexPath.row]?["buildingName"] as? String
+        if self.buildingsNearMe.count == 0 {
+            cell.textLabel?.text = "Click here to add your building!"
+        } else {
+            cell.textLabel?.text = self.buildingsNearMe[indexPath.row]?["buildingName"] as? String
+        }
+        
+        //cell.textLabel?.text = self.buildingsNearMe[indexPath.row]?["buildingName"] as? String
 
         return cell
         
@@ -102,58 +121,64 @@ class buildingNameView: UIViewController, UITableViewDelegate,UITableViewDataSou
     
     @IBAction func didTapAddNewBuilding(_ sender: Any) {
         
-        var buildingNameTextField: UITextField?
+        self.storeBuilding()
         
-        let alertController = UIAlertController(
-            title: "Add Building name",
-            message: "Please add building name if it does not already exist (do not add building if it already exist under a different spelling",
-            preferredStyle: UIAlertControllerStyle.alert)
+    }
+    
+    func storeBuilding() {
         
-        let cancelAction = UIAlertAction(
-        title: "Cancel", style: UIAlertActionStyle.default) {
-            (action) -> Void in
-        }
-        
-        let completeAction = UIAlertAction(
-        title: "Complete", style: UIAlertActionStyle.default) {
-            (action) -> Void in
-            if let buildingName = buildingNameTextField?.text {
-                self.buildingNameEntered = buildingName
-            }
-            
-            let key = self.databaseRef.child("request").childByAutoId().key
-            
-            let latitude = myLocation?.coordinate.latitude
-            let longitude = myLocation?.coordinate.longitude
-          
-            let childUpdates = ["/building/\(key)/latitude":latitude!, "/building/\(key)/longitude":longitude!, "/building/\(key)/buildingName":self.buildingNameEntered!] as [String : Any]
-            
-            self.databaseRef.updateChildValues(childUpdates)
-            
-            let childUpdates2 = ["/users/\((FIRAuth.auth()?.currentUser?.uid)!)/buildingName":self.buildingNameEntered!] as [String : Any]
-            
-            self.databaseRef.updateChildValues(childUpdates2)
-            
-            self.performSegue(withIdentifier: "buildingToRadius", sender: nil)
-            
-
-            
-        }
-        
-        alertController.addTextField {
-            (bldName) -> Void in
-            buildingNameTextField = bldName
-            buildingNameTextField!.placeholder = "Big Blue Apartment"
-        }
-        
-        alertController.addAction(cancelAction)
-        alertController.addAction(completeAction)
-        
-        
-        self.present(alertController, animated: true, completion: nil)
-
-        
-        
+       var buildingNameTextField: UITextField?
+         
+         let alertController = UIAlertController(
+         title: "Add Building name",
+         message: "Please add building name if it does not already exist (do not add building if it already exist under a different spelling",
+         preferredStyle: UIAlertControllerStyle.alert)
+         
+         let cancelAction = UIAlertAction(
+         title: "Cancel", style: UIAlertActionStyle.default) {
+         (action) -> Void in
+         }
+         
+         let completeAction = UIAlertAction(
+         title: "Complete", style: UIAlertActionStyle.default) {
+         (action) -> Void in
+         if let buildingName = buildingNameTextField?.text {
+         self.buildingNameEntered = buildingName
+         }
+         
+         let key = self.databaseRef.child("request").childByAutoId().key
+         
+         let latitude = myLocation?.coordinate.latitude
+         let longitude = myLocation?.coordinate.longitude
+         
+         let childUpdates = ["/building/\(key)/latitude":latitude!, "/building/\(key)/longitude":longitude!, "/building/\(key)/buildingName":self.buildingNameEntered!] as [String : Any]
+         
+         self.databaseRef.updateChildValues(childUpdates)
+         
+         let childUpdates2 = ["/users/\((FIRAuth.auth()?.currentUser?.uid)!)/buildingName":self.buildingNameEntered!] as [String : Any]
+         
+         self.databaseRef.updateChildValues(childUpdates2)
+         
+         self.performSegue(withIdentifier: "buildingToRadius", sender: nil)
+         
+         
+         
+         }
+         
+         alertController.addTextField {
+         (bldName) -> Void in
+         buildingNameTextField = bldName
+         buildingNameTextField!.placeholder = "Big Blue Apartment"
+         }
+         
+         alertController.addAction(cancelAction)
+         alertController.addAction(completeAction)
+         
+         
+         self.present(alertController, animated: true, completion: nil)
+         
+         
+ 
     }
 
     override func didReceiveMemoryWarning() {

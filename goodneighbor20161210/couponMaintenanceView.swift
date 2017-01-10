@@ -16,6 +16,8 @@ class couponMaintenanceView: UIViewController {
 
     @IBOutlet var codeTextField: UITextField!
     
+    @IBOutlet var uidLabel: UILabel!
+    
     let databaseRef = FIRDatabase.database().reference()
     
     var couponText: String?
@@ -36,6 +38,8 @@ class couponMaintenanceView: UIViewController {
         
         self.couponText = codeTextField.text
         
+        
+        
         if self.couponText == "justCompleted" {
            
             self.databaseRef.child("request").observe(.childAdded) { (snapshot:FIRDataSnapshot) in
@@ -54,7 +58,13 @@ class couponMaintenanceView: UIViewController {
                     
                 }
             }
-        } else if self.couponText == "beenCompleted" {
+        } else if self.couponText == "uid" {
+            
+            self.uidLabel.text = FIRAuth.auth()?.currentUser?.uid
+            
+        }
+        
+        else if self.couponText == "beenCompleted" {
             
             //7 days 606503 ticks http://www.currenttimestamp.com/
             

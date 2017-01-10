@@ -14,14 +14,19 @@ import FirebaseDatabase
 class myTokensView: UIViewController {
 
     @IBOutlet weak var tokenCountLabel: UILabel!
+    
+    @IBOutlet var tokenBlueView: UIView!
+    
     let databaseRef = FIRDatabase.database().reference()
+    
     var myTokens:String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        self.databaseRef.child("users").child((FIRAuth.auth()?.currentUser?.uid)!).observeSingleEvent(of: .value, with: { snapshot in
+            self.tokenBlueView.layer.cornerRadius = 4
+                
+            self.databaseRef.child("users").child((FIRAuth.auth()?.currentUser?.uid)!).observeSingleEvent(of: .value, with: { snapshot in
             
             let snapshot = snapshot.value as? NSDictionary
             if let tempToken = snapshot?["tokenCount"] as? String{

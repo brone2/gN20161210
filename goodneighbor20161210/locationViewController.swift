@@ -37,7 +37,15 @@ class locationViewController: UIViewController, CLLocationManagerDelegate, MKMap
         
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(6), execute: {
             
-            self.performSegue(withIdentifier: "mapToHomeChoice", sender: nil)
+            let alert = UIAlertController(title: "Delivery Location Set", message: "Thank you! Your delivery location is set to your current location. You can change this later in the Me tab", preferredStyle: UIAlertControllerStyle.alert)
+            
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
+                
+                self.performSegue(withIdentifier: "mapToHomeChoice", sender: nil)
+                
+            }))
+            
+            self.present(alert, animated: true, completion: nil)
             
         })
         
