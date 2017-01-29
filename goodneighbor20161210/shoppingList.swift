@@ -156,7 +156,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                 
                 //General shopping list requests, those that are not already accepted and not sent by you
                 if distanceMilesFloat < myRadius! {
-                if(snapID != self.loggedInUserId && snapAccepted != true ){
+                if(snapID != self.loggedInUserId && snapAccepted != true){
              
                     self.shoppingListCurrentRequests.append(requestDict)
                     

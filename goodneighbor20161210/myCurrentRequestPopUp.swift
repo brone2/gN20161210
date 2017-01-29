@@ -25,20 +25,51 @@ class myCurrentRequestPopUp: UIViewController, UITextViewDelegate, UITextFieldDe
     var databaseRef = FIRDatabase.database().reference()
     var myCurrentRequests = [NSDictionary?]()
     var selectedRowIndex:Int!
+    var isAccepted = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.loggedInUserId = FIRAuth.auth()?.currentUser?.uid
         
+        self.isAccepted = self.myCurrentRequests[self.selectedRowIndex]?["isAccepted"] as! Bool
+        
+        
+        print(self.myCurrentRequests)
+        
         self.productNameLabel.text = String("\(self.myCurrentRequests[self.selectedRowIndex]?["itemName"] as! String)")
         self.descriptionTextView.text = self.myCurrentRequests[self.selectedRowIndex]?["description"] as! String
+        
+        if !self.isAccepted {
         
         if let image = self.myCurrentRequests[self.selectedRowIndex]?["profilePicReference"] as? String {
             
             let data = try? Data(contentsOf: URL(string: image)!)
             
             self.profilePicImage.image = UIImage(data: data!)
+            
+            let imageTap:UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapMediaInTweet(_:)))
+           
+            self.productImage.addGestureRecognizer(imageTap)
+            
+        }
+        
+        self.requestedByLabel.text = "Requested by Me"
+            
+        } else {
+            
+            if let image = self.myCurrentRequests[self.selectedRowIndex]?["accepterProfilePicRef"] as? String {
+                
+                let data = try? Data(contentsOf: URL(string: image)!)
+                
+                self.profilePicImage.image = UIImage(data: data!)
+                
+            }
+            
+            let accepterName = self.myCurrentRequests[self.selectedRowIndex]?["accepterName"] as! String
+            
+            self.requestedByLabel.text = "Delivery from \(accepterName)"
+            
             
         }
         
@@ -57,10 +88,8 @@ class myCurrentRequestPopUp: UIViewController, UITextViewDelegate, UITextFieldDe
         }
         
         let imageTap:UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapMediaInTweet(_:)))
-        let imageTap2:UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapMediaInTweet(_:)))
-        
-        self.profilePicImage.addGestureRecognizer(imageTap2)
-        self.productImage.addGestureRecognizer(imageTap)
+   
+        self.profilePicImage.addGestureRecognizer(imageTap)
         
     }
     

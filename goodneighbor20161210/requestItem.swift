@@ -421,7 +421,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
             }
         }
             
-        else if self.imageData == nil && isSmallScreen == false // No image and not iphone 5
+        /*else if self.imageData == nil && isSmallScreen == false // No image and not iphone 5
             
         {
    
@@ -431,7 +431,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
                 return
             }))
             alertNoPic.addAction(UIAlertAction(title: "Post without picture", style: .default, handler: { (action) in
-                
+ 
                 let childUpdates:Dictionary<String, Any> = [timeStampPath: [".sv": "timestamp"],profilePicReferencePath: profilePicReferenceValue!, requesterCellPath: requesterCellValue,pricePath: priceLabelValue, buildingNamePath: buildingNamePathValue, itemNamePath: itemNameValue,tokenPath: tokensLabelValue,descriptionPath:descriptionLabelValue,requesterNamePath:requesterNameValue,deliverToPath:deliverToValue,longitudePath:longitudeValue,latitudePath:latitudeValue,requestedTimePath:requestedTimeValue!,requesterUIDPath:requesterUIDValue,isAcceptedPath:isAcceptedValue,isCompletePath:isCompleteValue,requestKeyPath:keyValue]
 
                 self.databaseRef.updateChildValues(childUpdates)
@@ -443,11 +443,11 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
                 }
             }))
             self.present(alertNoPic, animated: true, completion: nil)
-        }
+        }*/
         
         
-        else if self.imageData == nil && isSmallScreen == true // No image and is iphone 5
-        
+        //else if self.imageData == nil && isSmallScreen == true // No image and is iphone 5
+        else
         {
             
             let childUpdates:Dictionary<String, Any> = [timeStampPath: [".sv": "timestamp"],profilePicReferencePath: profilePicReferenceValue!, requesterCellPath: requesterCellValue,pricePath: priceLabelValue, buildingNamePath: buildingNamePathValue, itemNamePath: itemNameValue,tokenPath: tokensLabelValue,descriptionPath:descriptionLabelValue,requesterNamePath:requesterNameValue,deliverToPath:deliverToValue,longitudePath:longitudeValue,latitudePath:latitudeValue,requestedTimePath:requestedTimeValue!,requesterUIDPath:requesterUIDValue,isAcceptedPath:isAcceptedValue,isCompletePath:isCompleteValue,requestKeyPath:keyValue]

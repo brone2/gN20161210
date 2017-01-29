@@ -651,7 +651,7 @@
 				CODE_SIGN_ENTITLEMENTS = goodneighbor20161210/goodneighbor20161210.entitlements;
 				DEVELOPMENT_TEAM = 7XR7R62R49;
 				INFOPLIST_FILE = goodneighbor20161210/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = brone2.goodneighbor20161210;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -667,7 +667,7 @@
 				CODE_SIGN_ENTITLEMENTS = goodneighbor20161210/goodneighbor20161210.entitlements;
 				DEVELOPMENT_TEAM = 7XR7R62R49;
 				INFOPLIST_FILE = goodneighbor20161210/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = brone2.goodneighbor20161210;
 				PRODUCT_NAME = "$(TARGET_NAME)";
