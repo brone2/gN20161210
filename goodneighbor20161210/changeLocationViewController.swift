@@ -79,7 +79,7 @@ class changeLocationViewController: UIViewController, CLLocationManagerDelegate,
                 //Update
                 self.databaseRef.updateChildValues(childUpdates)
                 
-                self.locationManager.stopUpdatingLocation()
+                //self.locationManager.stopUpdatingLocation()
                 
             })
         }

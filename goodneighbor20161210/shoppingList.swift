@@ -22,7 +22,7 @@ var myCellNumber:String!
 var loggedInUserName:String!
 var currentTokenCount: Int!
 
-class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource, MFMessageComposeViewControllerDelegate  {
+class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource, MFMessageComposeViewControllerDelegate, CLLocationManagerDelegate  {
     
     var tableHeaderArray = ["My Current Deliveries","My Current Requests","Community Requests"]
     
@@ -46,6 +46,12 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
     var requesterRecieveCount:Int?
     var accepterDeliveryCount: Int?
     var purchasePrice: String?
+    
+    var locationManager = CLLocationManager()
+    var userLocation: CLLocation?
+    var userLatitude: CLLocationDegrees = 0.00000
+    var userLongitude: CLLocationDegrees = 0.00000
+    var isTest = false
     
     var chatUser = 0
     
@@ -124,6 +130,10 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
   
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
+        locationManager.startUpdatingLocation()
         
         self.sectionData = [0:self.myCurrentDeliveries,1:self.myCurrentRequests,2:self.shoppingListCurrentRequests]
         
@@ -367,6 +377,10 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                 cell.coinImage.addGestureRecognizer(twoTokenTap)
             }
             
+            if isVerySmallScreen {
+                cell.chatImage.isHidden = true
+            }
+            
             cell.chatImage.tag = indexPath.row
             let chatImageTap:UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.didTapChatImage(_:)))
             cell.chatImage.addGestureRecognizer(chatImageTap)
@@ -467,15 +481,10 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                 
                 cell.cancelCompleteButton.removeTarget(nil, action: nil, for: .allEvents)
                 cell.cancelCompleteButton.addTarget(self, action: #selector(self.didTapCompleteButton(_:)), for: .touchUpInside)
-                
-            /*
-                if isCompleted == false {
-                     cell.cancelCompleteButton.setTitle("Mark as Complete", for: [])
-                } else {
-                    cell.cancelCompleteButton.setTitle("Request is complete!", for: [])
-                    cell.cancelCompleteButton.isEnabled = false
+            
+                if isVerySmallScreen {
+                    cell.chatImage.isHidden = true
                 }
-                */
                 
                 cell.chatImage.image = UIImage(named: "greenTextBubble.png")
                 cell.chatImage.tag = indexPath.row
@@ -544,6 +553,9 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                 if isSmallScreen{
                     cell.nameLabel.text = "No current requests"
                     cell.distanceLabel.text = "Click pencil below to add one!"
+                } else if isVerySmallScreen {
+                    cell.distanceLabel.isHidden = true
+                    cell.nameLabel.text = "No current requests"
                 } else {
                     cell.distanceLabel.text = "Select the pencil below and add one!"
                     cell.nameLabel.text = "No current requests in your community"
@@ -801,6 +813,8 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             makeAlert(title: "Delivery In Progress", message: "\(accepterName!) has not yet purchased \(itemName!). Feel free to reach out to \(accepterName!) by clicking on the green chat button")
             
         } else {
+            
+        self.locationManager.startUpdatingLocation()
         
         let index = sender.tag
         let purchasePrice = self.sectionData[1]![index]?["purchasePrice"] as? String
@@ -854,8 +868,30 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             let tokensOfferedPath = "/requestComplete/\(requestKey!)/tokensOffered"
             let keyPath = "/requestComplete/\(requestKey!)/requestKey"
             
+            //Check difference between purchase and delivery
+            let purchaseLongitude = self.sectionData[1]![index]?["purchaseLongitude"] as? CLLocationDegrees
+            let purchaseLatitude = self.sectionData[1]![index]?["purchaseLatitude"] as? CLLocationDegrees
+            let purchaseLocation = CLLocation(latitude: purchaseLatitude!, longitude: purchaseLongitude!)
+            
+            let acceptLocation = CLLocation(latitude: self.userLatitude, longitude: self.userLongitude)
+            let distanceInMeters = purchaseLocation.distance(from: acceptLocation)
+            let distanceInMetersFloat = Float(distanceInMeters)
+            let distanceInMetersFloatString = String(format: "%.1f", distanceInMeters)
+            let distanceTraveledPath = "/requestComplete/\(requestKey!)/distanceTraveled"
+            
+            if distanceInMetersFloat > 20 {
+                
+                self.isTest = true
+                
+            }
+            
+            let isTestPath = "/requestComplete/\(requestKey!)/isTest"
+            
+            self.locationManager.stopUpdatingLocation()
+            
+            
             let childUpdateMoveNode:Dictionary<String, Any> = [accepterNamePath:accepterName!,accepterProfilePicRefPath:accepterProfilePicRef!,accepterUIDPath:accepterUIDToken!,itemNamePath:itemName!,pricePath:price!,profilePicReferencePath:profilePicReference!,requestedTimePath:requestedTime!,requesterNamePath:requesterName!,requesterUIDPath:requesterUID!,
-            timeStampPath:timeStamp!,tokensOfferedPath:tokensToTransfer!,keyPath:requestKey!]
+            timeStampPath:timeStamp!,tokensOfferedPath:tokensToTransfer!,keyPath:requestKey!,distanceTraveledPath:distanceInMetersFloatString,isTestPath:self.isTest]
             
             self.databaseRef.updateChildValues(childUpdateMoveNode)
             
@@ -904,6 +940,8 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         //here
         if sender.titleLabel?.text == "Purchase Complete" {
             
+            self.locationManager.startUpdatingLocation()
+            
             let itemName = self.sectionData[0]?[index]?["itemName"] as! String
             
             let payType = self.sectionData[0]?[index]?["paymentType"] as! String
@@ -937,9 +975,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                     if let phoneNumber = phoneNumberTextField?.text {
                         
                         self.purchasePrice = phoneNumber
-                        
-                       // let paymentType = self.sectionData[0]?[index]?["paymentType"] as! String
-                        
+         
                         if paymentType == "Cash" {
                             
                             if self.purchasePrice!.contains(".") {
@@ -971,6 +1007,11 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                 let requestKey = self.sectionData[0]?[index]?["requestKey"] as! String
                     
                 self.databaseRef.child("request").child(requestKey).child("purchasePrice").setValue(self.purchasePrice)
+                //Store location of purchase
+                self.databaseRef.child("request").child(requestKey).child("purchaseLatitude").setValue(self.userLatitude)
+                self.databaseRef.child("request").child(requestKey).child("purchaseLongitude").setValue(self.userLongitude)
+                    
+                self.locationManager.stopUpdatingLocation()
                     
                  if paymentType == "Cash" {
                     
@@ -1079,4 +1120,14 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         
     }
     
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        
+        if let location = self.locationManager.location?.coordinate{
+            
+            self.userLocation = CLLocation(latitude: location.latitude, longitude: location.longitude)
+            self.userLatitude = (self.userLocation?.coordinate.latitude)!
+            self.userLongitude = (self.userLocation?.coordinate.longitude)!
+            
+        }
+    }
 }

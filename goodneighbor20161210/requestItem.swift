@@ -38,7 +38,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
     var paymentType = "Venmo"
     var requestPrice = "$0.00"
     
-   
+    @IBOutlet var requestButton: customButton!
     @IBOutlet var oneTokenLabel: UILabel!
     @IBOutlet var twoTokenLabel: UILabel!
     
@@ -78,7 +78,18 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         self.cashImage.layer.cornerRadius = 2.0
         self.cashImage.layer.masksToBounds = true
         
-        if isSmallScreen == true {
+    //For ipad small hide token info
+        if isVerySmallScreen {
+            
+            self.oneTokenImage.isHidden = true
+            self.twoTokenImage.isHidden = true
+            self.oneTokenLabel.isHidden = true
+            self.twoTokenLabel.isHidden = true
+            self.tokensOfferedLabel.isHidden = true
+            
+        }
+        
+        if isSmallScreen || isVerySmallScreen {
             
             self.image.isHidden = true
             let smallFont:CGFloat = 12.0
@@ -89,6 +100,13 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
             self.itemNameLabel.font = UIFont.systemFont(ofSize: smallFont)
             self.oneTokenLabel.font = UIFont.systemFont(ofSize: smallFont)
             self.twoTokenLabel.font = UIFont.systemFont(ofSize: smallFont)
+        }
+        
+        if isLargeScreen {
+            
+            let bottomConstraint = self.image.bottomAnchor.constraint(equalTo: self.requestButton.topAnchor, constant: -65)
+            NSLayoutConstraint.activate([bottomConstraint])
+            
         }
         
         
@@ -262,7 +280,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
                 }
             }
 
-        let cashAlert = UIAlertController(title: "Cash Payment Notice", message: "If you would like to pay cash, you must round up to the nearest dollar, change is not allowed. Thus, your max price will be increased to \(self.requestPrice)", preferredStyle: UIAlertControllerStyle.alert)
+        let cashAlert = UIAlertController(title: "Cash Payment Notice", message: "If you would like to pay cash, you must round up to the nearest dollar, change is not allowed. Thus, your max price will be \(self.requestPrice)", preferredStyle: UIAlertControllerStyle.alert)
             
         cashAlert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (action) in
             //do nothing

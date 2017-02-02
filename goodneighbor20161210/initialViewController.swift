@@ -19,6 +19,8 @@ var myRadius: Float?
 var autoLoginHelp: Int = 0
 
 var isSmallScreen = false
+var isVerySmallScreen = false
+var isLargeScreen = false
 
 class initialViewController: UIViewController {
     
@@ -38,15 +40,28 @@ class initialViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//try! FIRAuth.auth()?.signOut()
+try! FIRAuth.auth()?.signOut()
         
         let screenSize: CGRect = UIScreen.main.bounds
-        let screenWidth = screenSize.width
         let screenHeight = screenSize.height
         
-        if screenHeight < 570.0 {
+        print(screenHeight)
+        
+        if screenHeight < 490.0{
+            
+            isVerySmallScreen = true
+            
+        }
+        
+        if screenHeight < 570.0 && screenHeight > 500{
             
             isSmallScreen = true
+            
+        }
+        
+        if screenHeight > 700 {
+            
+            isLargeScreen = true
             
         }
 
@@ -116,7 +131,6 @@ class initialViewController: UIViewController {
                             self.present(homeViewController, animated: true, completion: nil)
                         }
                 } else {
-                print("no one logged in")
                 self.performSegue(withIdentifier: "goToFbookLogin", sender: nil)
                 }
                 }

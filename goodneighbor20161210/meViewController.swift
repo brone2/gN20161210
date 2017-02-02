@@ -26,6 +26,7 @@ class meViewController: UIViewController {
     
     @IBOutlet var userInMyRadiusLabel: UILabel!
     
+    @IBOutlet var couponRedemptionBackground: UIView!
     @IBOutlet var logOutButton: UIButton!
     @IBOutlet var termsOfServiceButton: UIButton!
     @IBOutlet var changePhoneNumberButton: UIButton!
@@ -48,7 +49,15 @@ class meViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.logOutButton.isHidden = true
+       self.logOutButton.isHidden = true
+        
+        //For ipad small hide coupon redemption
+        if isVerySmallScreen {
+            
+            self.couponRedemptionButton.isHidden = true
+            self.couponRedemptionBackground.isHidden = true
+            
+        }
         
        self.loggedInUserId = FIRAuth.auth()?.currentUser?.uid
        globalLoggedInUserId = self.loggedInUserId

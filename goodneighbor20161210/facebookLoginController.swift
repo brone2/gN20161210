@@ -71,9 +71,13 @@ class facebookLoginController: UIViewController, FBSDKLoginButtonDelegate {
                         let data = pict["data"] as! NSDictionary
                         self.url = data["url"] as? String
                         
+                        let latitude = 0.0000000000
+                        let longitude = 0.0000000000
+                        
+                        
                         let userId = (FIRAuth.auth()?.currentUser?.uid)!
                         
-                        let childUpdatesFbook = ["/users/\(userId)/name":dict["first_name"]!,"/users/\(userId)/fullName":dict["name"]!,"/users/\(userId)/gender":dict["gender"]!,"/users/\(userId)/buildingName":"N/A","/users/\(userId)/cellPhoneNumber":"0","/users/\(userId)/deliveryCount":0, "/users/\(userId)/recieveCount":0, "/users/\(userId)/tokenCount":3,"/users/\(userId)/profilePicReference":self.url!] as [String : Any]
+                        let childUpdatesFbook = ["/users/\(userId)/name":dict["first_name"]!,"/users/\(userId)/fullName":dict["name"]!,"/users/\(userId)/gender":dict["gender"]!,"/users/\(userId)/buildingName":"N/A","/users/\(userId)/cellPhoneNumber":"0","/users/\(userId)/deliveryCount":0, "/users/\(userId)/recieveCount":0, "/users/\(userId)/tokenCount":3,"/users/\(userId)/profilePicReference":self.url!, "/users/\(userId)/longitude":longitude, "/users/\(userId)/latitude":latitude] as [String : Any]
                         
                         //Update
                         self.databaseRef.updateChildValues(childUpdatesFbook)

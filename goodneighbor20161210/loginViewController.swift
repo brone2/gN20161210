@@ -108,7 +108,7 @@ class loginViewController: UIViewController, UIImagePickerControllerDelegate, UI
                             })
                         }
                         
-                        let childUpdates = ["/users/\(user!.uid)/name":self.nameLabel.text!,"/users/\(user!.uid)/cellPhoneNumber":"0","/users/\(user!.uid)/buildingName":"N/A","/users/\(user!.uid)/deliveryCount":0, "/users/\(user!.uid)/recieveCount":0, "/users/\(user!.uid)/tokenCount":3,"/users/\(user!.uid)/email":self.emailLabel.text!] as [String : Any]
+                        let childUpdates = ["/users/\(user!.uid)/name":self.nameLabel.text!,"/users/\(user!.uid)/cellPhoneNumber":"0","/users/\(user!.uid)/buildingName":"N/A","/users/\(user!.uid)/deliveryCount":0, "/users/\(user!.uid)/recieveCount":0, "/users/\(user!.uid)/tokenCount":3,"/users/\(user!.uid)/email":self.emailLabel.text!, "/users/\(user!.uid)/longitude":0.0000000000, "/users/\(user!.uid)/latitude":0.0000000000] as [String : Any]
                         
                         print(childUpdates)
                         

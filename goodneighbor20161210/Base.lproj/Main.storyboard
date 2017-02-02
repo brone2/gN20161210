@@ -23,37 +23,30 @@
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Terms of Service" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W2d-A6-ah8">
                                 <rect key="frame" x="88" y="28" width="199" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="Fzn-x7-NYg"/>
+                                    <constraint firstAttribute="width" constant="199" id="mun-bt-uqu"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="25"/>
                                 <color key="textColor" red="1" green="0.90196078431372551" blue="0.24705882352941178" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Co6-lS-CeU">
-                                <rect key="frame" x="45.5" y="55" width="284" height="316"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.10000000000000001" translatesAutoresizingMaskIntoConstraints="NO" id="Co6-lS-CeU">
+                                <rect key="frame" x="46" y="88" width="284" height="326"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="316" id="Uuk-gD-dp0"/>
-                                    <constraint firstAttribute="width" constant="284" id="a0S-FF-uTH"/>
+                                    <constraint firstAttribute="width" constant="284" id="DyB-5d-BLZ"/>
                                 </constraints>
-                                <string key="text">The use of goodneighbor delivery is strictly confined to requesting items to be delivered to you that you can legally purchase yourself, and that could in no way be interpreted as being of a sexual, violent, or otherwise objectionable nature. The only pictures which are permitted to be posted within the app are 1) a photo of yourself to serve as your profile picture 2) photos of the products which you are requesting. </string>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                <color key="textColor" red="1" green="0.90196078430000004" blue="0.2470588235" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Any violation of this agreement will result in the immediate removal of the user account." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YOb-9r-67I">
-                                <rect key="frame" x="45" y="358" width="284" height="97"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="97" id="EdP-Ct-ohk"/>
-                                    <constraint firstAttribute="width" constant="284" id="KJV-cS-aLM"/>
-                                </constraints>
+                                <string key="text">The use of goodneighbor delivery is strictly confined to requesting items to be delivered to you that you can legally purchase yourself, and that could in no way be interpreted as being of a sexual, violent, or otherwise objectionable nature. The only pictures which are permitted to be posted within the app are 1) a photo of yourself to serve as your profile picture 2) photos of the products which you are requesting. Any violation of this agreement will result in the immediate removal of the user account.</string>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                 <color key="textColor" red="1" green="0.90196078430000004" blue="0.2470588235" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bG8-Fo-a0A" customClass="customButton" customModule="goodneighbor20161210" customModuleProvider="target">
-                                <rect key="frame" x="102.5" y="515" width="170" height="30"/>
+                                <rect key="frame" x="103" y="478" width="170" height="30"/>
                                 <color key="backgroundColor" red="0.94117647058823528" green="0.87058823529411766" blue="0.22352941176470589" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="170" id="OOB-29-SKU"/>
-                                    <constraint firstAttribute="height" constant="30" id="VZv-e8-YxA"/>
+                                    <constraint firstAttribute="width" constant="170" id="9Sa-Ig-B68"/>
+                                    <constraint firstAttribute="height" constant="30" id="Roa-fd-XEr"/>
                                 </constraints>
                                 <state key="normal" title="Accept"/>
                                 <userDefinedRuntimeAttributes>
@@ -68,20 +61,19 @@
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.57647058823529407" blue="0.85490196078431369" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="bG8-Fo-a0A" firstAttribute="top" secondItem="YOb-9r-67I" secondAttribute="bottom" constant="60" id="7Ml-qO-ZGH"/>
-                            <constraint firstItem="Co6-lS-CeU" firstAttribute="centerX" secondItem="QVi-7A-7FF" secondAttribute="centerX" id="Fxs-OD-6c7"/>
-                            <constraint firstItem="W2d-A6-ah8" firstAttribute="centerX" secondItem="QVi-7A-7FF" secondAttribute="centerX" id="Ikg-5K-OEW"/>
-                            <constraint firstItem="bG8-Fo-a0A" firstAttribute="centerX" secondItem="QVi-7A-7FF" secondAttribute="centerX" id="NI3-1h-nSH"/>
-                            <constraint firstItem="W2d-A6-ah8" firstAttribute="top" secondItem="ghP-K7-qL8" secondAttribute="bottom" constant="8" id="O4L-b7-u3r"/>
-                            <constraint firstItem="YOb-9r-67I" firstAttribute="centerX" secondItem="QVi-7A-7FF" secondAttribute="centerX" id="Ol6-1w-mHu"/>
-                            <constraint firstItem="Co6-lS-CeU" firstAttribute="top" secondItem="ghP-K7-qL8" secondAttribute="bottom" constant="35" id="Yjr-HR-pKW"/>
-                            <constraint firstItem="YOb-9r-67I" firstAttribute="top" secondItem="W2d-A6-ah8" secondAttribute="bottom" constant="300" id="v4N-I7-bKY"/>
+                            <constraint firstItem="W2d-A6-ah8" firstAttribute="top" secondItem="ghP-K7-qL8" secondAttribute="bottom" constant="8" id="LPy-By-gA1"/>
+                            <constraint firstItem="Co6-lS-CeU" firstAttribute="top" secondItem="W2d-A6-ah8" secondAttribute="bottom" constant="30" id="T8y-xs-8E5"/>
+                            <constraint firstItem="bG8-Fo-a0A" firstAttribute="top" secondItem="Co6-lS-CeU" secondAttribute="bottom" constant="64" id="dMB-5X-5M3"/>
+                            <constraint firstItem="W2d-A6-ah8" firstAttribute="centerX" secondItem="QVi-7A-7FF" secondAttribute="centerX" id="lsA-ij-PeD"/>
+                            <constraint firstItem="2Ia-5Q-gWx" firstAttribute="top" secondItem="bG8-Fo-a0A" secondAttribute="bottom" constant="159" id="rMV-8g-6Dy"/>
+                            <constraint firstItem="bG8-Fo-a0A" firstAttribute="centerX" secondItem="QVi-7A-7FF" secondAttribute="centerX" id="tFP-C1-2zL"/>
+                            <constraint firstItem="Co6-lS-CeU" firstAttribute="centerX" secondItem="QVi-7A-7FF" secondAttribute="centerX" id="wFq-1q-7aY"/>
                         </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tVO-b5-sVC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1001" y="-141"/>
+            <point key="canvasLocation" x="1000.8" y="-141.67916041979012"/>
         </scene>
         <!--Initial View-->
         <scene sceneID="Z4i-FJ-qvR">
@@ -240,7 +232,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="109"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2BZ-Tz-Kip" id="A7K-7m-wUp">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="108"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="108.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="appIcon2.png" translatesAutoresizingMaskIntoConstraints="NO" id="paG-Vu-ECh">
@@ -369,7 +361,7 @@
                                         <rect key="frame" x="0.0" y="137" width="375" height="120"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="x1s-Sg-Ayq" id="6dn-lh-eeg">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="119"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="119.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="appIcon2.png" translatesAutoresizingMaskIntoConstraints="NO" id="Fx3-F3-vdo">
@@ -487,7 +479,7 @@
                                         <rect key="frame" x="0.0" y="257" width="375" height="106"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7cq-m0-FcC" id="QRL-1C-XKa">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="105"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="105.5"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="appIcon2.png" translatesAutoresizingMaskIntoConstraints="NO" id="b3B-mX-xWe">
@@ -1366,6 +1358,7 @@
                         <outlet property="oneTokenImage" destination="qJv-W9-o8F" id="3hp-z1-tXF"/>
                         <outlet property="oneTokenLabel" destination="KkS-jY-XtV" id="ZGp-et-L5m"/>
                         <outlet property="priceLabel" destination="Xke-eg-cIm" id="WM5-Mb-J1Z"/>
+                        <outlet property="requestButton" destination="0p6-wP-DVb" id="InD-Tj-PzH"/>
                         <outlet property="tokensOfferedLabel" destination="JqB-tY-KMe" id="oMz-oh-2oh"/>
                         <outlet property="toolbarBottomConstraint" destination="fdV-Tr-gaN" id="ddv-wf-nJO"/>
                         <outlet property="twoTokenImage" destination="tK4-SB-cbS" id="GKU-54-cj0"/>
@@ -1826,6 +1819,7 @@
                     <connections>
                         <outlet property="changeDeliveryRadiusButton" destination="INd-rY-rBY" id="DbB-I0-Mxl"/>
                         <outlet property="changePhoneNumberButton" destination="vMZ-dP-eKO" id="vVa-Sw-hvU"/>
+                        <outlet property="couponRedemptionBackground" destination="FqF-DS-ZeR" id="rHI-QM-QyO"/>
                         <outlet property="couponRedemptionButton" destination="cho-ws-ioJ" id="nGS-Ps-G84"/>
                         <outlet property="logOutButton" destination="5IH-KW-ZcH" id="ACS-vg-JbK"/>
                         <outlet property="resetHomeLocationButton" destination="Kti-ta-qbu" id="wwH-GC-gye"/>
@@ -1860,7 +1854,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="70"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Zon-ta-z9Z" id="8MX-ln-jVe">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="69"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="69.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Bgf-Vd-i0Q">
@@ -2058,7 +2052,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="w3y-vj-48I" id="GZ8-yx-vg4">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -2341,10 +2335,9 @@
                                 <color key="textColor" red="1" green="0.90196078431372551" blue="0.24705882352941178" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bds-fh-rjt">
-                                <rect key="frame" x="45.5" y="55" width="284" height="316"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.29999999999999999" translatesAutoresizingMaskIntoConstraints="NO" id="bds-fh-rjt">
+                                <rect key="frame" x="45.5" y="76" width="284" height="267"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="316" id="awu-r1-5RV"/>
                                     <constraint firstAttribute="width" constant="284" id="jWZ-FE-eYO"/>
                                 </constraints>
                                 <string key="text">The use of goodneighbor delivery is strictly confined to requesting items to be delivered to you that you can legally purchase yourself, and that could in no way be interpreted as being of a sexual, violent, or otherwise objectionable nature. The only pictures which are permitted to be posted within the app are 1) a photo of yourself to serve as your profile picture 2) photos of the products which you are requesting. </string>
@@ -2352,18 +2345,8 @@
                                 <color key="textColor" red="1" green="0.90196078431372551" blue="0.24705882352941178" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Any violation of this agreement will result in the immediate removal of the user account." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6kE-xy-89R">
-                                <rect key="frame" x="45" y="358" width="284" height="97"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="284" id="Me7-E4-yaG"/>
-                                    <constraint firstAttribute="height" constant="97" id="onR-RB-CBB"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                <color key="textColor" red="1" green="0.90196078431372551" blue="0.24705882352941178" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C2e-Jl-S8j" customClass="customButton" customModule="goodneighbor20161210" customModuleProvider="target">
-                                <rect key="frame" x="122" y="515" width="131" height="30"/>
+                                <rect key="frame" x="122" y="591" width="131" height="30"/>
                                 <color key="backgroundColor" red="1" green="0.90196078431372551" blue="0.24705882352941178" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="Cee-jn-LKf"/>
@@ -2381,17 +2364,28 @@
                                     <segue destination="Eev-yu-jSf" kind="show" id="UfO-Qf-6If"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Any violation of this agreement will result in the immediate removal of the user account." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.25" translatesAutoresizingMaskIntoConstraints="NO" id="6kE-xy-89R">
+                                <rect key="frame" x="45" y="498" width="284" height="61"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="284" id="Me7-E4-yaG"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <color key="textColor" red="1" green="0.90196078431372551" blue="0.24705882352941178" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.062745098039215685" green="0.49803921568627452" blue="0.81960784313725488" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="6kE-xy-89R" firstAttribute="centerX" secondItem="cEB-L0-zoC" secondAttribute="centerX" id="5kZ-Q5-Fh4"/>
+                            <constraint firstItem="lQH-rR-4RM" firstAttribute="top" secondItem="C2e-Jl-S8j" secondAttribute="bottom" constant="46" id="AHH-5G-I2C"/>
                             <constraint firstItem="bds-fh-rjt" firstAttribute="centerX" secondItem="cEB-L0-zoC" secondAttribute="centerX" id="DV1-HG-gfJ"/>
+                            <constraint firstItem="bds-fh-rjt" firstAttribute="top" secondItem="HLK-cs-Tbg" secondAttribute="bottom" constant="18" id="JPo-QR-esI"/>
                             <constraint firstItem="C2e-Jl-S8j" firstAttribute="centerX" secondItem="cEB-L0-zoC" secondAttribute="centerX" id="K6k-ik-WGG"/>
-                            <constraint firstItem="bds-fh-rjt" firstAttribute="top" secondItem="IuY-PC-WDK" secondAttribute="bottom" constant="35" id="PI6-iI-Wp6"/>
+                            <constraint firstItem="6kE-xy-89R" firstAttribute="top" relation="lessThanOrEqual" secondItem="bds-fh-rjt" secondAttribute="bottom" constant="158" id="ORl-fJ-ZyU"/>
                             <constraint firstItem="HLK-cs-Tbg" firstAttribute="centerX" secondItem="cEB-L0-zoC" secondAttribute="centerX" id="ROc-cb-wkO"/>
-                            <constraint firstItem="6kE-xy-89R" firstAttribute="top" secondItem="HLK-cs-Tbg" secondAttribute="bottom" constant="300" id="amI-eb-P8i"/>
+                            <constraint firstItem="6kE-xy-89R" firstAttribute="top" relation="greaterThanOrEqual" secondItem="bds-fh-rjt" secondAttribute="bottom" constant="10" id="VHj-iK-3kq"/>
+                            <constraint firstItem="C2e-Jl-S8j" firstAttribute="top" secondItem="6kE-xy-89R" secondAttribute="bottom" constant="29" id="ib0-23-cmE"/>
                             <constraint firstItem="HLK-cs-Tbg" firstAttribute="top" secondItem="IuY-PC-WDK" secondAttribute="bottom" constant="8" id="nwY-te-h2O"/>
-                            <constraint firstItem="C2e-Jl-S8j" firstAttribute="top" secondItem="6kE-xy-89R" secondAttribute="bottom" constant="60" id="pRK-Pg-mPk"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -2716,7 +2710,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wuG-vX-r2S" id="0wu-8F-4dq">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -2905,14 +2899,14 @@
         <image name="venmo-icon_grey.png" width="360" height="361"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="eNf-UG-29a"/>
-        <segue reference="snf-E1-HOD"/>
-        <segue reference="HYy-gC-uE8"/>
-        <segue reference="ksH-Iz-MyS"/>
-        <segue reference="rTN-ao-NSx"/>
         <segue reference="cJs-CN-dFg"/>
         <segue reference="46Q-Of-GCr"/>
-        <segue reference="i3w-Ip-Vic"/>
-        <segue reference="wei-YH-Wj5"/>
+        <segue reference="nzL-4F-Ybh"/>
+        <segue reference="3Gq-Kg-BQY"/>
+        <segue reference="eNf-UG-29a"/>
+        <segue reference="Xlf-EA-jFq"/>
+        <segue reference="9gD-sH-e4F"/>
+        <segue reference="eT3-9b-yu6"/>
+        <segue reference="Cn8-dy-pnr"/>
     </inferredMetricsTieBreakers>
 </document>

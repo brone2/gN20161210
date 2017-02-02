@@ -19,6 +19,8 @@ class locationViewController: UIViewController, CLLocationManagerDelegate, MKMap
     var userLocation: CLLocation?
     var loggedInUser:String!
     var databaseRef: FIRDatabaseReference!
+    var userCity: String?
+    var userState: String?
 
     @IBOutlet weak var map: MKMapView!
     
@@ -79,12 +81,37 @@ class locationViewController: UIViewController, CLLocationManagerDelegate, MKMap
             //Update
             self.databaseRef.updateChildValues(childUpdates)
             
-            self.locationManager.stopUpdatingLocation()
+            })
             
-        })
+            //Find State
+                
+                CLGeocoder().reverseGeocodeLocation(myLocation!) {(placemarks,error) in
+                    
+                    if error != nil{
+                        
+                    }//if error != nil{
+                    else
+                    {
+                        if let placemark = placemarks?[0] {
+                      
+                            if placemark.subAdministrativeArea != nil {
+                                self.userCity = placemark.subAdministrativeArea! + " "
+                            }
+                            
+                            if placemark.postalCode != nil {
+                                self.userState = placemark.administrativeArea! + " "
+                            }
+                            
+                        }
+                        
+                        let childUpdates = ["/users/\(self.loggedInUser!)/city":self.userCity!, "/users/\(self.loggedInUser!)/state":self.userState!] as [String : Any]
+                        self.databaseRef.updateChildValues(childUpdates)
+                        self.locationManager.stopUpdatingLocation()
+                    }
+            
+                }
+        
         }
-        
-        
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
