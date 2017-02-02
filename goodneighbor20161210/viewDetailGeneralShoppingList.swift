@@ -101,11 +101,17 @@ class viewDetailGeneralShoppingList: UIViewController, UITextViewDelegate, UITex
         
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
             
-        self.databaseRef.child("request").child((self.shoppingListCurrentRequests[self.selectedRowIndex]?["requestKey"] as? String)!).child("isComplete").setValue(true)
+        let requestKey = self.shoppingListCurrentRequests[self.selectedRowIndex]?["requestKey"] as? String
+        let requestPath = "request/\(requestKey!)"
+        let childUpdates = [requestPath:NSNull()]
+        self.databaseRef.updateChildValues(childUpdates)
+        
+        //Just get rid of it this was causing bugs
+        /*self.databaseRef.child("request").child((self.shoppingListCurrentRequests[self.selectedRowIndex]?["requestKey"] as? String)!).child("isComplete").setValue(true)
             
         self.databaseRef.child("request").child((self.shoppingListCurrentRequests[self.selectedRowIndex]?["requestKey"] as? String)!).child("isAccepted").setValue(true)
             
-        self.databaseRef.child("request").child((self.shoppingListCurrentRequests[self.selectedRowIndex]?["requestKey"] as? String)!).child("isFlagged").setValue(true)
+        self.databaseRef.child("request").child((self.shoppingListCurrentRequests[self.selectedRowIndex]?["requestKey"] as? String)!).child("isFlagged").setValue(true)*/
             
             let alertFin = UIAlertController(title: "Thank you", message: "The request has been removed and this user's account is currently under review", preferredStyle: UIAlertControllerStyle.alert)
             
@@ -145,33 +151,13 @@ class viewDetailGeneralShoppingList: UIViewController, UITextViewDelegate, UITex
     
     func acceptDelivery() {
         
-        let alert = UIAlertController(title: "Accept Delivery", message: "Thank you for accepting this delivery! Please keep in touch with the requestor to ensure a smooth delivery process", preferredStyle: UIAlertControllerStyle.alert)
+        let alert = UIAlertController(title: "Accept Delivery", message: "Thank you for accepting this delivery! Please keep in contact with the requestor to ensure a smooth delivery process", preferredStyle: UIAlertControllerStyle.alert)
         
         alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (action) in
             //nothing happens
         }))
         
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
-            
-            /*let childUpdates = ["/request/\((self.shoppingListCurrentRequests[self.selectedRowIndex]?["requestKey"] as? String)!)/isAccepted":true,"/request/\((self.shoppingListCurrentRequests[self.selectedRowIndex]?["requestKey"] as? String)!)/accepterCell":myCellNumber as String,"/request/\((self.shoppingListCurrentRequests[self.selectedRowIndex]?["requestKey"] as? String)!)/accepterUID":self.loggedInUserId,"/request/\((self.shoppingListCurrentRequests[self.selectedRowIndex]?["requestKey"] as? String)!)/accepterName":loggedInUserName, "/request/\((self.shoppingListCurrentRequests[self.selectedRowIndex]?["requestKey"] as? String)!)/accepterProfilePicRef":myProfilePicRef] as [String : Any]
-            
-            self.databaseRef.updateChildValues(childUpdates)
-            
-            let requesterCell = self.shoppingListCurrentRequests[self.selectedRowIndex]?["requesterCell"] as? String
-            let requesterName = self.shoppingListCurrentRequests[self.selectedRowIndex]?["requesterName"] as? String
-            let itemName = self.shoppingListCurrentRequests[self.selectedRowIndex]?["itemName"] as? String
-            let itemPrice = self.shoppingListCurrentRequests[self.selectedRowIndex]?["price"] as? String
-            
-            let textMessage = "Hey \(requesterName!), I am happy to deliver \(itemName!). Please message me back confirming you are committed to recompensate me a price up to \(itemPrice!), as well as a specific location of delivery. Thanks, \(loggedInUserName!) "
-            // print(textMessage)
-            
-            if (MFMessageComposeViewController.canSendText()) {
-                let controller = MFMessageComposeViewController();
-                controller.body = textMessage;
-                controller.recipients = [requesterCell!]
-                controller.messageComposeDelegate = self;
-                self.present(controller, animated: true, completion: nil)
-            }*/
             
             self.deliverAcceptedCompletion()
             

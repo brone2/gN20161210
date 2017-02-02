@@ -38,8 +38,14 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
     var paymentType = "Venmo"
     var requestPrice = "$0.00"
     
+   
     @IBOutlet var oneTokenLabel: UILabel!
     @IBOutlet var twoTokenLabel: UILabel!
+    
+    @IBOutlet var completeToolBar: UIToolbar!
+    @IBOutlet var doneToolBarButton: UIBarButtonItem!
+    @IBOutlet var toolbarBottomConstraint: NSLayoutConstraint!
+    var toolbarBottomConstraintInitialValue:CGFloat?
  
     @IBOutlet weak var twoTokenImage: UIImageView!
     @IBOutlet weak var oneTokenImage: UIImageView!
@@ -62,6 +68,12 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
 
     override func viewDidLoad() {
         super.viewDidLoad()
+    
+    //Turn off the three text options when inputting text, perhaps makes it look better
+        self.nameLabel.autocorrectionType = .no
+        self.descriptionTextView.autocorrectionType = .no
+        
+        self.completeToolBar.isHidden = true
         
         self.cashImage.layer.cornerRadius = 2.0
         self.cashImage.layer.masksToBounds = true
@@ -78,6 +90,8 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
             self.oneTokenLabel.font = UIFont.systemFont(ofSize: smallFont)
             self.twoTokenLabel.font = UIFont.systemFont(ofSize: smallFont)
         }
+        
+        
         
         self.nameLabel.delegate = self
         self.priceLabel.delegate = self
@@ -140,7 +154,9 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         // Dispose of any resources that can be recreated.
     }
     
+
     func textViewDidBeginEditing(_ textView: UITextView) {
+        
         if(descriptionTextView.textColor == UIColor.lightGray){
             self.descriptionTextView.text = ""
             self.descriptionTextView.textColor = UIColor.black
@@ -148,11 +164,21 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        
+    /* Having the jumping text issues when top textfield pressed
         if self.priceLabel.text == "" {
-        self.priceLabel.text = "$"
-        self.priceLabel.textColor = UIColor.black
+            self.priceLabel.text = "$"
+            self.priceLabel.textColor = UIColor.black
         }
+ */
+    }
+    
+ 
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        
+        // Workaround for the jumping text bug.
+        textField.resignFirstResponder()
+        textField.layoutIfNeeded()
+        
     }
     
     @IBAction func didTapRequest(_ sender: Any) {
@@ -589,13 +615,62 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         return true
     }
     
-    func setDoneOnKeyboard() {
-        let keyboardToolbar = UIToolbar()
-        keyboardToolbar.sizeToFit()
-        let flexBarButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let doneBarButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(self.dismissKeyboard))
-        keyboardToolbar.items = [flexBarButton, doneBarButton]
-        self.priceLabel.inputAccessoryView = keyboardToolbar
+    func enableKeyboardHideOnTap () {
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(requestItem.keyBoardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(requestItem.keyBoardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        let tap: UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(requestItem.hideKeyboard))
+        self.view.addGestureRecognizer(tap)
+
+    }
+    
+
+    
+    func keyBoardWillShow(_ notification: NSNotification){
+
+        let info = (notification as NSNotification).userInfo!
+
+        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+
+       let duration = (notification as NSNotification).userInfo![UIKeyboardAnimationDurationUserInfoKey] as! Double
+
+        UIView.animate(withDuration: duration) {
+
+            self.toolbarBottomConstraint.constant = keyboardFrame.size.height
+            self.completeToolBar.isHidden = false
+            self.view.layoutIfNeeded()
+
+}
+        
+}
+    
+    
+    
+    func keyBoardWillHide(_ notification: NSNotification){
+ 
+        let duration = (notification as NSNotification).userInfo![UIKeyboardAnimationDurationUserInfoKey] as! Double
+
+        UIView.animate(withDuration: duration) {
+
+            self.toolbarBottomConstraint.constant = self.toolbarBottomConstraintInitialValue!
+            self.completeToolBar.isHidden = true
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+     override func viewDidAppear(_ animated: Bool) {
+        enableKeyboardHideOnTap()
+        self.toolbarBottomConstraintInitialValue = toolbarBottomConstraint.constant
+    }
+
+    @IBAction func didTapDone(_ sender: UIBarButtonItem) {
+        
+        hideKeyboard()
+        
+    }
+    func hideKeyboard() {
+        
+        self.view.endEditing(true)
         
     }
     

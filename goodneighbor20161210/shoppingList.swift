@@ -289,7 +289,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         
         let twoTokenTap: UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.didTapTwoCoin(_:)))
         
-    //Table is populated in three sections
+    //Table populated: First section is my Current Deliveries, Second is my Current Request, Third is community Request
         
         if indexPath.section == 0 { // if is my current deliveries
             
@@ -298,10 +298,6 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             let isCompleted:Bool = self.sectionData[indexPath.section]![indexPath.row]?["isComplete"] as! Bool
             
             cell.purchaseCompleteButton.contentHorizontalAlignment = .left
-            
-            //cell.deliverToLabel.text = self.sectionData[indexPath.section]![indexPath.row]?["deliverTo"] as? String
-            
-            cell.deliverToLabel.text = "Will pay \(self.sectionData[indexPath.section]![indexPath.row]?["price"] as! String)"
 
             let buildingCheck = self.sectionData[indexPath.section]![indexPath.row]?["buildingName"] as? String
             
@@ -319,6 +315,8 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             
             let payType:String = (self.sectionData[indexPath.section]![indexPath.row]?["paymentType"] as? String)!
             
+            cell.payTypeImage.tag = indexPath.row
+            
             if payType == "Venmo" {
                 cell.payTypeImage.image = UIImage(named: "venmo-icon.png")
                 cell.payTypeImage.addGestureRecognizer(payTypeVenmoTap)
@@ -331,17 +329,34 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             
             let purchasePriceString: String = (self.sectionData[indexPath.section]![indexPath.row]?["purchasePrice"] as? String)!
             
+            cell.purchaseCompleteButton.tag = indexPath.row
+            
             if purchasePriceString == "NA" {
                 
                 cell.purchaseCompleteButton.setTitle("Purchase Complete", for: [])
+                 cell.deliverToLabel.text = "Will pay \(self.sectionData[indexPath.section]![indexPath.row]?["price"] as! String)"
                 
             } else {
                 
-                cell.purchaseCompleteButton.setTitle("Awaiting Confirmation", for: [])
+                let isComplete: Bool = self.sectionData[indexPath.section]![indexPath.row]?["isComplete"] as! Bool
+                
+                if !isComplete {
+                
+                 cell.purchaseCompleteButton.setTitle("Awaiting Confirmation", for: [])
+                 cell.deliverToLabel.text = "Purchased for \(self.sectionData[indexPath.section]![indexPath.row]?["purchasePrice"] as! String)"
+                    
+                } else {
+                    
+                    cell.purchaseCompleteButton.setTitle("Delivery Complete!", for: [])
+                    cell.deliverToLabel.text = "Purchased for \(self.sectionData[indexPath.section]![indexPath.row]?["purchasePrice"] as! String)"
+                    
+                }
                 
             }
             
             let tokenCountHelp:Int = (self.sectionData[indexPath.section]![indexPath.row]?["tokensOffered"] as? Int)!
+            
+            cell.coinImage.tag = indexPath.row
             
             if tokenCountHelp == 1 {
                 cell.coinImage.image = UIImage(named: "1FullToken.png")
@@ -453,14 +468,14 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                 cell.cancelCompleteButton.removeTarget(nil, action: nil, for: .allEvents)
                 cell.cancelCompleteButton.addTarget(self, action: #selector(self.didTapCompleteButton(_:)), for: .touchUpInside)
                 
-                
+            /*
                 if isCompleted == false {
                      cell.cancelCompleteButton.setTitle("Mark as Complete", for: [])
                 } else {
                     cell.cancelCompleteButton.setTitle("Request is complete!", for: [])
                     cell.cancelCompleteButton.isEnabled = false
                 }
-                
+                */
                 
                 cell.chatImage.image = UIImage(named: "greenTextBubble.png")
                 cell.chatImage.tag = indexPath.row
@@ -480,7 +495,17 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                     
                 cell.deliveringToLabel.text = String("Delivery from \(self.sectionData[indexPath.section]![indexPath.row]?["accepterName"] as! String)")
                     
+                cell.cancelCompleteButton.setTitle("In Progress", for: [])
+                
+                    
                 } else {
+                    
+                    if isCompleted == false {
+                        cell.cancelCompleteButton.setTitle("Mark as Complete", for: [])
+                    } else {
+                        cell.cancelCompleteButton.setTitle("Request is complete!", for: [])
+                        cell.cancelCompleteButton.isEnabled = false
+                    }
                     
                     if payType == "Cash" {
                         cell.deliveringToLabel.text = "Please have \(self.sectionData[indexPath.section]![indexPath.row]?["purchasePrice"] as! String) cash for delivery"
@@ -495,6 +520,8 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                         
                     }
                 }
+                
+                cell.payTypeImage.tag = indexPath.row
                 
                 if tokenCountHelp == 1 {
                     cell.coinImage.image = UIImage(named: "1FullToken.png")
@@ -512,25 +539,17 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             
             let cell:shoppingListCell = tableView.dequeueReusableCell(withIdentifier: "shoppingListCell", for: indexPath) as! shoppingListCell
             
-        
-     
             if (self.sectionData[indexPath.section]?.count) == 0 {
                 
-                
-                
                 if isSmallScreen{
-                   
                     cell.nameLabel.text = "No current requests"
                     cell.distanceLabel.text = "Click pencil below to add one!"
-                    
                 } else {
-                
                     cell.distanceLabel.text = "Select the pencil below and add one!"
                     cell.nameLabel.text = "No current requests in your community"
-                
                 }
-                cell.deliverToLabel.text = ""
                 
+                cell.deliverToLabel.text = ""
                 cell.willingToPayLabel.isHidden = true
                 cell.payTypeImage.isHidden = true
                 
@@ -538,7 +557,9 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             }
             
             let payType:String = (self.sectionData[indexPath.section]![indexPath.row]?["paymentType"] as? String)!
-            print(payType)
+            
+            cell.payTypeImage.tag = indexPath.row
+            
             if payType == "Venmo" {
                 cell.payTypeImage.image = UIImage(named: "venmo-icon.png")
                 cell.payTypeImage.addGestureRecognizer(payTypeVenmoTap)
@@ -585,6 +606,8 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             }
             
             let tokenCountHelp:Int? = self.sectionData[indexPath.section]![indexPath.row]?["tokensOffered"] as? Int
+            
+            cell.coinImage.tag = indexPath.row
             
             if tokenCountHelp == 1 {
                 cell.coinImage.image = UIImage(named: "1FullToken.png")
@@ -769,11 +792,21 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
     
     func didTapCompleteButton(_ sender: UIButton)  {
         
+        if sender.titleLabel?.text == "In Progress" {
+            
+            let index = sender.tag
+            let accepterName = self.sectionData[1]![index]?["accepterName"] as? String
+            let itemName = self.sectionData[1]![index]?["itemName"] as? String
+            
+            makeAlert(title: "Delivery In Progress", message: "\(accepterName!) has not yet purchased \(itemName!). Feel free to reach out to \(accepterName!) by clicking on the green chat button")
+            
+        } else {
+        
         let index = sender.tag
-        let price = self.sectionData[1]![index]?["price"] as? String
+        let purchasePrice = self.sectionData[1]![index]?["purchasePrice"] as? String
         let accepterName = self.sectionData[1]![index]?["accepterName"] as? String
         
-        let alertPrice = UIAlertController(title: "Payment Verification", message: "Have you paid \(accepterName!) the price of the item up or equal to \(price!)?", preferredStyle: UIAlertControllerStyle.alert)
+        let alertPrice = UIAlertController(title: "Payment Verification", message: "Have you paid \(accepterName!) the price of the item up or equal to \(purchasePrice!)?", preferredStyle: UIAlertControllerStyle.alert)
         
         alertPrice.addAction(UIAlertAction(title: "No", style: .default, handler: { (action) in
             //nothing happens
@@ -844,13 +877,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                     self.requesterRecieveCount! += 1
                     self.accepterDeliveryCount! += 1
                     
-                /*self.databaseRef.child("users").child(accepterUIDToken!).child("tokenCount").setValue(self.accepterTokenCount!)
-                    self.databaseRef.child("users").child(requesterUIDToken!).child("tokenCount").setValue(self.requesterTokenCount!)
-                    self.databaseRef.child("users").child(accepterUIDToken!).child("deliveryCount").setValue(self.accepterDeliveryCount!)
-                    self.databaseRef.child("users").child(requesterUIDToken!).child("recieveCount").setValue(self.requesterRecieveCount!)
-                    */
-                    
-                    //Save the updated token counts and delivery/recieved counts
+                                 //Save the updated token counts and delivery/recieved counts
                     let childUpdates = ["/users/\(accepterUIDToken!)/tokenCount":self.accepterTokenCount!,"/users/\(requesterUIDToken!)/tokenCount":self.requesterTokenCount!,"/users/\(accepterUIDToken!)/deliveryCount":self.accepterDeliveryCount!,"/users/\(requesterUIDToken!)/recieveCount":self.self.requesterRecieveCount!] as [String : Any]
                         
                     self.databaseRef.updateChildValues(childUpdates)
@@ -867,7 +894,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
     
             }))
         self.present(alertPrice, animated: true, completion: nil)
-        
+        }
     }
     
     @IBAction func didTapPurchaseButton(_ sender: UIButton) {
@@ -879,6 +906,8 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             
             let itemName = self.sectionData[0]?[index]?["itemName"] as! String
             
+            let payType = self.sectionData[0]?[index]?["paymentType"] as! String
+            
             let alertPurchaseComplete = UIAlertController(title: "Purchase Verification", message: "Have you purchased \(itemName)?", preferredStyle: UIAlertControllerStyle.alert)
             
             alertPurchaseComplete.addAction(UIAlertAction(title: "No", style: .default, handler: { (action) in
@@ -889,7 +918,11 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                 
                 var phoneNumberTextField: UITextField?
                 
+                 sender.setTitle("Awaiting Confirmation", for: [])
+                
                 phoneNumberTextField?.keyboardType = UIKeyboardType.numberPad
+                
+                let paymentType = self.sectionData[0]?[index]?["paymentType"] as! String
                 
                 let itemName = self.sectionData[0]?[index]?["itemName"] as! String
                 
@@ -898,33 +931,58 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                     message: "Please enter the price you paid for the \(itemName) ",
                     preferredStyle: UIAlertControllerStyle.alert)
                 
-                let cancelAction = UIAlertAction(
-                title: "Cancel", style: UIAlertActionStyle.default) {
-                    (action) -> Void in
-                }
-                
                 let completeAction = UIAlertAction(
                 title: "Complete", style: UIAlertActionStyle.default) {
                     (action) -> Void in
                     if let phoneNumber = phoneNumberTextField?.text {
                         
-                        sender.setTitle("Awaiting Confirmation", for: [])
-                        
                         self.purchasePrice = phoneNumber
                         
-                        let paymentType = self.sectionData[0]?[index]?["paymentType"] as! String
+                       // let paymentType = self.sectionData[0]?[index]?["paymentType"] as! String
                         
                         if paymentType == "Cash" {
-                            //Get the rounding done
+                            
+                            if self.purchasePrice!.contains(".") {
+                                
+                                let requestPriceCash1 = self.purchasePrice!
+                                
+                                let requestPriceCash = requestPriceCash1.replacingOccurrences(of: "$", with: "")
+                                
+                                let priceStringArray = requestPriceCash.components(separatedBy: ".")
+                                
+                                if priceStringArray[1].characters.count > 0 {
+                                    
+                                let centsAsInt: Int = Int(priceStringArray[1])!
+                                
+                                if centsAsInt > 0 {
+                                        
+                                    var dollarsAsInt: Int = Int(priceStringArray[0])!
+                                    dollarsAsInt += 1
+                                    let dollarsAsString = String(dollarsAsInt)
+                                    let requestDollarsString = "$" + dollarsAsString + ".00"
+                                    self.purchasePrice = requestDollarsString
+                                        
+                                    }
+                                }
+                            }
                         }
-                        
-                        
                     }
                     
-                    let requestKey = self.sectionData[0]?[index]?["requestKey"] as! String
+                let requestKey = self.sectionData[0]?[index]?["requestKey"] as! String
                     
                 self.databaseRef.child("request").child(requestKey).child("purchasePrice").setValue(self.purchasePrice)
                     
+                 if paymentType == "Cash" {
+                    
+                    let cashAlert = UIAlertController(title: "Cash Payment Notice", message: "As this delivery will be paid in cash, the amount owed will be rounded up to \(self.purchasePrice)", preferredStyle: UIAlertControllerStyle.alert)
+                    
+                    cashAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
+                    }))
+                    
+                    self.present(cashAlert, animated: true, completion: nil)
+                    
+                    }
+                
                 }
                 
                 alertController.addTextField {
@@ -934,7 +992,6 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                     phoneNumberTextField!.text = "$"
                 }
                 
-                alertController.addAction(cancelAction)
                 alertController.addAction(completeAction)
                 
                 
@@ -944,7 +1001,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             
             self.present(alertPurchaseComplete, animated: true, completion: nil)
             
-        } else {
+        } else if sender.titleLabel?.text == "Awaiting Confirmation"{
             
             let requesterName = self.sectionData[0]?[index]?["requesterName"] as! String
             let tokensOffered = self.sectionData[0]?[index]?["tokensOffered"] as! Int
