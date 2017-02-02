@@ -19,6 +19,9 @@ class myCurrentDeliveriesCell: UITableViewCell {
     @IBOutlet var deliverToLabel: UILabel! //ie front desk
     @IBOutlet var distanceLabel: UILabel!
     @IBOutlet var deliveringTo: UILabel! //This is person name
+    @IBOutlet var payTypeImage: UIImageView!
+    @IBOutlet var purchaseCompleteButton: UIButton!
+    
 
     override func awakeFromNib() {
         super.awakeFromNib()

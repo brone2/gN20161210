@@ -39,7 +39,7 @@ class facebookLoginController: UIViewController, FBSDKLoginButtonDelegate {
         //frame's are obselete, please use constraints instead because its 2016 after all
         loginButton.frame = CGRect(x: 16, y: 220, width: view.frame.width - 32, height: 50)
         loginButton.delegate = self
-        signUpButtonOutlet.frame =  CGRect(x: 16, y: 330, width: view.frame.width - 32, height: 50)
+        signUpButtonOutlet.frame =  CGRect(x: 16, y: 280, width: view.frame.width - 32, height: 50)
         
     }
     
@@ -65,7 +65,7 @@ class facebookLoginController: UIViewController, FBSDKLoginButtonDelegate {
                 DispatchQueue.main.async{
                     
                     //Get all the facebook user data!!!
-                    FBSDKGraphRequest(graphPath: "/me", parameters: ["fields": "id, name, first_name, picture.type(large)"]).start(completionHandler: { (connection, result, err) in
+                    FBSDKGraphRequest(graphPath: "/me", parameters: ["fields": "id, name, first_name, gender, picture.type(large)"]).start(completionHandler: { (connection, result, err) in
                         let dict = result as! NSDictionary
                         let pict = dict["picture"] as! NSDictionary
                         let data = pict["data"] as! NSDictionary
@@ -73,7 +73,7 @@ class facebookLoginController: UIViewController, FBSDKLoginButtonDelegate {
                         
                         let userId = (FIRAuth.auth()?.currentUser?.uid)!
                         
-                        let childUpdatesFbook = ["/users/\(userId)/name":dict["first_name"]!,"/users/\(userId)/buildingName":"N/A","/users/\(userId)/cellPhoneNumber":"0","/users/\(userId)/deliveryCount":0, "/users/\(userId)/recieveCount":0, "/users/\(userId)/tokenCount":3,"/users/\(userId)/profilePicReference":self.url!] as [String : Any]
+                        let childUpdatesFbook = ["/users/\(userId)/name":dict["first_name"]!,"/users/\(userId)/fullName":dict["name"]!,"/users/\(userId)/gender":dict["gender"]!,"/users/\(userId)/buildingName":"N/A","/users/\(userId)/cellPhoneNumber":"0","/users/\(userId)/deliveryCount":0, "/users/\(userId)/recieveCount":0, "/users/\(userId)/tokenCount":3,"/users/\(userId)/profilePicReference":self.url!] as [String : Any]
                         
                         //Update
                         self.databaseRef.updateChildValues(childUpdatesFbook)

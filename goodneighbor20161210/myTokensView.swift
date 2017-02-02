@@ -25,6 +25,7 @@ class myTokensView: UIViewController {
         super.viewDidLoad()
         
             self.tokenBlueView.layer.cornerRadius = 4
+        
                 
             self.databaseRef.child("users").child((FIRAuth.auth()?.currentUser?.uid)!).observeSingleEvent(of: .value, with: { snapshot in
             

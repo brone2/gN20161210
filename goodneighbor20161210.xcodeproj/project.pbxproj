@@ -21,6 +21,10 @@
 		E536497C1DFB21F200920EA2 /* viewDetailGeneralShoppingList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536497B1DFB21F200920EA2 /* viewDetailGeneralShoppingList.swift */; };
 		E536497E1DFB6C1A00920EA2 /* meViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536497D1DFB6C1A00920EA2 /* meViewController.swift */; };
 		E53649811DFC733600920EA2 /* submitPhoneNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53649801DFC733600920EA2 /* submitPhoneNumberView.swift */; };
+		E599B6931E3EB30A00EBE6A0 /* venmo-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = E599B6921E3EB30900EBE6A0 /* venmo-icon.png */; };
+		E599B6951E3FA64C00EBE6A0 /* Cash_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = E599B6941E3FA64C00EBE6A0 /* Cash_icon.png */; };
+		E599B6971E40D0AA00EBE6A0 /* Cash_icon_grey.png in Resources */ = {isa = PBXBuildFile; fileRef = E599B6961E40D0AA00EBE6A0 /* Cash_icon_grey.png */; };
+		E599B6991E40D2A500EBE6A0 /* venmo-icon_grey.png in Resources */ = {isa = PBXBuildFile; fileRef = E599B6981E40D2A500EBE6A0 /* venmo-icon_grey.png */; };
 		E5B461B71DFDC23B00DCEC51 /* pastActivityCompleted.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B461B61DFDC23B00DCEC51 /* pastActivityCompleted.swift */; };
 		E5B461B91DFDCB6100DCEC51 /* mePastCompletedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B461B81DFDCB6100DCEC51 /* mePastCompletedCell.swift */; };
 		E5B461BD1DFDE6A400DCEC51 /* deliveryRadiusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B461BC1DFDE6A400DCEC51 /* deliveryRadiusView.swift */; };
@@ -81,6 +85,10 @@
 		E536497B1DFB21F200920EA2 /* viewDetailGeneralShoppingList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = viewDetailGeneralShoppingList.swift; sourceTree = "<group>"; };
 		E536497D1DFB6C1A00920EA2 /* meViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = meViewController.swift; sourceTree = "<group>"; };
 		E53649801DFC733600920EA2 /* submitPhoneNumberView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = submitPhoneNumberView.swift; sourceTree = "<group>"; };
+		E599B6921E3EB30900EBE6A0 /* venmo-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "venmo-icon.png"; path = "../../../../Downloads/venmo-icon.png"; sourceTree = "<group>"; };
+		E599B6941E3FA64C00EBE6A0 /* Cash_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Cash_icon.png; path = ../../../../Downloads/Cash_icon.png; sourceTree = "<group>"; };
+		E599B6961E40D0AA00EBE6A0 /* Cash_icon_grey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Cash_icon_grey.png; path = ../../../../Downloads/Cash_icon_grey.png; sourceTree = "<group>"; };
+		E599B6981E40D2A500EBE6A0 /* venmo-icon_grey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "venmo-icon_grey.png"; path = "../../../../Downloads/venmo-icon_grey.png"; sourceTree = "<group>"; };
 		E5B461B61DFDC23B00DCEC51 /* pastActivityCompleted.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = pastActivityCompleted.swift; sourceTree = "<group>"; };
 		E5B461B81DFDCB6100DCEC51 /* mePastCompletedCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = mePastCompletedCell.swift; sourceTree = "<group>"; };
 		E5B461BC1DFDE6A400DCEC51 /* deliveryRadiusView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = deliveryRadiusView.swift; sourceTree = "<group>"; };
@@ -212,6 +220,17 @@
 			name = "Request Delivery";
 			sourceTree = "<group>";
 		};
+		E599B6911E3EB2F400EBE6A0 /* Payment */ = {
+			isa = PBXGroup;
+			children = (
+				E599B6981E40D2A500EBE6A0 /* venmo-icon_grey.png */,
+				E599B6941E3FA64C00EBE6A0 /* Cash_icon.png */,
+				E599B6961E40D0AA00EBE6A0 /* Cash_icon_grey.png */,
+				E599B6921E3EB30900EBE6A0 /* venmo-icon.png */,
+			);
+			name = Payment;
+			sourceTree = "<group>";
+		};
 		E5B461B31DFDBE9C00DCEC51 /* me Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -270,6 +289,7 @@
 		E5E19F711DF96EB300994E5F /* Graphics */ = {
 			isa = PBXGroup;
 			children = (
+				E599B6911E3EB2F400EBE6A0 /* Payment */,
 				E5B461C71DFF411100DCEC51 /* Cancel-250.png */,
 				E5B461C51DFF2A1600DCEC51 /* appIcon2.png */,
 				E536496B1DFAFA3E00920EA2 /* Convo */,
@@ -425,15 +445,19 @@
 				E53649701DFAFA4B00920EA2 /* grayTelephone.png in Resources */,
 				E5E19FA11DF9843B00994E5F /* shoppingList3.jpg in Resources */,
 				E5B461C31DFF299C00DCEC51 /* 1FullToken.png in Resources */,
+				E599B6971E40D0AA00EBE6A0 /* Cash_icon_grey.png in Resources */,
+				E599B6951E3FA64C00EBE6A0 /* Cash_icon.png in Resources */,
 				E5E19F671DF96C0100994E5F /* Assets.xcassets in Resources */,
 				E53649721DFAFA4B00920EA2 /* greenTelephone.png in Resources */,
 				E5B461C81DFF411100DCEC51 /* Cancel-250.png in Resources */,
 				E5E19FB31DF99BAE00994E5F /* Editv3.png in Resources */,
 				E5E19FBF1DF99EB100994E5F /* blackWhite2Coin.png in Resources */,
 				E53649731DFAFA4B00920EA2 /* greenTextBubble.png in Resources */,
+				E599B6991E40D2A500EBE6A0 /* venmo-icon_grey.png in Resources */,
 				E5B461C61DFF2A1600DCEC51 /* appIcon2.png in Resources */,
 				E5E19F621DF96C0100994E5F /* Main.storyboard in Resources */,
 				E5E19FBE1DF99EB100994E5F /* blackWhite1Coin.png in Resources */,
+				E599B6931E3EB30A00EBE6A0 /* venmo-icon.png in Resources */,
 				E5E19FA31DF9873600994E5F /* GoogleService-Info.plist in Resources */,
 				E5E19FB41DF99BAE00994E5F /* list.png in Resources */,
 				E5E19F9E1DF9843B00994E5F /* Me2.jpg in Resources */,

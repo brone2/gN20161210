@@ -10,11 +10,13 @@ import UIKit
 
 class shoppingListCell: UITableViewCell {
 
+    @IBOutlet var payTypeImage: UIImageView!
     @IBOutlet var coinImage: UIImageView!
     @IBOutlet var deliverToLabel: UILabel! //ie front desk
     @IBOutlet var distanceLabel: UILabel!
     @IBOutlet var nameLabel: UILabel!
     @IBOutlet var profilePic: UIImageView!
+    @IBOutlet var willingToPayLabel: UILabel!
     
     
     

@@ -26,6 +26,7 @@ class meViewController: UIViewController {
     
     @IBOutlet var userInMyRadiusLabel: UILabel!
     
+    @IBOutlet var logOutButton: UIButton!
     @IBOutlet var termsOfServiceButton: UIButton!
     @IBOutlet var changePhoneNumberButton: UIButton!
     @IBOutlet var changeDeliveryRadiusButton: UIButton!
@@ -46,6 +47,8 @@ class meViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.logOutButton.isHidden = true
         
        self.loggedInUserId = FIRAuth.auth()?.currentUser?.uid
        globalLoggedInUserId = self.loggedInUserId
@@ -184,6 +187,7 @@ class meViewController: UIViewController {
         
         alertController.addTextField {
             (txtUsername) -> Void in
+            txtUsername.keyboardType = .decimalPad
             phoneNumberTextField = txtUsername
             phoneNumberTextField!.placeholder = "ex: 4135691234"
         }

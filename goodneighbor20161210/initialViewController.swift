@@ -60,7 +60,6 @@ class initialViewController: UIViewController {
         if time == 3 {
             //timer.invalidate()
             self.checkUser()
-            print("gotto3")
         }
         
         if time == 5 {

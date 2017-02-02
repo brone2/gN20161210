@@ -35,6 +35,8 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
     var saveKeyPath: String?
     var saveKey: String?
     var downloadUrlAbsoluteString: String?
+    var paymentType = "Venmo"
+    var requestPrice = "$0.00"
     
     @IBOutlet var oneTokenLabel: UILabel!
     @IBOutlet var twoTokenLabel: UILabel!
@@ -46,6 +48,8 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
     @IBOutlet weak var nameLabel: UITextField!
     @IBOutlet weak var image: UIImageView!
     @IBOutlet weak var locationButton: UIButton!
+    @IBOutlet var venmoImage: UIImageView!
+    @IBOutlet var cashImage: UIImageView!
     
     
     @IBOutlet var detailInfoLabel: UILabel!
@@ -58,6 +62,9 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.cashImage.layer.cornerRadius = 2.0
+        self.cashImage.layer.masksToBounds = true
         
         if isSmallScreen == true {
             
@@ -117,6 +124,12 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         let twoTokenImageTap:UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.didTapTwoToken(_:)))
         twoTokenImage.addGestureRecognizer(twoTokenImageTap)
         
+        let venmoImageTap: UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.didTapVenmoImage(_:)))
+        venmoImage.addGestureRecognizer(venmoImageTap)
+        
+        let cashImageTap: UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.didTapCashImage(_:)))
+        cashImage.addGestureRecognizer(cashImageTap)
+        
         let imageTap:UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapImageIcon(_:)))
         image.addGestureRecognizer(imageTap)
         
@@ -135,8 +148,11 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
+        
+        if self.priceLabel.text == "" {
         self.priceLabel.text = "$"
         self.priceLabel.textColor = UIColor.black
+        }
     }
     
     @IBAction func didTapRequest(_ sender: Any) {
@@ -163,36 +179,79 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
             }))
             self.present(alertNotEnough, animated: true, completion: nil)
         } else {
+            
         let alert = UIAlertController(title: "Neighberhood Shopping List", message: "I agree to pay a maximum of \(self.priceLabel.text!) for \(self.nameLabel.text!). Once this item has been accepted for delivery it cannot be cancelled", preferredStyle: UIAlertControllerStyle.alert)
         
         alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (action) in
+                
         }))
         
        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
-            
-            
-        self.prepareUploadRequest()
-            
-       /*
-        if myCellNumber == "0"{
-            self.performSegue(withIdentifier: "goToPhone", sender: nil)
-        }*/
-            
-       /* let alertDeliveryComplete = UIAlertController(title: "Request posted!", message: "Your delivery request has been posted to the neighberhood shopping List! Please be alert for a neighbor reaching out to deliver this item", preferredStyle: UIAlertControllerStyle.alert)
-            
-            alertDeliveryComplete.addAction(UIAlertAction(title: "ok", style: .default, handler: { (action) in
-                
-            self.segueToShoppingList()
-                
+        
+            self.cashPopUp()
+        
         }))
-             self.present(alertDeliveryComplete, animated: true, completion: nil)*/
             
-        }))
+      
+            
         self.present(alert, animated: true, completion: nil)
         }
     }
     }
     
+    func cashPopUp() {
+        
+        self.requestPrice = self.priceLabel.text! as String
+        
+        
+        if self.paymentType == "Venmo" {
+            
+            self.prepareUploadRequest()
+            
+        } else if self.paymentType == "Cash" {
+            
+        
+            if (self.requestPrice).contains(".") {
+                
+                let requestPriceCash1 = self.requestPrice
+                
+                let requestPriceCash = requestPriceCash1.replacingOccurrences(of: "$", with: "")
+                print(requestPriceCash)
+                
+                let priceStringArray = requestPriceCash.components(separatedBy: ".")
+                
+                if priceStringArray[1].characters.count > 0 {
+                    
+                    let centsAsInt: Int = Int(priceStringArray[1])!
+                    print(priceStringArray[0])
+                    if centsAsInt > 0 {
+                        
+                        var dollarsAsInt: Int = Int(priceStringArray[0])!
+                        dollarsAsInt += 1
+                        let dollarsAsString = String(dollarsAsInt)
+                        let requestDollarsString = "$" + dollarsAsString + ".00"
+                        self.requestPrice = requestDollarsString
+                        
+                    }
+                }
+            }
+
+        let cashAlert = UIAlertController(title: "Cash Payment Notice", message: "If you would like to pay cash, you must round up to the nearest dollar, change is not allowed. Thus, your max price will be increased to \(self.requestPrice)", preferredStyle: UIAlertControllerStyle.alert)
+            
+        cashAlert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (action) in
+            //do nothing
+        }))
+        
+        cashAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
+            self.prepareUploadRequest()
+        }))
+        
+        
+         self.present(cashAlert, animated: true, completion: nil)
+        
+    }
+    
+    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) { //
         
@@ -221,6 +280,26 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
             self.tokensOffered = 2
         }
 }
+    
+    func didTapVenmoImage(_ sender: UITapGestureRecognizer) {
+        
+        if self.paymentType == "Cash" {
+            self.venmoImage.image = UIImage(named: "venmo-icon.png")
+            self.cashImage.image = UIImage(named: "Cash_icon_grey.png")
+            self.paymentType = "Venmo"
+            print(self.paymentType)
+        }
+    }
+    
+    func didTapCashImage(_ sender: UITapGestureRecognizer) {
+        
+        if self.paymentType == "Venmo" {
+            self.venmoImage.image = UIImage(named: "venmo-icon_grey.png")
+            self.cashImage.image = UIImage(named: "Cash_icon.png")
+            self.paymentType = "Cash"
+            print(self.paymentType)
+        }
+    }
     
     func didTapImageIcon(_ sender:UITapGestureRecognizer){
         let imagePickerController = UIImagePickerController()
@@ -322,7 +401,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         //Choose png of jpeg or whatever
         metadata.contentType = "image/png"
         
-        if self.imageData  != nil{
+        if self.imageData != nil{
         
         let profilePicStorageRef = self.storageRef.child("productImages/\(key)/image_request")
           
@@ -346,12 +425,41 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
     func finalizeUploadRequest(key: String) {
     
         //Save text
-    
+        
+        let paymentTypePath = "/request/\(key)/paymentType"
+        //Will need to change this
+        let paymentTypeValue = self.paymentType as String
+        
+        var priceString = self.requestPrice
+        
+         if priceString.contains(".") {
+         
+         let priceStringArray = priceString.components(separatedBy: ".")
+         
+         if priceStringArray[1].characters.count == 1 {
+            
+         priceString += "0"
+         self.requestPrice = priceString
+         
+        }
+         
+         } else  { //if no values after decimal
+         
+         priceString += ".00"
+         self.requestPrice = priceString
+         
+         }
+        
+        
         let pricePath = "/request/\(key)/price"
-        let priceLabelValue = self.priceLabel.text! as String
+        let priceLabelValue = self.requestPrice
+        //let priceLabelValue = self.priceLabel.text! as String
         
         let tokenPath = "/request/\(key)/tokensOffered"
         let tokensLabelValue = self.tokensOffered
+        
+        let purchaePricePath = "/request/\(key)/purchasePrice"
+        let purchaePriceValue = "NA"
         
         let descriptionPath = "/request/\(key)/description"
         let descriptionLabelValue = self.descriptionTextView.text! as String
@@ -408,12 +516,14 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
             let downloadUrlAbsoluteStringPath = "/request/\(key)/productImage"
             let downloadUrlAbsoluteStringValue = self.downloadUrlAbsoluteString
             
-            let childUpdates:Dictionary<String, Any> = [timeStampPath: [".sv": "timestamp"],profilePicReferencePath: profilePicReferenceValue!,downloadUrlAbsoluteStringPath:downloadUrlAbsoluteStringValue!, requesterCellPath: requesterCellValue,pricePath: priceLabelValue, buildingNamePath: buildingNamePathValue, itemNamePath: itemNameValue,tokenPath: tokensLabelValue,descriptionPath:descriptionLabelValue,requesterNamePath:requesterNameValue,deliverToPath:deliverToValue,longitudePath:longitudeValue,latitudePath:latitudeValue,requestedTimePath:requestedTimeValue!,requesterUIDPath:requesterUIDValue,isAcceptedPath:isAcceptedValue,isCompletePath:isCompleteValue,requestKeyPath:keyValue]
+            let childUpdates:Dictionary<String, Any> = [timeStampPath: [".sv": "timestamp"],profilePicReferencePath: profilePicReferenceValue!,downloadUrlAbsoluteStringPath:downloadUrlAbsoluteStringValue!, requesterCellPath: requesterCellValue,pricePath: priceLabelValue, buildingNamePath: buildingNamePathValue, itemNamePath: itemNameValue,tokenPath: tokensLabelValue,descriptionPath:descriptionLabelValue,requesterNamePath:requesterNameValue,deliverToPath:deliverToValue,longitudePath:longitudeValue,latitudePath:latitudeValue,requestedTimePath:requestedTimeValue!,requesterUIDPath:requesterUIDValue,isAcceptedPath:isAcceptedValue,isCompletePath:isCompleteValue,requestKeyPath:keyValue, paymentTypePath:paymentTypeValue, purchaePricePath:purchaePriceValue]
             
         self.databaseRef.updateChildValues(childUpdates)
             
         if myCellNumber == "0"{
+            
                 self.performSegue(withIdentifier: "goToPhone", sender: nil)
+            
             } else {
             
         self.requestReset()
@@ -421,36 +531,10 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
             }
         }
             
-        /*else if self.imageData == nil && isSmallScreen == false // No image and not iphone 5
-            
-        {
-   
-        let alertNoPic = UIAlertController(title: "No Product Image Entered", message: "Providing an image of the product will make it easier for your neighbor to correctly fulfill your request. Please add a product image from you phone if possible", preferredStyle: UIAlertControllerStyle.alert)
-            
-        alertNoPic.addAction(UIAlertAction(title: "Return to request", style: .default, handler: { (action) in
-                return
-            }))
-            alertNoPic.addAction(UIAlertAction(title: "Post without picture", style: .default, handler: { (action) in
- 
-                let childUpdates:Dictionary<String, Any> = [timeStampPath: [".sv": "timestamp"],profilePicReferencePath: profilePicReferenceValue!, requesterCellPath: requesterCellValue,pricePath: priceLabelValue, buildingNamePath: buildingNamePathValue, itemNamePath: itemNameValue,tokenPath: tokensLabelValue,descriptionPath:descriptionLabelValue,requesterNamePath:requesterNameValue,deliverToPath:deliverToValue,longitudePath:longitudeValue,latitudePath:latitudeValue,requestedTimePath:requestedTimeValue!,requesterUIDPath:requesterUIDValue,isAcceptedPath:isAcceptedValue,isCompletePath:isCompleteValue,requestKeyPath:keyValue]
-
-                self.databaseRef.updateChildValues(childUpdates)
-                
-                if myCellNumber == "0"{
-                    self.performSegue(withIdentifier: "goToPhone", sender: nil)
-                } else {
-                self.requestReset()
-                }
-            }))
-            self.present(alertNoPic, animated: true, completion: nil)
-        }*/
-        
-        
-        //else if self.imageData == nil && isSmallScreen == true // No image and is iphone 5
         else
-        {
             
-            let childUpdates:Dictionary<String, Any> = [timeStampPath: [".sv": "timestamp"],profilePicReferencePath: profilePicReferenceValue!, requesterCellPath: requesterCellValue,pricePath: priceLabelValue, buildingNamePath: buildingNamePathValue, itemNamePath: itemNameValue,tokenPath: tokensLabelValue,descriptionPath:descriptionLabelValue,requesterNamePath:requesterNameValue,deliverToPath:deliverToValue,longitudePath:longitudeValue,latitudePath:latitudeValue,requestedTimePath:requestedTimeValue!,requesterUIDPath:requesterUIDValue,isAcceptedPath:isAcceptedValue,isCompletePath:isCompleteValue,requestKeyPath:keyValue]
+        {
+            let childUpdates:Dictionary<String, Any> = [timeStampPath: [".sv": "timestamp"],profilePicReferencePath: profilePicReferenceValue!, requesterCellPath: requesterCellValue,pricePath: priceLabelValue, buildingNamePath: buildingNamePathValue, itemNamePath: itemNameValue,tokenPath: tokensLabelValue,descriptionPath:descriptionLabelValue,requesterNamePath:requesterNameValue,deliverToPath:deliverToValue,longitudePath:longitudeValue,latitudePath:latitudeValue,requestedTimePath:requestedTimeValue!,requesterUIDPath:requesterUIDValue,isAcceptedPath:isAcceptedValue,isCompletePath:isCompleteValue,requestKeyPath:keyValue, paymentTypePath:paymentTypeValue, purchaePricePath:purchaePriceValue]
             
             self.databaseRef.updateChildValues(childUpdates)
             
@@ -503,6 +587,20 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
             return false
         }
         return true
+    }
+    
+    func setDoneOnKeyboard() {
+        let keyboardToolbar = UIToolbar()
+        keyboardToolbar.sizeToFit()
+        let flexBarButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let doneBarButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(self.dismissKeyboard))
+        keyboardToolbar.items = [flexBarButton, doneBarButton]
+        self.priceLabel.inputAccessoryView = keyboardToolbar
+        
+    }
+    
+    func dismissKeyboard() {
+        view.endEditing(true)
     }
     
     

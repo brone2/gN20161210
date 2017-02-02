@@ -19,6 +19,7 @@ class viewDetailDeliveryView: UIViewController, UITextViewDelegate, UITextFieldD
     @IBOutlet var productNameLabel: UILabel!
     @IBOutlet var profilePicImage: UIImageView!
     @IBOutlet var requestByLabel: UILabel!
+    @IBOutlet var deliveryLocation: UILabel!
     
     var currentUserName:String!
     var loggedInUserId:String!
@@ -32,11 +33,9 @@ class viewDetailDeliveryView: UIViewController, UITextViewDelegate, UITextFieldD
 
         self.loggedInUserId = FIRAuth.auth()?.currentUser?.uid
         self.requestByLabel.text = String("Requested by \(self.myCurrentDeliveries[self.selectedRowIndex]?["requesterName"] as! String)")
+        self.deliveryLocation.text = String("Please deliver to \(self.myCurrentDeliveries[self.selectedRowIndex]?["deliverTo"] as! String)")
         self.productNameLabel.text = String("\(self.myCurrentDeliveries[self.selectedRowIndex]?["itemName"] as! String)")
-        // self.distanceLabel.text = String("Located \(self.shoppingListCurrentRequests[self.selectedRowIndex]?["latitude"] as! String) away from you")
-        
-        //self.distanceLabel.text = String("Located \(self.myCurrentDeliveries[self.selectedRowIndex]?["distanceFromUser"] as! String) mi away from you")
-        
+               
         let buildingCheck = self.self.myCurrentDeliveries[self.selectedRowIndex]?["buildingName"] as? String
         
         if buildingCheck != "N/A" {

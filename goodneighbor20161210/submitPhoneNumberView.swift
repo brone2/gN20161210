@@ -10,14 +10,19 @@ import UIKit
 import Firebase
 import FirebaseDatabase
 import FirebaseAuth
+import MessageUI
+import MessageUI.MFMailComposeViewController
 
-
-class submitPhoneNumberView: UIViewController, UITextFieldDelegate {
+class submitPhoneNumberView: UIViewController, UITextFieldDelegate, MFMessageComposeViewControllerDelegate {
     
     var phoneNumber1:String?
     var phoneNumber2:String?
     var selectSubmit = 0
     var databaseRef = FIRDatabase.database().reference()
+    var isRequest: Bool = true
+    
+    var textMessage:String?
+    var phoneNumber:String?
     
     var saveKey: String?
 
@@ -31,17 +36,20 @@ class submitPhoneNumberView: UIViewController, UITextFieldDelegate {
     
     @IBAction func didTapSubmit(_ sender: Any) {
         
-        
+    
+    //selectSubmit keeps track of it is the first or second entering of phone number
         if self.selectSubmit == 0 {
         
         if (self.phoneText1.text != nil)        {
+            
         self.phoneNumber1 = String(self.phoneText1.text!)
+            
         }
             self.selectSubmit = 1
             
             self.phoneText1.text = ""
             
-            self.directionsLabel.text = "Please re-enter phone number"
+            self.directionsLabel.text = "Please verify phone number"
             
             return
             
@@ -75,23 +83,67 @@ class submitPhoneNumberView: UIViewController, UITextFieldDelegate {
             myCellNumber = myCellNumber.replacingOccurrences(of: "(", with: "")
             myCellNumber = myCellNumber.replacingOccurrences(of: "-", with: "")
             myCellNumber = myCellNumber.replacingOccurrences(of: ")", with: "")
-            self.databaseRef.child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("cellPhoneNumber").setValue(myCellNumber)
+
+//Save phone number and segue to Shopping List
+    
+        //If is a request
                 
-            self.databaseRef.child("request").child(self.saveKey!).child("requesterCell").setValue(myCellNumber)
+         if self.isRequest {
+            
+                self.databaseRef.child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("cellPhoneNumber").setValue(myCellNumber)
+                self.databaseRef.child("request").child(self.saveKey!).child("requesterCell").setValue(myCellNumber)
                 
-                let alertDeliveryComplete = UIAlertController(title: "Request posted!", message: "Your delivery request has been posted to the neighberhood shopping List! Please be alert for a neighbor reaching out to deliver this item", preferredStyle: UIAlertControllerStyle.alert)
+                    let alertDeliveryComplete = UIAlertController(title: "Request posted!", message: "Your delivery request has been posted to the neighberhood shopping List! Please be alert for a neighbor reaching out to deliver this item", preferredStyle: UIAlertControllerStyle.alert)
                 
-                alertDeliveryComplete.addAction(UIAlertAction(title: "ok", style: .default, handler: { (action) in
+                    alertDeliveryComplete.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
                     
-                    self.performSegue(withIdentifier: "phoneToGeneralRefreshSegue", sender: nil)
+                        self.performSegue(withIdentifier: "phoneToGeneralRefreshSegue", sender: nil)
+                        
                     
                 }))
-                self.present(alertDeliveryComplete, animated: true, completion: nil)
+                    self.present(alertDeliveryComplete, animated: true, completion: nil)
                 
-            }
+         } else { // if is delivery and need to enter phone number
             
+            self.databaseRef.child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("cellPhoneNumber").setValue(myCellNumber)
+            
+            self.databaseRef.child("request").child(self.saveKey!).child("accepterCell").setValue(myCellNumber)
+            
+            let alertPhoneNumberDelivery = UIAlertController(title: "Phone number saved", message: "Please be in contact with the recipient as you complete this delivery and thanks for being a goodneighbor :) ", preferredStyle: UIAlertControllerStyle.alert)
+            
+            
+            alertPhoneNumberDelivery.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
+                
+                self.sendText()
+                
+            }))
+            self.present(alertPhoneNumberDelivery, animated: true, completion: nil)
+        
+            }
+          }
         }
 
+    }
+    
+    func sendText() {
+        
+        if (MFMessageComposeViewController.canSendText()) {
+            let controller = MFMessageComposeViewController();
+            controller.body = self.textMessage;
+            controller.recipients = [self.phoneNumber!]
+            controller.messageComposeDelegate = self;
+            self.present(controller, animated: true, completion: nil)
+        }
+        
+        
+    }
+    
+    func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
+        self.dismiss(animated: true, completion: self.seger)
+    }
+    
+    func seger (){
+        self.performSegue(withIdentifier: "phoneToGeneralRefreshSegue", sender: nil)
     }
     
     

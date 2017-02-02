@@ -18,6 +18,7 @@ class myCurrentRequestsCell: UITableViewCell {
     @IBOutlet var distanceLabel: UILabel!
     @IBOutlet var nameLabel: UILabel!
     @IBOutlet var profilePic: UIImageView!
+    @IBOutlet var payTypeImage: UIImageView!
     
     @IBOutlet var cancelCompleteButton: UIButton!
     
