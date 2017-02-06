@@ -40,7 +40,7 @@ class initialViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-try! FIRAuth.auth()?.signOut()
+//try! FIRAuth.auth()?.signOut()
         
         let screenSize: CGRect = UIScreen.main.bounds
         let screenHeight = screenSize.height
@@ -90,15 +90,13 @@ try! FIRAuth.auth()?.signOut()
         
     }
     
-    func checkUser(){
-        
-   //try! FIRAuth.auth()?.signOut()
+    func checkUser()  {
         
             FIRAuth.auth()?.addStateDidChangeListener({ (auth, user) in
                 
                 if autoLoginHelp == 0 {
                 
-                if let currentUser = user {
+                if user != nil {
                     
                         print("timer invalidated")
                         self.timer.invalidate()
@@ -135,6 +133,10 @@ try! FIRAuth.auth()?.signOut()
                 }
                 }
             })
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
 
 

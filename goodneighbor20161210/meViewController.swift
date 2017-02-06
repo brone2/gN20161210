@@ -105,12 +105,11 @@ class meViewController: UIViewController {
         self.databaseRef.child("users").observe(.childAdded) { (snapshot3: FIRDataSnapshot) in
  
             let snapshot3 = snapshot3.value as! NSDictionary
-            print(snapshot3)
             
-            let userLatitude = snapshot3["latitude"] as? CLLocationDegrees
+            if let userLatitude = snapshot3["latitude"] as? CLLocationDegrees {
             let userLongitude = snapshot3["longitude"] as? CLLocationDegrees
             
-            let userLocation = CLLocation(latitude: userLatitude!, longitude: userLongitude!)
+            let userLocation = CLLocation(latitude: userLatitude, longitude: userLongitude!)
             let distanceInMeters = myLocation!.distance(from: userLocation)
             let distanceMiles = distanceInMeters/1609.344897
             let distanceMilesFloat = Float(distanceMiles)
@@ -122,6 +121,7 @@ class meViewController: UIViewController {
                 self.userInMyRadiusLabel.text = "\(self.usersInMyRadius - 1) members of your community use goodneighbor!"
                 
             }   
+        }
         }
     }
 
@@ -186,7 +186,11 @@ class meViewController: UIViewController {
         title: "Complete", style: UIAlertActionStyle.default) {
             (action) -> Void in
             if let phoneNumber = phoneNumberTextField?.text {
+                
                 self.enteredPhoneNumber = phoneNumber
+                if self.enteredPhoneNumber == "" {
+                    self.enteredPhoneNumber = "0"
+                }
             }
             self.databaseRef.child("users").child(self.loggedInUserId!).child("cellPhoneNumber").setValue(self.enteredPhoneNumber)
             

@@ -73,11 +73,12 @@ class facebookLoginController: UIViewController, FBSDKLoginButtonDelegate {
                         
                         let latitude = 0.0000000000
                         let longitude = 0.0000000000
+                        let deliveryRadius = 1.0000987
                         
                         
                         let userId = (FIRAuth.auth()?.currentUser?.uid)!
                         
-                        let childUpdatesFbook = ["/users/\(userId)/name":dict["first_name"]!,"/users/\(userId)/fullName":dict["name"]!,"/users/\(userId)/gender":dict["gender"]!,"/users/\(userId)/buildingName":"N/A","/users/\(userId)/cellPhoneNumber":"0","/users/\(userId)/deliveryCount":0, "/users/\(userId)/recieveCount":0, "/users/\(userId)/tokenCount":3,"/users/\(userId)/profilePicReference":self.url!, "/users/\(userId)/longitude":longitude, "/users/\(userId)/latitude":latitude] as [String : Any]
+                        let childUpdatesFbook = ["/users/\(userId)/name":dict["first_name"]!,"/users/\(userId)/fullName":dict["name"]!,"/users/\(userId)/gender":dict["gender"]!,"/users/\(userId)/buildingName":"N/A","/users/\(userId)/cellPhoneNumber":"0","/users/\(userId)/deliveryCount":0, "/users/\(userId)/recieveCount":0, "/users/\(userId)/tokenCount":3,"/users/\(userId)/profilePicReference":self.url!, "/users/\(userId)/longitude":longitude, "/users/\(userId)/latitude":latitude, "/users/\(userId)/deliveryRadius":deliveryRadius] as [String : Any]
                         
                         //Update
                         self.databaseRef.updateChildValues(childUpdatesFbook)

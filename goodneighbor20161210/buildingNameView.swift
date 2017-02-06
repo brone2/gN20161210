@@ -33,7 +33,7 @@ class buildingNameView: UIViewController, UITableViewDelegate,UITableViewDataSou
             
             let userLatitude = snapshot["latitude"] as? CLLocationDegrees
             let userLongitude = snapshot["longitude"] as? CLLocationDegrees
-            let buildingName = snapshot["buildingName"] as? String
+            //let buildingName = snapshot["buildingName"] as? String
             
             let userLocation = CLLocation(latitude: userLatitude!, longitude: userLongitude!)
             let distanceInMeters = myLocation!.distance(from: userLocation)

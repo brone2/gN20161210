@@ -108,7 +108,7 @@ class loginViewController: UIViewController, UIImagePickerControllerDelegate, UI
                             })
                         }
                         
-                        let childUpdates = ["/users/\(user!.uid)/name":self.nameLabel.text!,"/users/\(user!.uid)/cellPhoneNumber":"0","/users/\(user!.uid)/buildingName":"N/A","/users/\(user!.uid)/deliveryCount":0, "/users/\(user!.uid)/recieveCount":0, "/users/\(user!.uid)/tokenCount":3,"/users/\(user!.uid)/email":self.emailLabel.text!, "/users/\(user!.uid)/longitude":0.0000000000, "/users/\(user!.uid)/latitude":0.0000000000] as [String : Any]
+                        let childUpdates = ["/users/\(user!.uid)/name":self.nameLabel.text!,"/users/\(user!.uid)/cellPhoneNumber":"0","/users/\(user!.uid)/buildingName":"N/A","/users/\(user!.uid)/deliveryCount":0, "/users/\(user!.uid)/recieveCount":0, "/users/\(user!.uid)/tokenCount":3,"/users/\(user!.uid)/email":self.emailLabel.text!, "/users/\(user!.uid)/longitude":0.0000000000, "/users/\(user!.uid)/latitude":0.0000000000,"/users/\(user!.uid)/deliveryRadius": 1.0000987] as [String : Any]
                         
                         print(childUpdates)
                         
@@ -194,7 +194,7 @@ class loginViewController: UIViewController, UIImagePickerControllerDelegate, UI
         super.viewDidLoad()
         
   
-   //  try! FIRAuth.auth()?.signOut()
+   //try! FIRAuth.auth()?.signOut()
         
         let imageTap:UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapImageIcon(_:)))
         image.addGestureRecognizer(imageTap)
@@ -208,7 +208,7 @@ class loginViewController: UIViewController, UIImagePickerControllerDelegate, UI
         if self.loginHelp == 1 {
         
         FIRAuth.auth()?.addStateDidChangeListener({ (auth, user) in
-            if let currentUser = user {
+            if user != nil {
                 if self.loginHelp == 1 {
                     let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
                     

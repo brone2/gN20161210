@@ -299,13 +299,17 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         
         let twoTokenTap: UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.didTapTwoCoin(_:)))
         
+        let oneTokenTapMyRequest: UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.didTapOneCoinMyRequest(_:)))
+        
+        let twoTokenTapMyRequest: UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.didTapTwoCoinMyRequest(_:)))
+        
     //Table populated: First section is my Current Deliveries, Second is my Current Request, Third is community Request
         
         if indexPath.section == 0 { // if is my current deliveries
             
             let cell:myCurrentDeliveriesCell = tableView.dequeueReusableCell(withIdentifier: "myDeliveriesCell", for: indexPath) as! myCurrentDeliveriesCell
             
-            let isCompleted:Bool = self.sectionData[indexPath.section]![indexPath.row]?["isComplete"] as! Bool
+            //let isCompleted:Bool = self.sectionData[indexPath.section]![indexPath.row]?["isComplete"] as! Bool
             
             cell.purchaseCompleteButton.contentHorizontalAlignment = .left
 
@@ -350,12 +354,12 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                 
                 let isComplete: Bool = self.sectionData[indexPath.section]![indexPath.row]?["isComplete"] as! Bool
                 
-                if !isComplete {
+                if !isComplete { //is not complete
                 
                  cell.purchaseCompleteButton.setTitle("Awaiting Confirmation", for: [])
                  cell.deliverToLabel.text = "Purchased for \(self.sectionData[indexPath.section]![indexPath.row]?["purchasePrice"] as! String)"
                     
-                } else {
+                } else {  //is complete
                     
                     cell.purchaseCompleteButton.setTitle("Delivery Complete!", for: [])
                     cell.deliverToLabel.text = "Purchased for \(self.sectionData[indexPath.section]![indexPath.row]?["purchasePrice"] as! String)"
@@ -458,11 +462,12 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                 
                 if tokenCountHelp == 1 {
                     cell.coinImage.image = UIImage(named: "blackWhite1Coin")
-                    cell.coinImage.addGestureRecognizer(oneTokenTap)
+                    cell.coinImage.addGestureRecognizer(oneTokenTapMyRequest)
+                    
                 }
                 if tokenCountHelp == 2 {
                     cell.coinImage.image = UIImage(named: "blackWhite2Coin")
-                    cell.coinImage.addGestureRecognizer(twoTokenTap)
+                    cell.coinImage.addGestureRecognizer(twoTokenTapMyRequest)
                 }
                 
             } else { //isAccepted == true
@@ -603,8 +608,6 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             
             cell.willingToPayLabel.text = "Willing to pay \(self.sectionData[indexPath.section]![indexPath.row]?["price"] as! String) via"
             
-            let paymentType:String = self.sectionData[indexPath.section]![indexPath.row]?["paymentType"] as! String
-            
             let buildingCheck = self.sectionData[indexPath.section]![indexPath.row]?["buildingName"] as? String
             
             if buildingCheck != "N/A" {
@@ -656,17 +659,14 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         if (self.sectionData[0]?.count) == 0 && (self.sectionData[1]?.count) == 0 && (self.sectionData[2]?.count) == 0 {
     
             self.rowHeight = 75
-            print("isLowHeight")
            
         } else if indexPath.section == 2 {
             
             self.rowHeight = 102
-            print("isMedHeight")
             
         } else if indexPath.section == 0 || indexPath.section == 1  {
             
             self.rowHeight = 105
-            print("isHighHeight")
             
         }
         
@@ -937,14 +937,17 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
        
         let index = sender.tag
         
-        //here
+        //Set values for purchaseText function
+        
+        let requesterCell = self.sectionData[0]![index]?["accepterCell"] as! String
+        let requesterName = self.sectionData[0]![index]?["accepterName"] as! String
+        let itemName = self.sectionData[0]![index]?["itemName"] as! String
+        
         if sender.titleLabel?.text == "Purchase Complete" {
             
             self.locationManager.startUpdatingLocation()
             
             let itemName = self.sectionData[0]?[index]?["itemName"] as! String
-            
-            let payType = self.sectionData[0]?[index]?["paymentType"] as! String
             
             let alertPurchaseComplete = UIAlertController(title: "Purchase Verification", message: "Have you purchased \(itemName)?", preferredStyle: UIAlertControllerStyle.alert)
             
@@ -956,7 +959,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                 
                 var phoneNumberTextField: UITextField?
                 
-                 sender.setTitle("Awaiting Confirmation", for: [])
+                sender.setTitle("Awaiting Confirmation", for: [])
                 
                 phoneNumberTextField?.keyboardType = UIKeyboardType.numberPad
                 
@@ -1007,7 +1010,6 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                 let requestKey = self.sectionData[0]?[index]?["requestKey"] as! String
                     
                 self.databaseRef.child("request").child(requestKey).child("purchasePrice").setValue(self.purchasePrice)
-                //Store location of purchase
                 self.databaseRef.child("request").child(requestKey).child("purchaseLatitude").setValue(self.userLatitude)
                 self.databaseRef.child("request").child(requestKey).child("purchaseLongitude").setValue(self.userLongitude)
                     
@@ -1015,14 +1017,19 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                     
                  if paymentType == "Cash" {
                     
-                    let cashAlert = UIAlertController(title: "Cash Payment Notice", message: "As this delivery will be paid in cash, the amount owed will be rounded up to \(self.purchasePrice)", preferredStyle: UIAlertControllerStyle.alert)
+                    let cashAlert = UIAlertController(title: "Cash Payment Notice", message: "As this delivery will be paid in cash, the amount owed will be \(self.purchasePrice!)", preferredStyle: UIAlertControllerStyle.alert)
                     
                     cashAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
+                        self.purchaseText(itemName: itemName, requesterCell: requesterCell, requesterName: requesterName, purchasePrice: self.purchasePrice!, isVenmo: false)
                     }))
                     
                     self.present(cashAlert, animated: true, completion: nil)
                     
-                    }
+                 } else {
+                    
+                    self.purchaseText(itemName: itemName, requesterCell: requesterCell, requesterName: requesterName, purchasePrice: self.purchasePrice!, isVenmo: true)
+                    
+                 }
                 
                 }
                 
@@ -1034,13 +1041,12 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                 }
                 
                 alertController.addAction(completeAction)
-                
-                
                 self.present(alertController, animated: true, completion: nil)
                 
             }))
             
             self.present(alertPurchaseComplete, animated: true, completion: nil)
+            
             
         } else if sender.titleLabel?.text == "Awaiting Confirmation"{
             
@@ -1060,11 +1066,11 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         
       let chatTag = sender.view!.tag
     
-      let requesterCell = self.sectionData[1]![chatTag]?["accepterCell"] as! String
+      let accepterCell = self.sectionData[1]![chatTag]?["accepterCell"] as! String
     
       let accepterName = self.sectionData[1]![chatTag]?["accepterName"] as! String
         
-      UIPasteboard.general.string = requesterCell
+      UIPasteboard.general.string = accepterCell
         
         let cellCopiedAlert = UIAlertController(title: "Deliverer cell # copied", message: "\(accepterName)'s cell number is copied to your clipboard. Please paste this into venmo to pay them for the delivery ", preferredStyle: UIAlertControllerStyle.alert)
         
@@ -1102,10 +1108,53 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         
     }
     
+    func didTapOneCoinMyRequest(_ sender: UITapGestureRecognizer) {
+        
+        makeAlert(title: "One Token For Delivery", message: "When this delivery is complete, you will transfer one token to the deliverer, as well as compensating them for the price of the purchase")
+        
+    }
+    
+    func didTapTwoCoinMyRequest(_ sender: UITapGestureRecognizer) {
+        
+        makeAlert(title: "Two Tokens For Delivery", message: "When this delivery is complete, you will transfer two tokens to the deliverer, as well as compensating them for the price of the purchase")
+        
+    }
+    
     func didTapTwoCoin(_ sender: UITapGestureRecognizer) {
         
         makeAlert(title: "Two Tokens For Delivery", message: "For making this delivery, you will recieve two tokens, as well as being fully compensated for the price of the purchase")
         
+    }
+    
+    func purchaseText(itemName: String, requesterCell: String, requesterName: String, purchasePrice: String, isVenmo: Bool) {
+        
+        if !isVenmo {
+        
+            let textMessage = "Hey \(requesterName), I have purchased \(itemName) for \(purchasePrice). Please have \(purchasePrice) cash ready to pay me when I arrive. Thanks!"
+            
+            self.purchaseActualText(textMessage: textMessage, requesterCell: requesterCell)
+            
+        } else {
+            
+            let textMessage = "Hey \(requesterName), I have purchased \(itemName) for \(purchasePrice). Please be ready to venmo me \(purchasePrice) when I arrive. You can copy my phone number by tapping on Copy Phone Number written in bold blue. Thanks!"
+            
+            self.purchaseActualText(textMessage: textMessage, requesterCell: requesterCell)
+            
+        }
+        
+    }
+    
+    func purchaseActualText(textMessage: String, requesterCell: String) {
+    
+    if (MFMessageComposeViewController.canSendText()) {
+        
+        let controller = MFMessageComposeViewController();
+        controller.body = textMessage;
+        controller.recipients = [requesterCell]
+        controller.messageComposeDelegate = self;
+        self.present(controller, animated: true, completion: nil)
+
+        }
     }
     
     func makeAlert(title: String, message: String)  {

@@ -104,7 +104,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         
         if isLargeScreen {
             
-            let bottomConstraint = self.image.bottomAnchor.constraint(equalTo: self.requestButton.topAnchor, constant: -65)
+            let bottomConstraint = self.image.bottomAnchor.constraint(equalTo: self.requestButton.topAnchor, constant: -55)
             NSLayoutConstraint.activate([bottomConstraint])
             
         }

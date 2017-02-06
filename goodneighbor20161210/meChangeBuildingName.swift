@@ -35,16 +35,13 @@ class meChangeBuildingName: UIViewController, UITableViewDelegate,UITableViewDat
             
             let userLatitude = snapshot["latitude"] as? CLLocationDegrees
             let userLongitude = snapshot["longitude"] as? CLLocationDegrees
-            let buildingName = snapshot["buildingName"] as? String
+            //let buildingName = snapshot["buildingName"] as? String
             
             let userLocation = CLLocation(latitude: userLatitude!, longitude: userLongitude!)
             let distanceInMeters = myLocation!.distance(from: userLocation)
             let distanceMiles = distanceInMeters/1609.344897
             
             let distanceMilesFloat = Float(distanceMiles)
-            
-            print(snapshot)
-            print(distanceMiles)
             
             if distanceMilesFloat < 0.7500 {
                 

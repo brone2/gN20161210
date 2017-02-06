@@ -168,7 +168,7 @@ class viewDetailGeneralShoppingList: UIViewController, UITextViewDelegate, UITex
     
     func deliverAcceptedCompletion() {
     
-       let childUpdates = ["/request/\((self.shoppingListCurrentRequests[self.selectedRowIndex]?["requestKey"] as? String)!)/isAccepted":true,"/request/\((self.shoppingListCurrentRequests[self.selectedRowIndex]?["requestKey"] as? String)!)/accepterCell":myCellNumber as String,"/request/\((self.shoppingListCurrentRequests[self.selectedRowIndex]?["requestKey"] as? String)!)/accepterUID":FIRAuth.auth()?.currentUser?.uid,"/request/\((self.shoppingListCurrentRequests[self.selectedRowIndex]?["requestKey"] as? String)!)/accepterName":loggedInUserName, "/request/\((self.shoppingListCurrentRequests[self.selectedRowIndex]?["requestKey"] as? String)!)/accepterProfilePicRef":myProfilePicRef] as [String : Any]
+       let childUpdates = ["/request/\((self.shoppingListCurrentRequests[self.selectedRowIndex]?["requestKey"] as? String)!)/isAccepted":true,"/request/\((self.shoppingListCurrentRequests[self.selectedRowIndex]?["requestKey"] as? String)!)/accepterCell":myCellNumber as String,"/request/\((self.shoppingListCurrentRequests[self.selectedRowIndex]?["requestKey"] as? String)!)/accepterUID": FIRAuth.auth()?.currentUser?.uid,"/request/\((self.shoppingListCurrentRequests[self.selectedRowIndex]?["requestKey"] as? String)!)/accepterName":loggedInUserName, "/request/\((self.shoppingListCurrentRequests[self.selectedRowIndex]?["requestKey"] as? String)!)/accepterProfilePicRef":myProfilePicRef] as [String : Any]
          
          self.databaseRef.updateChildValues(childUpdates)
         
@@ -221,7 +221,7 @@ class viewDetailGeneralShoppingList: UIViewController, UITextViewDelegate, UITex
             newViewController.isRequest = false
             newViewController.saveKey = (self.shoppingListCurrentRequests[self.selectedRowIndex]?["requestKey"] as? String)!
             newViewController.textMessage = "Hey \(self.shoppingListCurrentRequests[self.selectedRowIndex]?["requesterName"] as! String), I am happy to deliver \(self.shoppingListCurrentRequests[self.selectedRowIndex]?["itemName"] as! String). Please message me back confirming you are committed to recompensate me a price up to \(self.shoppingListCurrentRequests[self.selectedRowIndex]?["price"] as! String), as well as a specific location of delivery. Thanks, \(loggedInUserName!)"
-            newViewController.phoneNumber = self.shoppingListCurrentRequests[self.selectedRowIndex]?["requesterCell"] as! String
+            newViewController.phoneNumber = (self.shoppingListCurrentRequests[self.selectedRowIndex]?["requesterCell"] as! String)
             
             
         }
