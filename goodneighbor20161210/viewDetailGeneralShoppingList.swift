@@ -159,6 +159,8 @@ class viewDetailGeneralShoppingList: UIViewController, UITextViewDelegate, UITex
         
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
             
+            //Event request accepted
+            FIRAnalytics.logEvent(withName: "didAcceptRequest", parameters: nil)
             self.deliverAcceptedCompletion()
             
         }))

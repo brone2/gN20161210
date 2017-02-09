@@ -21,6 +21,7 @@
 		E536497C1DFB21F200920EA2 /* viewDetailGeneralShoppingList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536497B1DFB21F200920EA2 /* viewDetailGeneralShoppingList.swift */; };
 		E536497E1DFB6C1A00920EA2 /* meViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536497D1DFB6C1A00920EA2 /* meViewController.swift */; };
 		E53649811DFC733600920EA2 /* submitPhoneNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53649801DFC733600920EA2 /* submitPhoneNumberView.swift */; };
+		E57A6B1B1E4C4E2900C8BAFA /* promoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57A6B1A1E4C4E2900C8BAFA /* promoViewController.swift */; };
 		E599B6931E3EB30A00EBE6A0 /* venmo-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = E599B6921E3EB30900EBE6A0 /* venmo-icon.png */; };
 		E599B6951E3FA64C00EBE6A0 /* Cash_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = E599B6941E3FA64C00EBE6A0 /* Cash_icon.png */; };
 		E599B6971E40D0AA00EBE6A0 /* Cash_icon_grey.png in Resources */ = {isa = PBXBuildFile; fileRef = E599B6961E40D0AA00EBE6A0 /* Cash_icon_grey.png */; };
@@ -85,6 +86,7 @@
 		E536497B1DFB21F200920EA2 /* viewDetailGeneralShoppingList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = viewDetailGeneralShoppingList.swift; sourceTree = "<group>"; };
 		E536497D1DFB6C1A00920EA2 /* meViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = meViewController.swift; sourceTree = "<group>"; };
 		E53649801DFC733600920EA2 /* submitPhoneNumberView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = submitPhoneNumberView.swift; sourceTree = "<group>"; };
+		E57A6B1A1E4C4E2900C8BAFA /* promoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = promoViewController.swift; sourceTree = "<group>"; };
 		E599B6921E3EB30900EBE6A0 /* venmo-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "venmo-icon.png"; path = "../../../../Downloads/venmo-icon.png"; sourceTree = "<group>"; };
 		E599B6941E3FA64C00EBE6A0 /* Cash_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Cash_icon.png; path = ../../../../Downloads/Cash_icon.png; sourceTree = "<group>"; };
 		E599B6961E40D0AA00EBE6A0 /* Cash_icon_grey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Cash_icon_grey.png; path = ../../../../Downloads/Cash_icon_grey.png; sourceTree = "<group>"; };
@@ -332,6 +334,7 @@
 				E5084FDA1E03EDE400D1F388 /* buildingNameView.swift */,
 				E5B461BC1DFDE6A400DCEC51 /* deliveryRadiusView.swift */,
 				E5E724D71E0AEF30007E9E6F /* facebookLoginController.swift */,
+				E57A6B1A1E4C4E2900C8BAFA /* promoViewController.swift */,
 			);
 			name = IntroViews;
 			sourceTree = "<group>";
@@ -546,6 +549,7 @@
 				E5E19FB61DF99CA300994E5F /* requestItem.swift in Sources */,
 				E5E19F5D1DF96C0100994E5F /* AppDelegate.swift in Sources */,
 				E5E724DA1E0B0CDC007E9E6F /* myCurrentRequestPopUp.swift in Sources */,
+				E57A6B1B1E4C4E2900C8BAFA /* promoViewController.swift in Sources */,
 				E5E19F651DF96C0100994E5F /* goodneighbor20161210.xcdatamodeld in Sources */,
 				E536496A1DFAF8B500920EA2 /* myCurrentDeliveriesCell.swift in Sources */,
 				E5B461CA1DFFAAC500DCEC51 /* changeLocationViewController.swift in Sources */,

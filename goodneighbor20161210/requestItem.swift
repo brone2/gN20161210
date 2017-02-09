@@ -15,7 +15,7 @@ import CoreLocation
 
 
 
-class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePickerControllerDelegate, UITextViewDelegate, UITextFieldDelegate {
+class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePickerControllerDelegate, UITextViewDelegate, UITextFieldDelegate, CLLocationManagerDelegate {
     
     var databaseRef = FIRDatabase.database().reference()
     var storageRef = FIRStorage.storage().reference()
@@ -37,6 +37,11 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
     var downloadUrlAbsoluteString: String?
     var paymentType = "Venmo"
     var requestPrice = "$0.00"
+    
+    var locationManager = CLLocationManager()
+    var userLocation: CLLocation?
+    var userLatitude: CLLocationDegrees = 0.10000
+    var userLongitude: CLLocationDegrees = 0.10000
     
     @IBOutlet var requestButton: customButton!
     @IBOutlet var oneTokenLabel: UILabel!
@@ -68,6 +73,10 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
+        locationManager.startUpdatingLocation()
     
     //Turn off the three text options when inputting text, perhaps makes it look better
         self.nameLabel.autocorrectionType = .no
@@ -232,29 +241,80 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         
        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
         
-            self.cashPopUp()
+            //self.cashPopUp()
+        self.locationCheck()
         
         }))
-            
-      
-            
         self.present(alert, animated: true, completion: nil)
         }
     }
+    }
+    
+    
+    func locationCheck() {
+        
+        let requestLocation = CLLocation(latitude: self.userLatitude, longitude: self.userLongitude)
+        let distanceInMeters = myLocation?.distance(from: requestLocation)
+        let distanceInMetersFloat = Float(distanceInMeters!)
+        
+        if myLocation?.coordinate.latitude == 0.000000 {
+            
+            self.makeAlert(title: "Missing Delivery Location", message: "Please go to settings and allow for Location while using. Once you have done this, you may set your delivery location in the Me tab")
+            
+        } else if self.userLatitude == 0.10000 {
+            self.cashPopUp()
+        } else if distanceInMetersFloat > 150 {
+            
+            let alertPurchaseLocation = UIAlertController(title: "Reset Delivery Location?", message: "You are requesting this item from a location that is different from your currently registered delivery address. Would you like to reset your delivery locatin to your current Location?", preferredStyle: UIAlertControllerStyle.alert)
+            
+            alertPurchaseLocation.addAction(UIAlertAction(title: "No", style: .default, handler: { (action) in
+                self.cashPopUp()
+            }))
+            
+            alertPurchaseLocation.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
+                
+                myLocation = CLLocation(latitude: self.userLatitude, longitude: self.userLongitude)
+                
+                let alertLocationSet = UIAlertController(title: "Delivery Location Set", message: "Your delivery location has been reset to your current location", preferredStyle: UIAlertControllerStyle.alert)
+                
+                alertLocationSet.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
+                    self.cashPopUp()
+                }))
+                
+                self.present(alertLocationSet, animated: true, completion: nil)
+                
+            }))
+            self.present(alertPurchaseLocation, animated: true, completion: nil)
+            
+        } else { //is requesting near delivery location
+            self.cashPopUp()
+        }
+        
     }
     
     func cashPopUp() {
         
         self.requestPrice = self.priceLabel.text! as String
         
+        //Event Request made
+        FIRAnalytics.logEvent(withName: "didMakeRequest", parameters: nil)
+        
+        //Event Request has picture
+        if self.imageData != nil{
+            FIRAnalytics.logEvent(withName: "didAddPictureToRequest", parameters: nil)
+        }
         
         if self.paymentType == "Venmo" {
             
+        //Event Venmo Request made
+            
+            FIRAnalytics.logEvent(withName: "didMakeVenmoRequest", parameters: nil)
             self.prepareUploadRequest()
             
         } else if self.paymentType == "Cash" {
             
-        
+        FIRAnalytics.logEvent(withName: "didMakeCashRequest", parameters: nil)
+            
             if (self.requestPrice).contains(".") {
                 
                 let requestPriceCash1 = self.requestPrice
@@ -357,21 +417,18 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         
         let myActionSheet = UIAlertController(title:"Delivery Location",message:"Please select where you would like item delivered",preferredStyle: UIAlertControllerStyle.actionSheet)
         
-        let aptLobby = UIAlertAction(title: "Will meet in Apt. Lobby", style: UIAlertActionStyle.default) { (action) in
-            sender.setTitle("Will meet in Apt. Lobby", for: [])
+        let aptLobby = UIAlertAction(title: "Will meet in my dorm", style: UIAlertActionStyle.default) { (action) in
+            sender.setTitle("Will meet in my dorm", for: [])
         }
         
-        let myFloor = UIAlertAction(title: "Will meet on my floor", style: UIAlertActionStyle.default) { (action) in
-            sender.setTitle("Will meet on my floor", for: [])
+        let myFloor = UIAlertAction(title: "Will pick up from you", style: UIAlertActionStyle.default) { (action) in
+            sender.setTitle("Will pick up from you", for: [])
         }
         
         let myDoor = UIAlertAction(title: "My door", style: UIAlertActionStyle.default) { (action) in
             sender.setTitle("My door", for: [])
         }
         
-        let buildingDesk = UIAlertAction(title: "Front Desk", style: UIAlertActionStyle.default) { (action) in
-            sender.setTitle("Front Desk", for: [])
-        }
         
         let otherChoice = UIAlertAction(title: "Other", style: UIAlertActionStyle.default) { (action) in
             
@@ -414,7 +471,6 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         myActionSheet.addAction(myDoor)
         myActionSheet.addAction(myFloor)
         myActionSheet.addAction(aptLobby)
-        myActionSheet.addAction(buildingDesk)
         myActionSheet.addAction(otherChoice)
         
         self.present(myActionSheet, animated: true, completion: nil)
@@ -518,15 +574,16 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         let requestedTimeValue = self.date
         
         let longitudePath = "/request/\(key)/longitude"
-        let longitudeValue = self.requesterLongitude! as CLLocationDegrees
-        
+        //let longitudeValue = self.requesterLongitude! as CLLocationDegrees
+        let longitudeValue = (myLocation?.coordinate.longitude)! as CLLocationDegrees
         
         let buildingNamePath = "/request/\(key)/buildingName"
         let buildingNamePathValue = self.requesterBuildingName! as String
         //let buildingNamePathValue = "hello"
         
         let latitudePath = "/request/\(key)/latitude"
-        let latitudeValue = self.requesterLatitude! as CLLocationDegrees
+        //let latitudeValue = self.requesterLatitude! as CLLocationDegrees
+        let latitudeValue = (myLocation?.coordinate.latitude)! as CLLocationDegrees
         
         let requesterUIDPath = "/request/\(key)/requesterUID"
         let requesterUIDValue = self.loggedInUser as String
@@ -699,6 +756,29 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
     
     func checkLocationOnRequest()  {
         //check if location there at matches home
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        
+        if let location = self.locationManager.location?.coordinate{
+            
+            self.userLocation = CLLocation(latitude: location.latitude, longitude: location.longitude)
+            self.userLatitude = (self.userLocation?.coordinate.latitude)!
+            self.userLongitude = (self.userLocation?.coordinate.longitude)!
+            
+        }
+    }
+    
+    func makeAlert(title: String, message: String)  {
+        
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
+            //do nothing
+        }))
+        
+        self.present(alert, animated: true, completion: nil)
+        
     }
     
 }

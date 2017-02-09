@@ -19,15 +19,19 @@ class myTokensView: UIViewController {
     
     let databaseRef = FIRDatabase.database().reference()
     
+    @IBOutlet var referralLabel: underlinedLabel!
+    
     var myTokens:String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-            self.tokenBlueView.layer.cornerRadius = 4
+       referralLabel.text = "Earn 2 free tokens when a friend downloads the app!"
+       
+        self.tokenBlueView.layer.cornerRadius = 4
         
                 
-            self.databaseRef.child("users").child((FIRAuth.auth()?.currentUser?.uid)!).observeSingleEvent(of: .value, with: { snapshot in
+        self.databaseRef.child("users").child((FIRAuth.auth()?.currentUser?.uid)!).observeSingleEvent(of: .value, with: { snapshot in
             
             let snapshot = snapshot.value as? NSDictionary
             if let tempToken = snapshot?["tokenCount"] as? String{

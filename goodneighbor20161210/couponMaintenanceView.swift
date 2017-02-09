@@ -22,6 +22,12 @@ class couponMaintenanceView: UIViewController {
     
     var couponText: String?
     var timeThreshold: Int?
+    let threeHours: Int = 10800000
+    
+    override func viewDidAppear(_ animated: Bool) {
+        let nowTime = (UInt64(NSDate().timeIntervalSince1970 * 1000.0))
+        print(nowTime)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,8 +43,6 @@ class couponMaintenanceView: UIViewController {
     @IBAction func didTapEnter(_ sender: UIButton) {
         
         self.couponText = codeTextField.text
-        
-        
         
         if self.couponText == "justCompleted" {
            
@@ -62,14 +66,42 @@ class couponMaintenanceView: UIViewController {
             
             self.uidLabel.text = FIRAuth.auth()?.currentUser?.uid
             
+        } else if self.couponText == "dailyMaintenance" {
+            
+            self.databaseRef.child("request").observe(.childAdded) { (snapshot:FIRDataSnapshot) in
+                
+                let snapshot = snapshot.value as? NSDictionary
+                
+                let isComplete = snapshot?["isComplete"] as! Bool
+                
+                let timeStamp = snapshot?["timeStamp"] as! Int
+                
+                let nowTime = (UInt64(NSDate().timeIntervalSince1970 * 1000.0))
+                
+                let nowInt = Int(nowTime)
+                
+                let timeDif = nowInt - timeStamp
+                
+                if isComplete == false && timeDif > self.threeHours {
+                    
+                    let key = snapshot?["requestKey"] as? String
+                    
+                    let deletePath = "request/\(key!)"
+                    let childUpdates = [deletePath:NSNull()]
+                    self.databaseRef.updateChildValues(childUpdates)
+                    
+                }
+            }
+            
         }
+
         
         else if self.couponText == "beenCompleted" {
             
-            //7 days 606503 ticks http://www.currenttimestamp.com/
-            
+            //7 days 606503000 ticks http://www.currenttimestamp.com/
+            //ISSUE
             //set the time for how long the threshold is
-            self.timeThreshold = 606503
+            self.timeThreshold = 606503000
          
             self.databaseRef.child("requestComplete").observe(.childAdded) { (snapshot:FIRDataSnapshot) in
                 

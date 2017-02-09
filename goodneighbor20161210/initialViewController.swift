@@ -32,6 +32,7 @@ class initialViewController: UIViewController {
     var time = 0
     var timer = Timer()
     var loggedInUserId: String?
+    var isPromotion = false
     
     override var prefersStatusBarHidden: Bool {
         return true
@@ -41,6 +42,7 @@ class initialViewController: UIViewController {
         super.viewDidLoad()
         
 //try! FIRAuth.auth()?.signOut()
+        
         
         let screenSize: CGRect = UIScreen.main.bounds
         let screenHeight = screenSize.height
@@ -122,11 +124,29 @@ class initialViewController: UIViewController {
                             }
                             
                             myRadius  = self.loggedInUserData?["deliveryRadius"] as? Float
+                            FIRAnalytics.logEvent(withName: "openApp", parameters: nil)
                             
                             
-                            let homeViewController: UIViewController = mainStoryboard.instantiateViewController(withIdentifier: "shoppingList")
-                            print("should have been sent")
-                            self.present(homeViewController, animated: true, completion: nil)
+                            self.databaseRef.child("promoteShare").observeSingleEvent(of: .value) { (snapshot:FIRDataSnapshot) in
+                                
+                                let snapshot = snapshot.value as? NSDictionary
+                                
+                                self.isPromotion = snapshot?["isTrue"] as! Bool
+                                
+                                if self.isPromotion {
+                                    
+                                    self.performSegue(withIdentifier: "goToPromoPage", sender: nil)
+                                    
+                                } else {
+                                
+                                let homeViewController: UIViewController = mainStoryboard.instantiateViewController(withIdentifier: "shoppingList")
+                                
+                                self.present(homeViewController, animated: true, completion: nil)
+                                }
+                                
+                            }
+                            
+                           
                         }
                 } else {
                 self.performSegue(withIdentifier: "goToFbookLogin", sender: nil)

@@ -78,11 +78,15 @@ class buildingNameView: UIViewController, UITableViewDelegate,UITableViewDataSou
         
         let buildingLongitude = self.buildingsNearMe[selectedRowIndex]?["longitude"]
         
-        let buildingName = self.buildingsNearMe[selectedRowIndex]?["buildingName"]
+        let buildingName = self.buildingsNearMe[selectedRowIndex]?["buildingName"] as! String
         
-        let childUpdates = ["/users/\((FIRAuth.auth()?.currentUser?.uid)!)/latitude":buildingLatitude!, "/users/\((FIRAuth.auth()?.currentUser?.uid)!)/longitude":buildingLongitude!, "/users/\((FIRAuth.auth()?.currentUser?.uid)!)/buildingName":buildingName!] as [String : Any]
+        let childUpdates = ["/users/\((FIRAuth.auth()?.currentUser?.uid)!)/latitude":buildingLatitude!, "/users/\((FIRAuth.auth()?.currentUser?.uid)!)/longitude":buildingLongitude!, "/users/\((FIRAuth.auth()?.currentUser?.uid)!)/buildingName":buildingName] as [String : Any]
         
         self.databaseRef.updateChildValues(childUpdates)
+            
+        //Set user property
+        FIRAnalytics.setUserPropertyString(buildingName, forName: "building")
+        FIRAnalytics.logEvent(withName: "didCompleteLogin", parameters: nil)
         
         self.performSegue(withIdentifier: "buildingToRadius", sender: nil)
         

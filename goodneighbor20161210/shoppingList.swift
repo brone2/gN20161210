@@ -694,6 +694,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
     
     
     override func viewDidAppear(_ animated: Bool) {
+        //self.databaseRef.child("promoteShare").child("isTrue").setValue(true)
         self.table.reloadData()
     }
     
@@ -889,6 +890,14 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             
             self.locationManager.stopUpdatingLocation()
             
+            //Event delivery is complete and test or not
+            
+            if self.isTest {
+                FIRAnalytics.logEvent(withName: "deliveryCompleteLEGIT", parameters: nil)
+            } else {
+                FIRAnalytics.logEvent(withName: "deliveryCompleteFAKE", parameters: nil)
+            }
+            
             
             let childUpdateMoveNode:Dictionary<String, Any> = [accepterNamePath:accepterName!,accepterProfilePicRefPath:accepterProfilePicRef!,accepterUIDPath:accepterUIDToken!,itemNamePath:itemName!,pricePath:price!,profilePicReferencePath:profilePicReference!,requestedTimePath:requestedTime!,requesterNamePath:requesterName!,requesterUIDPath:requesterUID!,
             timeStampPath:timeStamp!,tokensOfferedPath:tokensToTransfer!,keyPath:requestKey!,distanceTraveledPath:distanceInMetersFloatString,isTestPath:self.isTest]
@@ -939,8 +948,8 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         
         //Set values for purchaseText function
         
-        let requesterCell = self.sectionData[0]![index]?["accepterCell"] as! String
-        let requesterName = self.sectionData[0]![index]?["accepterName"] as! String
+        let requesterCell = self.sectionData[0]![index]?["requesterCell"] as! String
+        let requesterName = self.sectionData[0]![index]?["requesterName"] as! String
         let itemName = self.sectionData[0]![index]?["itemName"] as! String
         
         if sender.titleLabel?.text == "Purchase Complete" {
@@ -1157,7 +1166,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         }
     }
     
-    func makeAlert(title: String, message: String)  {
+     func makeAlert(title: String, message: String)  {
         
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
         

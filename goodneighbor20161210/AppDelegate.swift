@@ -56,6 +56,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Saves changes in the application's managed object context before the application terminates.
        //TOOK OUT FOR IOS 9 self.saveContext()
     }
+
     
     // MARK: - Core Data stack
 /*TOOK OUT FOR IOS 9

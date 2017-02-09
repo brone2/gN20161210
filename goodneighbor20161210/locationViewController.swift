@@ -19,8 +19,8 @@ class locationViewController: UIViewController, CLLocationManagerDelegate, MKMap
     var userLocation: CLLocation?
     var loggedInUser:String!
     var databaseRef: FIRDatabaseReference!
-    var userCity: String?
-    var userState: String?
+    var userCity = "N/A"
+    var userState = "N/A"
 
     @IBOutlet weak var map: MKMapView!
     
@@ -104,9 +104,14 @@ class locationViewController: UIViewController, CLLocationManagerDelegate, MKMap
                             
                         }
                         
-                        let childUpdates = ["/users/\(self.loggedInUser!)/city":self.userCity!, "/users/\(self.loggedInUser!)/state":self.userState!] as [String : Any]
+                        let childUpdates = ["/users/\(self.loggedInUser!)/city":self.userCity, "/users/\(self.loggedInUser!)/state":self.userState] as [String : Any]
                         self.databaseRef.updateChildValues(childUpdates)
                         self.locationManager.stopUpdatingLocation()
+                        
+                        //Save user properties
+                        FIRAnalytics.setUserPropertyString(self.userCity, forName: "City")
+                        FIRAnalytics.setUserPropertyString(self.userState, forName: "State")
+                        
                     }
             
                 }
