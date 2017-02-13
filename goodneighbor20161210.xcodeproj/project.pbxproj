@@ -22,6 +22,11 @@
 		E536497E1DFB6C1A00920EA2 /* meViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536497D1DFB6C1A00920EA2 /* meViewController.swift */; };
 		E53649811DFC733600920EA2 /* submitPhoneNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53649801DFC733600920EA2 /* submitPhoneNumberView.swift */; };
 		E57A6B1B1E4C4E2900C8BAFA /* promoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57A6B1A1E4C4E2900C8BAFA /* promoViewController.swift */; };
+		E57A6B1D1E4D0D0400C8BAFA /* referralIncentiveExplained.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57A6B1C1E4D0D0400C8BAFA /* referralIncentiveExplained.swift */; };
+		E57A6B1F1E4D101C00C8BAFA /* referralImage.png in Resources */ = {isa = PBXBuildFile; fileRef = E57A6B1E1E4D101C00C8BAFA /* referralImage.png */; };
+		E57A6B241E50A70D00C8BAFA /* shoppingListExplained2.png in Resources */ = {isa = PBXBuildFile; fileRef = E57A6B231E50A70D00C8BAFA /* shoppingListExplained2.png */; };
+		E57A6B261E50ACAF00C8BAFA /* questionRed.png in Resources */ = {isa = PBXBuildFile; fileRef = E57A6B251E50ACAF00C8BAFA /* questionRed.png */; };
+		E57A6B281E50ADDB00C8BAFA /* explanationShoppingList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57A6B271E50ADDB00C8BAFA /* explanationShoppingList.swift */; };
 		E599B6931E3EB30A00EBE6A0 /* venmo-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = E599B6921E3EB30900EBE6A0 /* venmo-icon.png */; };
 		E599B6951E3FA64C00EBE6A0 /* Cash_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = E599B6941E3FA64C00EBE6A0 /* Cash_icon.png */; };
 		E599B6971E40D0AA00EBE6A0 /* Cash_icon_grey.png in Resources */ = {isa = PBXBuildFile; fileRef = E599B6961E40D0AA00EBE6A0 /* Cash_icon_grey.png */; };
@@ -68,6 +73,9 @@
 		E5E724DA1E0B0CDC007E9E6F /* myCurrentRequestPopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E724D91E0B0CDC007E9E6F /* myCurrentRequestPopUp.swift */; };
 		E5E724FE1E15D6E4007E9E6F /* couponMaintenanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E724FD1E15D6E4007E9E6F /* couponMaintenanceView.swift */; };
 		E5EC9AF41E06335100310A6D /* meChangeRadius.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EC9AF31E06335100310A6D /* meChangeRadius.swift */; };
+		E5EE48C41E51402100AA1330 /* explanationRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EE48C31E51402100AA1330 /* explanationRequest.swift */; };
+		E5EE48C61E51403F00AA1330 /* explanationTokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EE48C51E51403F00AA1330 /* explanationTokens.swift */; };
+		E5EE48C81E51409F00AA1330 /* beginIntro.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EE48C71E51409F00AA1330 /* beginIntro.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -87,6 +95,11 @@
 		E536497D1DFB6C1A00920EA2 /* meViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = meViewController.swift; sourceTree = "<group>"; };
 		E53649801DFC733600920EA2 /* submitPhoneNumberView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = submitPhoneNumberView.swift; sourceTree = "<group>"; };
 		E57A6B1A1E4C4E2900C8BAFA /* promoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = promoViewController.swift; sourceTree = "<group>"; };
+		E57A6B1C1E4D0D0400C8BAFA /* referralIncentiveExplained.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = referralIncentiveExplained.swift; sourceTree = "<group>"; };
+		E57A6B1E1E4D101C00C8BAFA /* referralImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = referralImage.png; path = ../../../../Desktop/referralImage.png; sourceTree = "<group>"; };
+		E57A6B231E50A70D00C8BAFA /* shoppingListExplained2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = shoppingListExplained2.png; path = ../../../../Desktop/shoppingListExplained2.png; sourceTree = "<group>"; };
+		E57A6B251E50ACAF00C8BAFA /* questionRed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = questionRed.png; path = ../../../../Downloads/questionRed.png; sourceTree = "<group>"; };
+		E57A6B271E50ADDB00C8BAFA /* explanationShoppingList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = explanationShoppingList.swift; path = goodneighbor20161210/explanationShoppingList.swift; sourceTree = "<group>"; };
 		E599B6921E3EB30900EBE6A0 /* venmo-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "venmo-icon.png"; path = "../../../../Downloads/venmo-icon.png"; sourceTree = "<group>"; };
 		E599B6941E3FA64C00EBE6A0 /* Cash_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Cash_icon.png; path = ../../../../Downloads/Cash_icon.png; sourceTree = "<group>"; };
 		E599B6961E40D0AA00EBE6A0 /* Cash_icon_grey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Cash_icon_grey.png; path = ../../../../Downloads/Cash_icon_grey.png; sourceTree = "<group>"; };
@@ -136,6 +149,9 @@
 		E5E724D91E0B0CDC007E9E6F /* myCurrentRequestPopUp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = myCurrentRequestPopUp.swift; sourceTree = "<group>"; };
 		E5E724FD1E15D6E4007E9E6F /* couponMaintenanceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = couponMaintenanceView.swift; sourceTree = "<group>"; };
 		E5EC9AF31E06335100310A6D /* meChangeRadius.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = meChangeRadius.swift; sourceTree = "<group>"; };
+		E5EE48C31E51402100AA1330 /* explanationRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = explanationRequest.swift; sourceTree = "<group>"; };
+		E5EE48C51E51403F00AA1330 /* explanationTokens.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = explanationTokens.swift; sourceTree = "<group>"; };
+		E5EE48C71E51409F00AA1330 /* beginIntro.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = beginIntro.swift; sourceTree = "<group>"; };
 		FE9BC30A54DB8E9F4050CFA2 /* Pods_goodneighbor20161210.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_goodneighbor20161210.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -222,6 +238,26 @@
 			name = "Request Delivery";
 			sourceTree = "<group>";
 		};
+		E57A6B201E50A16E00C8BAFA /* Explanation */ = {
+			isa = PBXGroup;
+			children = (
+				E57A6B251E50ACAF00C8BAFA /* questionRed.png */,
+				E57A6B231E50A70D00C8BAFA /* shoppingListExplained2.png */,
+			);
+			name = Explanation;
+			sourceTree = "<group>";
+		};
+		E57A6B291E50ADE500C8BAFA /* Explanation */ = {
+			isa = PBXGroup;
+			children = (
+				E57A6B271E50ADDB00C8BAFA /* explanationShoppingList.swift */,
+				E5EE48C31E51402100AA1330 /* explanationRequest.swift */,
+				E5EE48C51E51403F00AA1330 /* explanationTokens.swift */,
+				E5EE48C71E51409F00AA1330 /* beginIntro.swift */,
+			);
+			name = Explanation;
+			sourceTree = "<group>";
+		};
 		E599B6911E3EB2F400EBE6A0 /* Payment */ = {
 			isa = PBXGroup;
 			children = (
@@ -251,6 +287,7 @@
 		E5E19F501DF96C0100994E5F = {
 			isa = PBXGroup;
 			children = (
+				E57A6B291E50ADE500C8BAFA /* Explanation */,
 				E5E19F5B1DF96C0100994E5F /* goodneighbor20161210 */,
 				E5E19F5A1DF96C0100994E5F /* Products */,
 				27A30EE2B46D70E602192404 /* Pods */,
@@ -284,6 +321,7 @@
 				E5E19F6B1DF96C0100994E5F /* Info.plist */,
 				E5B461C01DFEA37000DCEC51 /* goodneighbor20161210.entitlements */,
 				E5E19F631DF96C0100994E5F /* goodneighbor20161210.xcdatamodeld */,
+				E57A6B1C1E4D0D0400C8BAFA /* referralIncentiveExplained.swift */,
 			);
 			path = goodneighbor20161210;
 			sourceTree = "<group>";
@@ -291,6 +329,8 @@
 		E5E19F711DF96EB300994E5F /* Graphics */ = {
 			isa = PBXGroup;
 			children = (
+				E57A6B201E50A16E00C8BAFA /* Explanation */,
+				E57A6B1E1E4D101C00C8BAFA /* referralImage.png */,
 				E599B6911E3EB2F400EBE6A0 /* Payment */,
 				E5B461C71DFF411100DCEC51 /* Cancel-250.png */,
 				E5B461C51DFF2A1600DCEC51 /* appIcon2.png */,
@@ -444,6 +484,7 @@
 				E5E19F911DF97A6800994E5F /* convenienceIntroLine.png in Resources */,
 				E5E19FC11DF9A0A900994E5F /* saveImage2.png in Resources */,
 				E5E19F6A1DF96C0100994E5F /* LaunchScreen.storyboard in Resources */,
+				E57A6B1F1E4D101C00C8BAFA /* referralImage.png in Resources */,
 				E5E19F9D1DF9843B00994E5F /* joinTheCommunity1.jpg in Resources */,
 				E53649701DFAFA4B00920EA2 /* grayTelephone.png in Resources */,
 				E5E19FA11DF9843B00994E5F /* shoppingList3.jpg in Resources */,
@@ -453,6 +494,7 @@
 				E5E19F671DF96C0100994E5F /* Assets.xcassets in Resources */,
 				E53649721DFAFA4B00920EA2 /* greenTelephone.png in Resources */,
 				E5B461C81DFF411100DCEC51 /* Cancel-250.png in Resources */,
+				E57A6B261E50ACAF00C8BAFA /* questionRed.png in Resources */,
 				E5E19FB31DF99BAE00994E5F /* Editv3.png in Resources */,
 				E5E19FBF1DF99EB100994E5F /* blackWhite2Coin.png in Resources */,
 				E53649731DFAFA4B00920EA2 /* greenTextBubble.png in Resources */,
@@ -460,6 +502,7 @@
 				E5B461C61DFF2A1600DCEC51 /* appIcon2.png in Resources */,
 				E5E19F621DF96C0100994E5F /* Main.storyboard in Resources */,
 				E5E19FBE1DF99EB100994E5F /* blackWhite1Coin.png in Resources */,
+				E57A6B241E50A70D00C8BAFA /* shoppingListExplained2.png in Resources */,
 				E599B6931E3EB30A00EBE6A0 /* venmo-icon.png in Resources */,
 				E5E19FA31DF9873600994E5F /* GoogleService-Info.plist in Resources */,
 				E5E19FB41DF99BAE00994E5F /* list.png in Resources */,
@@ -525,6 +568,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E5EE48C41E51402100AA1330 /* explanationRequest.swift in Sources */,
 				E5B461BF1DFE62FD00DCEC51 /* viewDetailDeliveryView.swift in Sources */,
 				E536497E1DFB6C1A00920EA2 /* meViewController.swift in Sources */,
 				E5E19FC71DF9F17B00994E5F /* myTokensView.swift in Sources */,
@@ -533,10 +577,13 @@
 				E5E724FE1E15D6E4007E9E6F /* couponMaintenanceView.swift in Sources */,
 				E5E19F961DF982C200994E5F /* loginViewController.swift in Sources */,
 				E5E19FAB1DF99A6400994E5F /* shoppingList.swift in Sources */,
+				E5EE48C61E51403F00AA1330 /* explanationTokens.swift in Sources */,
 				E5EC9AF41E06335100310A6D /* meChangeRadius.swift in Sources */,
+				E57A6B281E50ADDB00C8BAFA /* explanationShoppingList.swift in Sources */,
 				E5084FDB1E03EDE400D1F388 /* buildingNameView.swift in Sources */,
 				E53649811DFC733600920EA2 /* submitPhoneNumberView.swift in Sources */,
 				E5E19F731DF96FCC00994E5F /* initialViewController.swift in Sources */,
+				E57A6B1D1E4D0D0400C8BAFA /* referralIncentiveExplained.swift in Sources */,
 				E5084FDD1E04576900D1F388 /* meChangeBuildingName.swift in Sources */,
 				E5E19FA71DF9902300994E5F /* locationViewController.swift in Sources */,
 				E5B461B71DFDC23B00DCEC51 /* pastActivityCompleted.swift in Sources */,
@@ -548,6 +595,7 @@
 				E5E19FC51DF9A16E00994E5F /* customButton.swift in Sources */,
 				E5E19FB61DF99CA300994E5F /* requestItem.swift in Sources */,
 				E5E19F5D1DF96C0100994E5F /* AppDelegate.swift in Sources */,
+				E5EE48C81E51409F00AA1330 /* beginIntro.swift in Sources */,
 				E5E724DA1E0B0CDC007E9E6F /* myCurrentRequestPopUp.swift in Sources */,
 				E57A6B1B1E4C4E2900C8BAFA /* promoViewController.swift in Sources */,
 				E5E19F651DF96C0100994E5F /* goodneighbor20161210.xcdatamodeld in Sources */,

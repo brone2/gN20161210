@@ -74,8 +74,7 @@ class pastActivityCompleted: UIViewController, UITableViewDelegate,UITableViewDa
                     
                     let url = URL(string: image)
                     
-                    cell.profilePic!.sd_setImage(with: url, placeholderImage: UIImage(named:"saveImage2.png")!)
-                    
+                    cell.profilePic!.sd_setImage(with: url, placeholderImage: UIImage(named:"saveImage2.png")!)  
                 }}
             
             cell.profilePic.layer.cornerRadius = 27.5
@@ -96,7 +95,6 @@ class pastActivityCompleted: UIViewController, UITableViewDelegate,UITableViewDa
                     let url = URL(string: image)
                     
                     cell.profilePic!.sd_setImage(with: url, placeholderImage: UIImage(named:"saveImage2.png")!)
-                    
                 }}
             
             cell.profilePic.layer.cornerRadius = 27.5
@@ -105,10 +103,8 @@ class pastActivityCompleted: UIViewController, UITableViewDelegate,UITableViewDa
             cell.profilePic.layer.borderWidth = 2.0
             cell.profilePic.layer.borderColor = UIColor(red: 16/255, green: 126/255, blue: 207/255, alpha: 1).cgColor
 
-            
         }
         return cell
-        
     }
     
     

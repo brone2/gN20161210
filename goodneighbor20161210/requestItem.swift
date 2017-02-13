@@ -275,6 +275,11 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
                 
                 myLocation = CLLocation(latitude: self.userLatitude, longitude: self.userLongitude)
                 
+                let childUpdates = ["/users/\(self.loggedInUser!)/longitude":self.userLongitude, "/users/\(self.loggedInUser!)/latitude":self.userLatitude] as [String : Any]
+                
+                //Update
+                self.databaseRef.updateChildValues(childUpdates)
+                
                 let alertLocationSet = UIAlertController(title: "Delivery Location Set", message: "Your delivery location has been reset to your current location", preferredStyle: UIAlertControllerStyle.alert)
                 
                 alertLocationSet.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
@@ -421,8 +426,8 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
             sender.setTitle("Will meet in my dorm", for: [])
         }
         
-        let myFloor = UIAlertAction(title: "Will pick up from you", style: UIAlertActionStyle.default) { (action) in
-            sender.setTitle("Will pick up from you", for: [])
+        let myFloor = UIAlertAction(title: "Will pick up", style: UIAlertActionStyle.default) { (action) in
+            sender.setTitle("Will pick up", for: [])
         }
         
         let myDoor = UIAlertAction(title: "My door", style: UIAlertActionStyle.default) { (action) in
@@ -603,7 +608,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         let isCompletePath = "/request/\(key)/isComplete"
         let isCompleteValue = false
         
-        let timeStampPath = "/request/\(key)/timeStamp"
+        let requestedTimeStamp = "/request/\(key)/requestedTimeStamp"
         
         //Set key value for later reference
         let requestKeyPath = "/request/\(key)/requestKey"
@@ -617,7 +622,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
             let downloadUrlAbsoluteStringPath = "/request/\(key)/productImage"
             let downloadUrlAbsoluteStringValue = self.downloadUrlAbsoluteString
             
-            let childUpdates:Dictionary<String, Any> = [timeStampPath: [".sv": "timestamp"],profilePicReferencePath: profilePicReferenceValue!,downloadUrlAbsoluteStringPath:downloadUrlAbsoluteStringValue!, requesterCellPath: requesterCellValue,pricePath: priceLabelValue, buildingNamePath: buildingNamePathValue, itemNamePath: itemNameValue,tokenPath: tokensLabelValue,descriptionPath:descriptionLabelValue,requesterNamePath:requesterNameValue,deliverToPath:deliverToValue,longitudePath:longitudeValue,latitudePath:latitudeValue,requestedTimePath:requestedTimeValue!,requesterUIDPath:requesterUIDValue,isAcceptedPath:isAcceptedValue,isCompletePath:isCompleteValue,requestKeyPath:keyValue, paymentTypePath:paymentTypeValue, purchaePricePath:purchaePriceValue]
+            let childUpdates:Dictionary<String, Any> = [requestedTimeStamp: [".sv": "timestamp"],profilePicReferencePath: profilePicReferenceValue!,downloadUrlAbsoluteStringPath:downloadUrlAbsoluteStringValue!, requesterCellPath: requesterCellValue,pricePath: priceLabelValue, buildingNamePath: buildingNamePathValue, itemNamePath: itemNameValue,tokenPath: tokensLabelValue,descriptionPath:descriptionLabelValue,requesterNamePath:requesterNameValue,deliverToPath:deliverToValue,longitudePath:longitudeValue,latitudePath:latitudeValue,requestedTimePath:requestedTimeValue!,requesterUIDPath:requesterUIDValue,isAcceptedPath:isAcceptedValue,isCompletePath:isCompleteValue,requestKeyPath:keyValue, paymentTypePath:paymentTypeValue, purchaePricePath:purchaePriceValue]
             
         self.databaseRef.updateChildValues(childUpdates)
             
@@ -635,7 +640,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         else
             
         {
-            let childUpdates:Dictionary<String, Any> = [timeStampPath: [".sv": "timestamp"],profilePicReferencePath: profilePicReferenceValue!, requesterCellPath: requesterCellValue,pricePath: priceLabelValue, buildingNamePath: buildingNamePathValue, itemNamePath: itemNameValue,tokenPath: tokensLabelValue,descriptionPath:descriptionLabelValue,requesterNamePath:requesterNameValue,deliverToPath:deliverToValue,longitudePath:longitudeValue,latitudePath:latitudeValue,requestedTimePath:requestedTimeValue!,requesterUIDPath:requesterUIDValue,isAcceptedPath:isAcceptedValue,isCompletePath:isCompleteValue,requestKeyPath:keyValue, paymentTypePath:paymentTypeValue, purchaePricePath:purchaePriceValue]
+            let childUpdates:Dictionary<String, Any> = [requestedTimeStamp: [".sv": "timestamp"],profilePicReferencePath: profilePicReferenceValue!, requesterCellPath: requesterCellValue,pricePath: priceLabelValue, buildingNamePath: buildingNamePathValue, itemNamePath: itemNameValue,tokenPath: tokensLabelValue,descriptionPath:descriptionLabelValue,requesterNamePath:requesterNameValue,deliverToPath:deliverToValue,longitudePath:longitudeValue,latitudePath:latitudeValue,requestedTimePath:requestedTimeValue!,requesterUIDPath:requesterUIDValue,isAcceptedPath:isAcceptedValue,isCompletePath:isCompleteValue,requestKeyPath:keyValue, paymentTypePath:paymentTypeValue, purchaePricePath:purchaePriceValue]
             
             self.databaseRef.updateChildValues(childUpdates)
             
@@ -677,6 +682,9 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         return .lightContent
     }
     
+    @IBAction func didTapQuestion(_ sender: Any) {
+        self.performSegue(withIdentifier: "requestToExplanation", sender: nil)
+    }
  func textFieldShouldReturn(_ textField: UITextField) -> Bool{
     self.view.endEditing(true)
     return false

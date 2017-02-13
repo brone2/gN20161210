@@ -15,7 +15,6 @@ import FirebaseDatabase
 class couponMaintenanceView: UIViewController {
 
     @IBOutlet var codeTextField: UITextField!
-    
     @IBOutlet var uidLabel: UILabel!
     
     let databaseRef = FIRDatabase.database().reference()
@@ -23,6 +22,11 @@ class couponMaintenanceView: UIViewController {
     var couponText: String?
     var timeThreshold: Int?
     let threeHours: Int = 10800000
+    var isVerified:Bool = false
+    var isAlreadyUsed:Bool = false
+    var myTokens:Int?
+    var referralUid:String?
+    
     
     override func viewDidAppear(_ animated: Bool) {
         let nowTime = (UInt64(NSDate().timeIntervalSince1970 * 1000.0))
@@ -128,12 +132,71 @@ class couponMaintenanceView: UIViewController {
         }
             
         else {
-            let alert = UIAlertController(title: "Code not Recognized", message: "", preferredStyle: UIAlertControllerStyle.alert)
             
-            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
+            let referralName = self.couponText?.lowercased()
+            
+            self.databaseRef.child("users").observeSingleEvent(of: .value) { (snapshot:FIRDataSnapshot) in
                 
-            }))
-            self.present(alert, animated: true, completion: nil)
+                let snapshot = snapshot.value as? NSDictionary
+                
+                for userDict in snapshot! {
+                    
+                   let userInfo = userDict.value as? NSDictionary
+                   
+                   if let userName = userInfo?["fullName"] as? String {
+                    
+                        let userNameLowerCase = userName.lowercased()
+                    
+                        if userNameLowerCase == referralName {
+                            
+                            self.isVerified = true
+                            
+                            self.referralUid = userDict.key as? String
+                        
+                            if userInfo?["referralRedeemed"] != nil {
+                                self.isAlreadyUsed = true
+                            } else {
+                                self.isAlreadyUsed = false
+                            }
+                        
+                    }
+                   }
+                }
+                
+                if self.isVerified == true && self.isAlreadyUsed == false { //Successful entry
+                    
+                    self.databaseRef.child("users").child((FIRAuth.auth()?.currentUser?.uid)!).observeSingleEvent(of: .value, with: { snapshot in
+                        
+                        let snapshot = snapshot.value as? NSDictionary
+                        if let tempToken = snapshot?["tokenCount"] as? Int {
+                            
+                            self.myTokens = tempToken
+                            self.myTokens! += 2
+                            self.databaseRef.child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("tokenCount").setValue(self.myTokens!)
+                            
+                                self.databaseRef.child("users").child(self.referralUid!).child("referralRedeemed").setValue(true)
+                            
+                                self.makeAlert(title: "Thank you!", message: "Thank you for your referral! You have been awarded two tokens and now have \(self.myTokens!) in your account")
+                        }
+                  
+                        
+                    })
+                } else if self.isVerified == true && self.isAlreadyUsed == true {
+                    
+                    self.makeAlert(title: "Already referred", message: "This user has already been referred. However, there are many other potential Goodneighbors out there that can earn you free tokens!")
+                    
+                } else if self.couponText == "logout" {
+                    
+                    try! FIRAuth.auth()?.signOut()
+                    self.performSegue(withIdentifier: "couponToLogIn", sender: nil)
+                    
+                } else {
+                
+                    
+                    self.makeAlert(title: "Name not found", message: "Unfortunately, it appears this user is not yet apart of the Goodneighbor community. Please make sure the name you entered matches the referrals facebook name at the time they downloaded the app.")
+                    
+                }
+            }
 
         }
         
@@ -149,6 +212,18 @@ class couponMaintenanceView: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    
+    func makeAlert(title: String, message: String)  {
+        
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
+            //do nothing
+        }))
+        
+        self.present(alert, animated: true, completion: nil)
+        
+    }
    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent

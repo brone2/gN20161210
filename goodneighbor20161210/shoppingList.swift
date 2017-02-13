@@ -76,10 +76,11 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
     
                     //Updating the community deliveries array for sake of real time update
                     //ISSUE IS HERE BECAUSE NEED TO HAVE GENERAL SECTION DATA UPDATED
+                    //This is essentially backwards updating to prevent issue on .childAdded
                         if sectionIndex == 2 {
-                    self.shoppingListCurrentRequests = self.sectionData[sectionIndex] as! [NSDictionary]
+                            self.shoppingListCurrentRequests = self.sectionData[sectionIndex] as! [NSDictionary]
                         } else if sectionIndex == 1{
-                    self.myCurrentRequests = self.sectionData[sectionIndex] as! [NSDictionary]
+                            self.myCurrentRequests = self.sectionData[sectionIndex] as! [NSDictionary]
                         }
                         
                     self.table.reloadData()
@@ -117,9 +118,17 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                         //isAccepted updated to take off this request immediately, isComplete is not so people can see isComplete message
                         requestDict["isAccepted"] = snapshot["isAccepted"] as? Bool
                         requestDict["distanceFromUser"] = distanceMilesFloatString
-                        print(requestDict)
                         
                     self.sectionData[sectionIndex]?[valIndex] = requestDict
+                    
+                    //This is backwards from the .childAdded, but the purpose is to update the three dictionaries of SectionData, in the case a .childAdded event, the section data will pull from these three dictionaries which would not otherwise be updated 
+                        if sectionIndex == 2 {
+                            self.shoppingListCurrentRequests = self.sectionData[sectionIndex] as! [NSDictionary]
+                        } else if sectionIndex == 1{
+                            self.myCurrentRequests = self.sectionData[sectionIndex] as! [NSDictionary]
+                        } else if sectionIndex == 0{
+                            self.myCurrentDeliveries = self.sectionData[sectionIndex] as! [NSDictionary]
+                        }
                     self.table.reloadData()
                         
                     }
@@ -146,6 +155,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
      self.databaseRef.child("request").observe(.childAdded) { (snapshot: FIRDataSnapshot) in
         
             let snapshot = snapshot.value as! NSDictionary
+           // print(self.sectionData)
             
             let snapID = snapshot["requesterUID"] as? String
             let snapAccepted = snapshot["isAccepted"] as? Bool
@@ -342,6 +352,8 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             }
             
             let purchasePriceString: String = (self.sectionData[indexPath.section]![indexPath.row]?["purchasePrice"] as? String)!
+            print(purchasePriceString + "HERE")
+            print(indexPath.section)
             
             cell.purchaseCompleteButton.tag = indexPath.row
             
@@ -557,13 +569,15 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                 
                 if isSmallScreen{
                     cell.nameLabel.text = "No current requests"
-                    cell.distanceLabel.text = "Click pencil below to add one!"
+                    //cell.distanceLabel.text = "Refer friends and earn tokens!"
+                   cell.distanceLabel.text = "Click pencil below to add one!"
                 } else if isVerySmallScreen {
                     cell.distanceLabel.isHidden = true
                     cell.nameLabel.text = "No current requests"
                 } else {
-                    cell.distanceLabel.text = "Select the pencil below and add one!"
-                    cell.nameLabel.text = "No current requests in your community"
+                   cell.distanceLabel.text = "Select the pencil below and add one!"
+                   //cell.distanceLabel.text = "Refer friends and earn tokens!"
+                   cell.nameLabel.text = "No current requests in your community"
                 }
                 
                 cell.deliverToLabel.text = ""
@@ -591,8 +605,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             cell.distanceLabel.text = self.sectionData[indexPath.section]![indexPath.row]?["latitude"] as? String
             cell.nameLabel.text = self.sectionData[indexPath.section]![indexPath.row]?["itemName"] as? String
             
-            let payAmount = self.sectionData[indexPath.section]![indexPath.row]?["price"] as! String
-            print(payAmount.characters.count)
+           let payAmount = self.sectionData[indexPath.section]![indexPath.row]?["price"] as! String
             
            if payAmount.characters.count < 6 {
             
@@ -853,8 +866,9 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             let accepterProfilePicRef = self.sectionData[1]![index]?["accepterProfilePicRef"] as? String
             let requesterName = self.sectionData[1]![index]?["requesterName"] as? String
             let requesterUID = self.sectionData[1]![index]?["requesterUID"] as? String
-            let timeStamp = self.sectionData[1]![index]?["timeStamp"] as? Int
+            let requestedTimeStamp = self.sectionData[1]![index]?["requestedTimeStamp"] as? Int
             let price = self.sectionData[1]![index]?["price"] as? String
+            let purchaseTimeStamp = self.sectionData[1]![index]?["purchaseTimeStamp"] as? Int
             
             let accepterNamePath = "/requestComplete/\(requestKey!)/accepterName"
             let accepterProfilePicRefPath = "/requestComplete/\(requestKey!)/accepterProfilePicRef"
@@ -865,9 +879,12 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             let requestedTimePath = "/requestComplete/\(requestKey!)/requestedTime"
             let requesterNamePath = "/requestComplete/\(requestKey!)/requesterName"
             let requesterUIDPath = "/requestComplete/\(requestKey!)/requesterUID"
-            let timeStampPath = "/requestComplete/\(requestKey!)/timeStamp"
+            let requestedTimeStampPath = "/requestComplete/\(requestKey!)/requestTime"
             let tokensOfferedPath = "/requestComplete/\(requestKey!)/tokensOffered"
             let keyPath = "/requestComplete/\(requestKey!)/requestKey"
+            let timeRequestToPurchaseMinutesPath  = "/requestComplete/\(requestKey!)/timeRequestToPurchaseMinutes"
+            let isTestPath = "/requestComplete/\(requestKey!)/isTest"
+            let distanceTraveledPath = "/requestComplete/\(requestKey!)/distanceTraveled"
             
             //Check difference between purchase and delivery
             let purchaseLongitude = self.sectionData[1]![index]?["purchaseLongitude"] as? CLLocationDegrees
@@ -878,7 +895,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             let distanceInMeters = purchaseLocation.distance(from: acceptLocation)
             let distanceInMetersFloat = Float(distanceInMeters)
             let distanceInMetersFloatString = String(format: "%.1f", distanceInMeters)
-            let distanceTraveledPath = "/requestComplete/\(requestKey!)/distanceTraveled"
+            
             
             if distanceInMetersFloat > 20 {
                 
@@ -886,21 +903,27 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                 
             }
             
-            let isTestPath = "/requestComplete/\(requestKey!)/isTest"
+            let timeRequestToPurchase = purchaseTimeStamp! - requestedTimeStamp!
+            let timeRequestToPurchaseMinutes = timeRequestToPurchase/60000
+            
+            if timeRequestToPurchase < 90000 {
+                
+                 self.isTest = true
+                 print("timeRequestToPurchase")
+            }
             
             self.locationManager.stopUpdatingLocation()
             
-            //Event delivery is complete and test or not
+            //Event delivery is complete and "test" or not
             
             if self.isTest {
-                FIRAnalytics.logEvent(withName: "deliveryCompleteLEGIT", parameters: nil)
+                FIRAnalytics.logEvent(withName: "deliveryCompleteTest", parameters: nil)
             } else {
-                FIRAnalytics.logEvent(withName: "deliveryCompleteFAKE", parameters: nil)
+                FIRAnalytics.logEvent(withName: "deliveryCompleteReal", parameters: nil)
             }
             
             
-            let childUpdateMoveNode:Dictionary<String, Any> = [accepterNamePath:accepterName!,accepterProfilePicRefPath:accepterProfilePicRef!,accepterUIDPath:accepterUIDToken!,itemNamePath:itemName!,pricePath:price!,profilePicReferencePath:profilePicReference!,requestedTimePath:requestedTime!,requesterNamePath:requesterName!,requesterUIDPath:requesterUID!,
-            timeStampPath:timeStamp!,tokensOfferedPath:tokensToTransfer!,keyPath:requestKey!,distanceTraveledPath:distanceInMetersFloatString,isTestPath:self.isTest]
+            let childUpdateMoveNode:Dictionary<String, Any> = [accepterNamePath:accepterName!,accepterProfilePicRefPath:accepterProfilePicRef!,accepterUIDPath:accepterUIDToken!,itemNamePath:itemName!,pricePath:price!,profilePicReferencePath:profilePicReference!,requestedTimeStampPath:requestedTimeStamp!,requesterNamePath:requesterName!,requesterUIDPath:requesterUID!,requestedTimePath:requestedTime!,tokensOfferedPath:tokensToTransfer!,keyPath:requestKey!,distanceTraveledPath:distanceInMetersFloatString,isTestPath:self.isTest, timeRequestToPurchaseMinutesPath:timeRequestToPurchaseMinutes]
             
             self.databaseRef.updateChildValues(childUpdateMoveNode)
             
@@ -928,8 +951,6 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                     self.databaseRef.updateChildValues(childUpdates)
                         
                     self.databaseRef.child("request").child(requestKey!).child("isComplete").setValue(true)
-                    
-                   
                 
                 }
             }
@@ -1018,9 +1039,31 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                     
                 let requestKey = self.sectionData[0]?[index]?["requestKey"] as! String
                     
-                self.databaseRef.child("request").child(requestKey).child("purchasePrice").setValue(self.purchasePrice)
+             /*   self.databaseRef.child("request").child(requestKey).child("purchasePrice").setValue(self.purchasePrice)
                 self.databaseRef.child("request").child(requestKey).child("purchaseLatitude").setValue(self.userLatitude)
                 self.databaseRef.child("request").child(requestKey).child("purchaseLongitude").setValue(self.userLongitude)
+                self.databaseRef.child("request").child(requestKey).child("purchaseTimeStamp").setValue([".sv": "timestamp"])
+                    
+             */
+                    
+                    
+                let purchasePricePath = "/request/\(requestKey)/purchasePrice"
+                let purchaseLatitudePath = "/request/\(requestKey)/purchaseLatitude"
+                let purchaseLongitudePath = "/request/\(requestKey)/purchaseLongitude"
+                let purchaseTimeStampPath = "/request/\(requestKey)/purchaseTimeStamp"
+                    
+                let childUpdatePurchaseComplete:Dictionary<String, Any> = [purchasePricePath: self.purchasePrice, purchaseLatitudePath:self.userLatitude,purchaseLongitudePath:self.userLongitude,purchaseTimeStampPath:[".sv": "timestamp"]]
+                    
+                //Issue arising in that when a new requested is added to community, the Awaiting complete button become purchas and bottom label reverts to "will pay". To solve this manually update
+                
+                let dictBeingUpdated = self.myCurrentDeliveries[index] as! NSMutableDictionary //find dictionary you want to change
+                dictBeingUpdated["purchasePrice"] = self.purchasePrice! as String
+                self.myCurrentDeliveries[index] = dictBeingUpdated //add updated dictionary to array of myCurrentDeliveries
+                self.sectionData = [0:self.myCurrentDeliveries,1:self.myCurrentRequests,2:self.shoppingListCurrentRequests]//Update all section data
+                
+                    
+                
+                self.databaseRef.updateChildValues(childUpdatePurchaseComplete)
                     
                 self.locationManager.stopUpdatingLocation()
                     
@@ -1055,6 +1098,8 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             }))
             
             self.present(alertPurchaseComplete, animated: true, completion: nil)
+            
+            
             
             
         } else if sender.titleLabel?.text == "Awaiting Confirmation"{

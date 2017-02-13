@@ -43,14 +43,18 @@ class myTokensView: UIViewController {
             self.tokenCountLabel.text = tokenString
         })
         
+        let goToReferPageTap:UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.goToReferPage(_:)))
+        self.referralLabel.addGestureRecognizer(goToReferPageTap)
         
-
-        
+    }
+    
+    func goToReferPage(_ gesture: UITapGestureRecognizer) {
+        self.performSegue(withIdentifier: "myTokenToReferral", sender: nil)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        // myTokenToReferral
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
