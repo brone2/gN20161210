@@ -11,6 +11,7 @@ import UIKit
 class myCurrentDeliveriesCell: UITableViewCell {
     
     
+    //@IBOutlet var redQuestionMark: UIImageView!
     @IBOutlet var profilePic: UIImageView!
     @IBOutlet var nameLabel: UILabel! //product name
     @IBOutlet var phoneImage: UIImageView!
@@ -21,6 +22,7 @@ class myCurrentDeliveriesCell: UITableViewCell {
     @IBOutlet var deliveringTo: UILabel! //This is person name
     @IBOutlet var payTypeImage: UIImageView!
     @IBOutlet var purchaseCompleteButton: UIButton!
+    @IBOutlet var blueQuestionMarkButton: customButton!
     
 
     override func awakeFromNib() {

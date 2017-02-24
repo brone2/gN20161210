@@ -43,7 +43,7 @@ class deliveryRadiusView: UIViewController {
         view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(4), execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
         
         
         //get user name
@@ -65,7 +65,12 @@ class deliveryRadiusView: UIViewController {
             myRadius  = self.loggedInUserData?["deliveryRadius"] as? Float
         
             self.activityIndicator.stopAnimating()
-            self.performSegue(withIdentifier: "goRadiusHome", sender: nil)
+            
+            if isVerySmallScreen {
+                self.performSegue(withIdentifier: "goRadiusHome", sender: nil)
+            } else {
+            self.performSegue(withIdentifier: "goToExpIntro", sender: nil)
+            }
         }
         })
     }

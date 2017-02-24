@@ -27,6 +27,9 @@
 		E57A6B241E50A70D00C8BAFA /* shoppingListExplained2.png in Resources */ = {isa = PBXBuildFile; fileRef = E57A6B231E50A70D00C8BAFA /* shoppingListExplained2.png */; };
 		E57A6B261E50ACAF00C8BAFA /* questionRed.png in Resources */ = {isa = PBXBuildFile; fileRef = E57A6B251E50ACAF00C8BAFA /* questionRed.png */; };
 		E57A6B281E50ADDB00C8BAFA /* explanationShoppingList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57A6B271E50ADDB00C8BAFA /* explanationShoppingList.swift */; };
+		E57BBD2D1E53CA040091538C /* smallO2.png in Resources */ = {isa = PBXBuildFile; fileRef = E57BBD2C1E53CA040091538C /* smallO2.png */; };
+		E57BBD371E53E3F90091538C /* Screen Shot 2017-02-14 at 8.18.16 PM.png in Resources */ = {isa = PBXBuildFile; fileRef = E57BBD361E53E3F90091538C /* Screen Shot 2017-02-14 at 8.18.16 PM.png */; };
+		E57BBD391E53F0AA0091538C /* blueQuestionMark.png in Resources */ = {isa = PBXBuildFile; fileRef = E57BBD381E53F0AA0091538C /* blueQuestionMark.png */; };
 		E599B6931E3EB30A00EBE6A0 /* venmo-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = E599B6921E3EB30900EBE6A0 /* venmo-icon.png */; };
 		E599B6951E3FA64C00EBE6A0 /* Cash_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = E599B6941E3FA64C00EBE6A0 /* Cash_icon.png */; };
 		E599B6971E40D0AA00EBE6A0 /* Cash_icon_grey.png in Resources */ = {isa = PBXBuildFile; fileRef = E599B6961E40D0AA00EBE6A0 /* Cash_icon_grey.png */; };
@@ -100,6 +103,9 @@
 		E57A6B231E50A70D00C8BAFA /* shoppingListExplained2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = shoppingListExplained2.png; path = ../../../../Desktop/shoppingListExplained2.png; sourceTree = "<group>"; };
 		E57A6B251E50ACAF00C8BAFA /* questionRed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = questionRed.png; path = ../../../../Downloads/questionRed.png; sourceTree = "<group>"; };
 		E57A6B271E50ADDB00C8BAFA /* explanationShoppingList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = explanationShoppingList.swift; path = goodneighbor20161210/explanationShoppingList.swift; sourceTree = "<group>"; };
+		E57BBD2C1E53CA040091538C /* smallO2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = smallO2.png; path = ../../../../Desktop/smallO2.png; sourceTree = "<group>"; };
+		E57BBD361E53E3F90091538C /* Screen Shot 2017-02-14 at 8.18.16 PM.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Screen Shot 2017-02-14 at 8.18.16 PM.png"; path = "../../../../Desktop/Screen Shot 2017-02-14 at 8.18.16 PM.png"; sourceTree = "<group>"; };
+		E57BBD381E53F0AA0091538C /* blueQuestionMark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = blueQuestionMark.png; path = ../../../../Downloads/blueQuestionMark.png; sourceTree = "<group>"; };
 		E599B6921E3EB30900EBE6A0 /* venmo-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "venmo-icon.png"; path = "../../../../Downloads/venmo-icon.png"; sourceTree = "<group>"; };
 		E599B6941E3FA64C00EBE6A0 /* Cash_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Cash_icon.png; path = ../../../../Downloads/Cash_icon.png; sourceTree = "<group>"; };
 		E599B6961E40D0AA00EBE6A0 /* Cash_icon_grey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Cash_icon_grey.png; path = ../../../../Downloads/Cash_icon_grey.png; sourceTree = "<group>"; };
@@ -258,6 +264,16 @@
 			name = Explanation;
 			sourceTree = "<group>";
 		};
+		E57BBD251E53AF0E0091538C /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				E57BBD381E53F0AA0091538C /* blueQuestionMark.png */,
+				E57BBD361E53E3F90091538C /* Screen Shot 2017-02-14 at 8.18.16 PM.png */,
+				E57BBD2C1E53CA040091538C /* smallO2.png */,
+			);
+			name = Other;
+			sourceTree = "<group>";
+		};
 		E599B6911E3EB2F400EBE6A0 /* Payment */ = {
 			isa = PBXGroup;
 			children = (
@@ -329,6 +345,7 @@
 		E5E19F711DF96EB300994E5F /* Graphics */ = {
 			isa = PBXGroup;
 			children = (
+				E57BBD251E53AF0E0091538C /* Other */,
 				E57A6B201E50A16E00C8BAFA /* Explanation */,
 				E57A6B1E1E4D101C00C8BAFA /* referralImage.png */,
 				E599B6911E3EB2F400EBE6A0 /* Payment */,
@@ -373,8 +390,8 @@
 				E5E19FA61DF9902300994E5F /* locationViewController.swift */,
 				E5084FDA1E03EDE400D1F388 /* buildingNameView.swift */,
 				E5B461BC1DFDE6A400DCEC51 /* deliveryRadiusView.swift */,
-				E5E724D71E0AEF30007E9E6F /* facebookLoginController.swift */,
 				E57A6B1A1E4C4E2900C8BAFA /* promoViewController.swift */,
+				E5E724D71E0AEF30007E9E6F /* facebookLoginController.swift */,
 			);
 			name = IntroViews;
 			sourceTree = "<group>";
@@ -486,6 +503,7 @@
 				E5E19F6A1DF96C0100994E5F /* LaunchScreen.storyboard in Resources */,
 				E57A6B1F1E4D101C00C8BAFA /* referralImage.png in Resources */,
 				E5E19F9D1DF9843B00994E5F /* joinTheCommunity1.jpg in Resources */,
+				E57BBD371E53E3F90091538C /* Screen Shot 2017-02-14 at 8.18.16 PM.png in Resources */,
 				E53649701DFAFA4B00920EA2 /* grayTelephone.png in Resources */,
 				E5E19FA11DF9843B00994E5F /* shoppingList3.jpg in Resources */,
 				E5B461C31DFF299C00DCEC51 /* 1FullToken.png in Resources */,
@@ -499,8 +517,10 @@
 				E5E19FBF1DF99EB100994E5F /* blackWhite2Coin.png in Resources */,
 				E53649731DFAFA4B00920EA2 /* greenTextBubble.png in Resources */,
 				E599B6991E40D2A500EBE6A0 /* venmo-icon_grey.png in Resources */,
+				E57BBD2D1E53CA040091538C /* smallO2.png in Resources */,
 				E5B461C61DFF2A1600DCEC51 /* appIcon2.png in Resources */,
 				E5E19F621DF96C0100994E5F /* Main.storyboard in Resources */,
+				E57BBD391E53F0AA0091538C /* blueQuestionMark.png in Resources */,
 				E5E19FBE1DF99EB100994E5F /* blackWhite1Coin.png in Resources */,
 				E57A6B241E50A70D00C8BAFA /* shoppingListExplained2.png in Resources */,
 				E599B6931E3EB30A00EBE6A0 /* venmo-icon.png in Resources */,

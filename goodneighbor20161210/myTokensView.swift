@@ -15,6 +15,9 @@ class myTokensView: UIViewController {
 
     @IBOutlet weak var tokenCountLabel: UILabel!
     
+   //@IBOutlet var questionMarkImage: UIImageView!
+    
+    @IBOutlet var questionButton: customButton!
     @IBOutlet var tokenBlueView: UIView!
     
     let databaseRef = FIRDatabase.database().reference()
@@ -23,9 +26,12 @@ class myTokensView: UIViewController {
     
     var myTokens:String?
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+       /*
+       let segueTap: UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.goToReferPage(_:)))
+        questionMarkImage.addGestureRecognizer(segueTap)*/
        referralLabel.text = "Earn 2 free tokens when a friend downloads the app!"
        
         self.tokenBlueView.layer.cornerRadius = 4
@@ -49,8 +55,17 @@ class myTokensView: UIViewController {
     }
     
     func goToReferPage(_ gesture: UITapGestureRecognizer) {
-        self.performSegue(withIdentifier: "myTokenToReferral", sender: nil)
+        
+       self.performSegue(withIdentifier: "myTokenToReferral", sender: nil)
+        
     }
+    
+    @IBAction func didTapQuestion(_ sender: Any) {
+        
+        self.questionButton.isHidden = true
+        self.performSegue(withIdentifier: "tokenToExp", sender: nil)
+    }
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -59,6 +74,7 @@ class myTokensView: UIViewController {
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
-    }
+    } 
     
+
 }

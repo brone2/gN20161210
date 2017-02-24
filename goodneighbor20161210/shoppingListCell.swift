@@ -20,6 +20,7 @@ class shoppingListCell: UITableViewCell {
     
     
     
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

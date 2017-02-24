@@ -43,6 +43,9 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
     var userLatitude: CLLocationDegrees = 0.10000
     var userLongitude: CLLocationDegrees = 0.10000
     
+    
+    @IBOutlet var questionButton: customButton!
+    //@IBOutlet var questionToTap: UIImageView!
     @IBOutlet var requestButton: customButton!
     @IBOutlet var oneTokenLabel: UILabel!
     @IBOutlet var twoTokenLabel: UILabel!
@@ -69,10 +72,16 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
     @IBOutlet var maxPayLabel: UILabel!
     @IBOutlet var itemNameLabel: UILabel!
     
+    @IBOutlet var addPictureButton: UIButton!
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.image.isHidden = true
+        
+        /*let segueTap: UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.goToExplanation(_:)))
+        questionToTap.addGestureRecognizer(segueTap)*/
         
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
@@ -126,7 +135,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         
         self.loggedInUser = FIRAuth.auth()?.currentUser?.uid
 
-        descriptionTextView.text = "Please enter description of the product and arrangements for delivery"
+        descriptionTextView.text = "Ex: Please bring this item to Dardick dorm. You can get six packs of diet coke at the 7-11 across the street at main campus. Diet coke comes in gray packaging and the cans are grey. Please call me on my cell if you have any questions"
         descriptionTextView.textColor = UIColor.lightGray
         descriptionTextView.layer.borderWidth = 1
         descriptionTextView.layer.borderColor = UIColor.black.cgColor
@@ -256,6 +265,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         let requestLocation = CLLocation(latitude: self.userLatitude, longitude: self.userLongitude)
         let distanceInMeters = myLocation?.distance(from: requestLocation)
         let distanceInMetersFloat = Float(distanceInMeters!)
+        print(distanceInMetersFloat)
         
         if myLocation?.coordinate.latitude == 0.000000 {
             
@@ -410,12 +420,23 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         }
     }
     
-    func didTapImageIcon(_ sender:UITapGestureRecognizer){
+    @IBAction func didTapAddPicture(_ sender: UIButton) {
+      
         let imagePickerController = UIImagePickerController()
         imagePickerController.delegate = self
         imagePickerController.sourceType = UIImagePickerControllerSourceType.photoLibrary
         imagePickerController.allowsEditing = true
-        self.present(imagePickerController, animated: true, completion: nil)   
+        self.image.isHidden = false
+        self.addPictureButton.isHidden = false
+        self.present(imagePickerController, animated: true, completion: nil)
+        
+    }
+    func didTapImageIcon(_ sender:UITapGestureRecognizer){
+        /*let imagePickerController = UIImagePickerController()
+        imagePickerController.delegate = self
+        imagePickerController.sourceType = UIImagePickerControllerSourceType.photoLibrary
+        imagePickerController.allowsEditing = true
+        self.present(imagePickerController, animated: true, completion: nil) */
     }
     
     @IBAction func didTapDeliverTo(_ sender: UIButton) {
@@ -682,9 +703,9 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         return .lightContent
     }
     
-    @IBAction func didTapQuestion(_ sender: Any) {
+    /*@IBAction func didTapQuestion(_ sender: Any) {
         self.performSegue(withIdentifier: "requestToExplanation", sender: nil)
-    }
+    }*/
  func textFieldShouldReturn(_ textField: UITextField) -> Bool{
     self.view.endEditing(true)
     return false
@@ -751,6 +772,9 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         hideKeyboard()
         
     }
+    
+    
+    
     func hideKeyboard() {
         
         self.view.endEditing(true)
@@ -775,6 +799,19 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
             self.userLongitude = (self.userLocation?.coordinate.longitude)!
             
         }
+    }
+    
+ /*   func goToExplanation(_ gesture: UITapGestureRecognizer) {
+        self.questionToTap.isHidden = true
+        self.performSegue(withIdentifier: "requestToExplanation", sender: nil)
+    }*/
+    
+    
+    @IBAction func didToGoToExp(_ sender: Any) {
+        
+        self.questionButton.isHidden = true
+        self.performSegue(withIdentifier: "requestToExplanation", sender: nil)
+        
     }
     
     func makeAlert(title: String, message: String)  {

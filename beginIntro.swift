@@ -10,7 +10,7 @@ import UIKit
 
 class beginIntro: UIViewController {
     
-    var isIntro:Bool?
+    var isIntro = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,7 +34,7 @@ class beginIntro: UIViewController {
         if segue.identifier == "beginExp" {
             
             let secondViewController = segue.destination as! explanationShoppingList
-            secondViewController.isIntro = self.isIntro!
+            secondViewController.isIntro = self.isIntro
           
             
         }

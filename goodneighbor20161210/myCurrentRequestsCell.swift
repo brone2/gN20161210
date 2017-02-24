@@ -10,6 +10,7 @@ import UIKit
 
 class myCurrentRequestsCell: UITableViewCell {
 
+    //@IBOutlet var redQuestionMark: UIImageView!
     @IBOutlet var phoneImage: UIImageView!
     @IBOutlet var chatImage: UIImageView!
     @IBOutlet var coinImage: UIImageView!
@@ -21,6 +22,7 @@ class myCurrentRequestsCell: UITableViewCell {
     @IBOutlet var payTypeImage: UIImageView!
     
     @IBOutlet var cancelCompleteButton: UIButton!
+    @IBOutlet var blueQuestionMark: UIButton!
     
     
     override func awakeFromNib() {

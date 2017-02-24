@@ -43,13 +43,11 @@ class initialViewController: UIViewController {
         
 //try! FIRAuth.auth()?.signOut()
         
-        
         let screenSize: CGRect = UIScreen.main.bounds
+        
         let screenHeight = screenSize.height
         
-        print(screenHeight)
-        
-        if screenHeight < 490.0{
+        if screenHeight < 490.0     {
             
             isVerySmallScreen = true
             
@@ -142,6 +140,7 @@ class initialViewController: UIViewController {
                                 let homeViewController: UIViewController = mainStoryboard.instantiateViewController(withIdentifier: "shoppingList")
                                 
                                 self.present(homeViewController, animated: true, completion: nil)
+                                    
                                 }
                                 
                             }
