@@ -154,6 +154,11 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             self.coverUpBlueView.frame = CGRect(x:99.7, y: 24.5, width: 11.1, height: 22)
             self.oCoverUpText.image = UIImage(named: "smallO2.png")
              self.oCoverUpText.frame = CGRect(x:99.9, y: 24.5, width: 10.5, height: 22)
+        } else if isLargeScreen {
+            self.coverUpBlueView.frame = CGRect(x:129.5, y: 20.5, width: 13.9, height: 30)
+            self.oCoverUpText.image = UIImage(named: "smallOLarge1.png")
+            //self.coverUpBlueView.isHidden = true
+            self.oCoverUpText.frame = CGRect(x:129, y: 20.5, width: 14, height: 30)
         } else {
              self.oCoverUpText.frame = CGRect(x: 113, y: 26.5, width: 20.5, height: 19)
             //self.oCoverUpText.frame = CGRect(x: 112.5, y: 26, width: 21.5, height: 19.5)
@@ -1177,13 +1182,15 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         if !isComplete {
             if purchasePriceString == "NA" {
                 
-                self.questionMarkMessageDelivery = "Once you have purchased \(self.sectionData[0]![index]?["itemName"] as! String), please tap Purchase Complete and then you will be able to enter the price you paid for it"
+                self.questionMarkMessageDelivery = "Once you have purchased \(self.sectionData[0]![index]?["itemName"] as! String), please tap \"Purchase Complete\" and then enter the price you paid for it"
                 
                 self.questionMarkMessageDeliveryTitle = "Item not purchased"
                 
             } else {
                 
-                self.questionMarkMessageDelivery = "Now that you have purchased \(self.sectionData[0]![index]?["itemName"] as! String), once you deliver it to \(self.sectionData[0]![index]?["requesterName"] as! String) and receive payment of \(self.sectionData[0]![index]?["purchasePrice"] as! String), \(self.sectionData[0]![index]?["requesterName"] as! String) will be able to mark the request as complete and you will receive \(self.sectionData[0]![index]?["tokensOffered"] as! Int) token"
+                //self.questionMarkMessageDelivery = "Now that you have purchased \(self.sectionData[0]![index]?["itemName"] as! String), once you deliver it to \(self.sectionData[0]![index]?["requesterName"] as! String) and receive payment of \(self.sectionData[0]![index]?["purchasePrice"] as! String), \(self.sectionData[0]![index]?["requesterName"] as! String) will select \"Mark as Complete\" and you will receive \(self.sectionData[0]![index]?["tokensOffered"] as! Int) token"
+                
+                self.questionMarkMessageDelivery = "The final step is to deliver \(self.sectionData[0]![index]?["itemName"] as! String) to \(self.sectionData[0]![index]?["requesterName"] as! String) and receive payment of \(self.sectionData[0]![index]?["purchasePrice"] as! String). Once the delivery is complete \(self.sectionData[0]![index]?["requesterName"] as! String) will select \"Mark as Complete\" and you will receive \(self.sectionData[0]![index]?["tokensOffered"] as! Int) token"
                 
                 self.questionMarkMessageDeliveryTitle = "Delivery in Progress"
             }
@@ -1240,7 +1247,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         if !isComplete {
             if isAccepted == false {
                 
-                self.questionMarkMessageRequest = "Your request of \( self.sectionData[1]![index]?["itemName"] as! String) is not yet accepted. When it is accepted, the Goodneighbor who accepted it will send you a text. If you no longer want \(self.sectionData[1]![index]?["itemName"] as! String), you can cancel the request."
+                self.questionMarkMessageRequest = "Your request of \( self.sectionData[1]![index]?["itemName"] as! String) is not yet accepted. When it is accepted, the Goodneighbor who accepted it will send you a text. If you no longer want \(self.sectionData[1]![index]?["itemName"] as! String), select \"Cancel Request\"."
                 self.questionMarkMessageRequestTitle = "Awaiting a Goodneighbor"
                 
             } else {
@@ -1254,7 +1261,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                     
                 } else {
                     
-                    self.questionMarkMessageRequest = " \(self.sectionData[1]![index]?["accepterName"] as! String)  has purchased \(self.sectionData[1]![index]?["itemName"] as! String) for \(self.sectionData[1]![index]?["purchasePrice"] as! String). Please be prepared to pay this amount when you meet. Once the delivery is complete please press Mark as Complete to finalize the transaction."
+                    self.questionMarkMessageRequest = " \(self.sectionData[1]![index]?["accepterName"] as! String)  has purchased \(self.sectionData[1]![index]?["itemName"] as! String) for \(self.sectionData[1]![index]?["purchasePrice"] as! String). Please be prepared to pay this amount when you meet. Once the delivery is complete please press \"Mark as Complete\" to finalize the transaction."
                     
                     self.questionMarkMessageRequestTitle = "Awaiting Delivery"
                 }
@@ -1283,7 +1290,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         if !isComplete {
         if isAccepted == false {
          
-            self.questionMarkMessageRequest = "Your request of \( self.sectionData[1]![index]?["itemName"] as! String) is not yet accepted. When it is accepted, the Goodneighbor who accepted it will send you a text. If you no longer want \(self.sectionData[1]![index]?["itemName"] as! String), you can cancel the request."
+            self.questionMarkMessageRequest = "Your request of \( self.sectionData[1]![index]?["itemName"] as! String) is not yet accepted. When it is accepted, the Goodneighbor who accepted it will send you a text. If you no longer want \(self.sectionData[1]![index]?["itemName"] as! String) select \"Cancel Request\"."
             self.questionMarkMessageRequestTitle = "Awaiting a Goodneighbor"
 
         } else {
@@ -1297,7 +1304,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                     
                 } else {
                     
-                    self.questionMarkMessageRequest = " \(self.sectionData[1]![index]?["accepterName"] as! String)  has purchased \(self.sectionData[1]![index]?["itemName"] as! String) for \(self.sectionData[1]![index]?["purchasePrice"] as! String). Please be prepared to pay this amount when you meet. Once the delivery is complete please press Mark as Complete to finalize the transaction."
+                    self.questionMarkMessageRequest = " \(self.sectionData[1]![index]?["accepterName"] as! String)  has purchased \(self.sectionData[1]![index]?["itemName"] as! String) for \(self.sectionData[1]![index]?["purchasePrice"] as! String). Please be prepared to pay this amount when you meet. Once the delivery is complete please press \"Mark as Complete\" to finalize the transaction."
                     
                     self.questionMarkMessageRequestTitle = "Awaiting Delivery"
             }

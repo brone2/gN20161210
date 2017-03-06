@@ -22,6 +22,8 @@ var isSmallScreen = false
 var isVerySmallScreen = false
 var isLargeScreen = false
 
+var userFullName: String?
+
 class initialViewController: UIViewController {
     
     var loggedInUserData: AnyObject?
@@ -111,6 +113,23 @@ class initialViewController: UIViewController {
                             self.loggedInUserData = snapshot.value as? NSDictionary
                             
                             loggedInUserName = self.loggedInUserData?["name"] as! String
+                            
+                           /* if self.loggedInUserData?["fullName"] as? String != nil {
+                                userFullName = (self.loggedInUserData["fullName"] as! String)
+                            } else {
+                                loggedInUserName = self.loggedInUserData?["fullName"] as! String
+                            }*/
+                            
+                            if let _ = self.loggedInUserData?["fullName"] as? String {
+                                
+                                userFullName = self.loggedInUserData?["fullName"] as? String
+                                
+                            } else {
+                                
+                                userFullName = loggedInUserName
+                                
+                            }
+                            
                             myProfilePicRef = self.loggedInUserData?["profilePicReference"] as! String
                             myCellNumber = self.loggedInUserData?["cellPhoneNumber"] as! String
                             currentTokenCount = self.loggedInUserData?["tokenCount"] as! Int
@@ -124,7 +143,6 @@ class initialViewController: UIViewController {
                             myRadius  = self.loggedInUserData?["deliveryRadius"] as? Float
                             FIRAnalytics.logEvent(withName: "openApp", parameters: nil)
                             
-                            
                             self.databaseRef.child("promoteShare").observeSingleEvent(of: .value) { (snapshot:FIRDataSnapshot) in
                                 
                                 let snapshot = snapshot.value as? NSDictionary
@@ -137,7 +155,10 @@ class initialViewController: UIViewController {
                                     
                                 } else {
                                 
-                                let homeViewController: UIViewController = mainStoryboard.instantiateViewController(withIdentifier: "shoppingList")
+                                //For now set default page to request page
+                                //let homeViewController: UIViewController = mainStoryboard.instantiateViewController(withIdentifier: "shoppingList")
+                                    
+                                let homeViewController: UIViewController = mainStoryboard.instantiateViewController(withIdentifier: "requestItem")
                                 
                                 self.present(homeViewController, animated: true, completion: nil)
                                     

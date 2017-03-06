@@ -16,7 +16,10 @@ class explanationTokens: UIViewController {
     var distanceBetweenButtons: CGFloat = 35
     var isIntro = false
 
-    @IBOutlet var exampleTextLabel: UILabel!
+    
+    
+    @IBOutlet var labelTextExample1: UILabel!
+    
     @IBOutlet var forExampleLabel: UILabel!
     
     override func viewDidLoad() {
@@ -29,21 +32,22 @@ class explanationTokens: UIViewController {
             
             self.forExampleLabel.frame = CGRect(x: view.frame.width/2 - self.forExampleLabel.frame.width/2, y: 290, width: 135.5, height: 24)
             
-            self.exampleTextLabel.frame = CGRect(x: view.frame.width/2 - self.exampleTextLabel.frame.width/2, y: 310, width: 290, height: 168)
+            self.labelTextExample1.frame = CGRect(x: view.frame.width/2 - 130, y: 310, width: 260, height: 168)
+            
             
             
             
             if self.isIntro {
-                self.continueButton.frame = CGRect(x: view.frame.width/2 - 70, y: 525, width: 140, height: 30)
+                self.continueButton.frame = CGRect(x: view.frame.width/2 - 70, y: 515, width: 140, height: 30)
             } else {
-                self.continueButton.frame = CGRect(x: view.frame.width/2 - 50, y: 525, width: 100, height: 30)
+                self.continueButton.frame = CGRect(x: view.frame.width/2 - 50, y: 515, width: 100, height: 30)
             }
             
         } else {
 
             self.forExampleLabel.frame = CGRect(x: view.frame.width/2 - self.forExampleLabel.frame.width/2, y: 313, width: 135.5, height: 24)
             
-            self.exampleTextLabel.frame = CGRect(x: view.frame.width/2 - self.exampleTextLabel.frame.width/2, y: 352, width: 290, height: 168)
+            self.labelTextExample1.frame = CGRect(x: view.frame.width/2 - self.labelTextExample1.frame.width/2, y: 352, width: 322, height: 128)
             
             
             
@@ -87,8 +91,13 @@ class explanationTokens: UIViewController {
         
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
         
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
+       /* alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
             self.performSegue(withIdentifier: "expTokenToList", sender: nil)
+        }))*/
+        
+        
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
+            self.performSegue(withIdentifier: "expTokenToRequest", sender: nil)
         }))
         
         self.present(alert, animated: true, completion: nil)

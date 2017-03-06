@@ -78,6 +78,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
         self.image.isHidden = true
         
         /*let segueTap: UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.goToExplanation(_:)))
@@ -104,10 +105,9 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
             self.oneTokenLabel.isHidden = true
             self.twoTokenLabel.isHidden = true
             self.tokensOfferedLabel.isHidden = true
+            self.addPictureButton.isHidden = true
             
-        }
-        
-        if isSmallScreen || isVerySmallScreen {
+        } else if isSmallScreen || isVerySmallScreen {
             
             self.image.isHidden = true
             let smallFont:CGFloat = 12.0
@@ -118,24 +118,35 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
             self.itemNameLabel.font = UIFont.systemFont(ofSize: smallFont)
             self.oneTokenLabel.font = UIFont.systemFont(ofSize: smallFont)
             self.twoTokenLabel.font = UIFont.systemFont(ofSize: smallFont)
-        }
-        
-        if isLargeScreen {
             
-            let bottomConstraint = self.image.bottomAnchor.constraint(equalTo: self.requestButton.topAnchor, constant: -55)
-            NSLayoutConstraint.activate([bottomConstraint])
+            self.requestButton.frame = CGRect(x: view.frame.width/2 - self.requestButton.frame.width/2, y: 465, width: 132, height: 30)
+            self.image.isHidden = true
+            self.addPictureButton.isHidden = true
+            
+            
+        } else if isLargeScreen {
+            
+            /*let bottomConstraint = self.image.bottomAnchor.constraint(equalTo: self.requestButton.topAnchor, constant: -55)
+            NSLayoutConstraint.activate([bottomConstraint])*/
+            
+            self.requestButton.frame = CGRect(x: view.frame.width/2 - self.requestButton.frame.width/2, y: 625, width: 132, height: 30)
+            self.image.frame = CGRect(x: view.frame.width/2 - 60, y: 485, width: 120, height: 120)
+            self.addPictureButton.frame = CGRect(x: view.frame.width/2 - self.addPictureButton.frame.width/2, y: 525, width: 195, height: 30)
+            
+        } else {
+            
+            self.requestButton.frame = CGRect(x: view.frame.width/2 - self.requestButton.frame.width/2, y: 552, width: 132, height: 30)
+            self.image.frame = CGRect(x: view.frame.width/2 - self.image.frame.width/2, y: 465, width: 72, height: 72)
+            self.addPictureButton.frame = CGRect(x: view.frame.width/2 - self.addPictureButton.frame.width/2, y: 484, width: 195, height: 30)
             
         }
-        
-        
         
         self.nameLabel.delegate = self
         self.priceLabel.delegate = self
         
-        
         self.loggedInUser = FIRAuth.auth()?.currentUser?.uid
 
-        descriptionTextView.text = "Ex: Please bring this item to Dardick dorm. You can get six packs of diet coke at the 7-11 across the street at main campus. Diet coke comes in gray packaging and the cans are grey. Please call me on my cell if you have any questions"
+        descriptionTextView.text = "Ex: Please pick up a six pack of diet coke, but regular coke is fine if there's no diet. I live in Lisner Dorm. Call me with any questions."
         descriptionTextView.textColor = UIColor.lightGray
         descriptionTextView.layer.borderWidth = 1
         descriptionTextView.layer.borderColor = UIColor.black.cgColor
@@ -223,7 +234,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         
         currentTokenCount = self.loggedInUserData?["tokenCount"] as? Int
         
-        if self.priceLabel.text == "" || self.priceLabel.text == "" || self.priceLabel.text == "$" || self.descriptionTextView.text! == "" {
+        if self.itemNameLabel.text == "" || self.priceLabel.text == "" || self.priceLabel.text == "" || self.priceLabel.text == "$" || self.descriptionTextView.text! == "" {
             let alertNotEnough = UIAlertController(title: "Missing Required Fields", message: "Please fill out all required fields", preferredStyle: UIAlertControllerStyle.alert)
             
             alertNotEnough.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
@@ -426,8 +437,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         imagePickerController.delegate = self
         imagePickerController.sourceType = UIImagePickerControllerSourceType.photoLibrary
         imagePickerController.allowsEditing = true
-        self.image.isHidden = false
-        self.addPictureButton.isHidden = false
+       
         self.present(imagePickerController, animated: true, completion: nil)
         
     }
@@ -505,6 +515,8 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         let image = info[UIImagePickerControllerOriginalImage] as! UIImage?
+        self.image.isHidden = false
+        self.addPictureButton.isHidden = true
         self.image.image = image
         self.imageData = UIImageJPEGRepresentation(image!, 0.2)
         self.dismiss(animated: true, completion: nil)

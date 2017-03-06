@@ -78,7 +78,9 @@ class couponMaintenanceView: UIViewController {
                 
                 let isComplete = snapshot?["isComplete"] as! Bool
                 
-                let timeStamp = snapshot?["timeStamp"] as! Int
+                let isAccepted = snapshot?["isAccepted"] as! Bool
+                
+                if let timeStamp = snapshot?["requestedTimeStamp"] as? Int {
                 
                 let nowTime = (UInt64(NSDate().timeIntervalSince1970 * 1000.0))
                 
@@ -86,7 +88,7 @@ class couponMaintenanceView: UIViewController {
                 
                 let timeDif = nowInt - timeStamp
                 
-                if isComplete == false && timeDif > self.threeHours {
+                if isAccepted == false && isComplete == false && timeDif > self.threeHours {
                     
                     let key = snapshot?["requestKey"] as? String
                     
@@ -95,6 +97,7 @@ class couponMaintenanceView: UIViewController {
                     self.databaseRef.updateChildValues(childUpdates)
                     
                 }
+            }
             }
             
         }

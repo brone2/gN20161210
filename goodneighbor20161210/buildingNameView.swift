@@ -29,6 +29,8 @@ class buildingNameView: UIViewController, UITableViewDelegate,UITableViewDataSou
         
         self.databaseRef.child("building").observe(.childAdded) { (snapshot: FIRDataSnapshot) in
             
+            //Go ahead and save the fullName here 
+            
             let snapshot = snapshot.value as! NSDictionary
             
             let userLatitude = snapshot["latitude"] as? CLLocationDegrees
@@ -53,7 +55,8 @@ class buildingNameView: UIViewController, UITableViewDelegate,UITableViewDataSou
                 //General shopping list requests, those that are not already accepted and not sent by you
                 
                     self.buildingsNearMe.append(requestDict)
-                    print(requestDict)
+                    self.buildingsNearMe.sort{($0?["buildingName"] as! String) < ($1?["buildingName"] as! String) }
+                
                 
                 self.table.reloadData()
                    

@@ -49,9 +49,8 @@ class meChangeBuildingName: UIViewController, UITableViewDelegate,UITableViewDat
                 let distanceMilesFloatString = String(format: "%.2f", distanceMilesFloat)
                 requestDict["distanceFromUser"] = distanceMilesFloatString
                 
-                //General shopping list requests, those that are not already accepted and not sent by you
-                
                 self.buildingsNearMe.append(requestDict)
+                self.buildingsNearMe.sort{($0?["buildingName"] as! String) < ($1?["buildingName"] as! String) }
                 print(requestDict)
                 
                 self.table.reloadData()

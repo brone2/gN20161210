@@ -73,6 +73,8 @@ class facebookLoginController: UIViewController, FBSDKLoginButtonDelegate {
                         let fullName = dict["name"] as! String
                         let gender = dict["gender"] as! String
                         
+                        userFullName = fullName
+                            
                         let latitude = 0.0000000000
                         let longitude = 0.0000000000
                         let deliveryRadius = 1.0000987

@@ -13,7 +13,7 @@ class explanationShoppingList: UIViewController {
     
     
     var isIntro = false
-    var yPoint:CGFloat = 415
+    var yPoint:CGFloat = 360
     var distanceBetweenButtons: CGFloat = 35
     
     @IBOutlet var explanationLabel: UILabel!
@@ -56,16 +56,16 @@ class explanationShoppingList: UIViewController {
             
             
             if self.isIntro {
-                self.continueButton.frame = CGRect(x: view.frame.width/2 - 70, y: yPoint + 155, width: 140, height: 30)
+                self.continueButton.frame = CGRect(x: view.frame.width/2 - 70, y: yPoint + 165, width: 140, height: 30)
             } else {
-                self.continueButton.frame = CGRect(x: view.frame.width/2 - 50, y: yPoint + 155, width: 100, height: 30)
+                self.continueButton.frame = CGRect(x: view.frame.width/2 - 50, y: yPoint + 165, width: 100, height: 30)
             }
             
             self.exampleImage.frame = CGRect(x: 0, y: 200, width: view.frame.width, height: 83)
             
             self.explanationLabel.frame = CGRect(x: 21, y: 30, width: view.frame.width - 40, height: 189)
             
-            self.explanationLabel.font = UIFont.systemFont(ofSize: 13.0)
+            //self.explanationLabel.font = UIFont.systemFont(ofSize: 13.0)
             
         }  else  { //Normal (iPhone 6) size
         
@@ -94,12 +94,12 @@ class explanationShoppingList: UIViewController {
         
             
             if self.isIntro {
-                self.continueButton.frame = CGRect(x: view.frame.width/2 - 70, y: yPoint + 185, width: 140, height: 30)
+                self.continueButton.frame = CGRect(x: view.frame.width/2 - 70, y: yPoint + 195, width: 140, height: 30)
             } else {
-                self.continueButton.frame = CGRect(x: view.frame.width/2 - 50, y: yPoint + 185, width: 100, height: 30)
+                self.continueButton.frame = CGRect(x: view.frame.width/2 - 50, y: yPoint + 195, width: 100, height: 30)
             }
         
-        self.exampleImage.frame = CGRect(x: 0, y: 260, width: view.frame.width, height: 83)
+        self.exampleImage.frame = CGRect(x: 0, y: 200, width: view.frame.width, height: 83)
         
       
         }

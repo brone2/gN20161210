@@ -30,6 +30,7 @@
 		E57BBD2D1E53CA040091538C /* smallO2.png in Resources */ = {isa = PBXBuildFile; fileRef = E57BBD2C1E53CA040091538C /* smallO2.png */; };
 		E57BBD371E53E3F90091538C /* Screen Shot 2017-02-14 at 8.18.16 PM.png in Resources */ = {isa = PBXBuildFile; fileRef = E57BBD361E53E3F90091538C /* Screen Shot 2017-02-14 at 8.18.16 PM.png */; };
 		E57BBD391E53F0AA0091538C /* blueQuestionMark.png in Resources */ = {isa = PBXBuildFile; fileRef = E57BBD381E53F0AA0091538C /* blueQuestionMark.png */; };
+		E57BBD3B1E6487730091538C /* smallOLarge1.png in Resources */ = {isa = PBXBuildFile; fileRef = E57BBD3A1E6487730091538C /* smallOLarge1.png */; };
 		E599B6931E3EB30A00EBE6A0 /* venmo-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = E599B6921E3EB30900EBE6A0 /* venmo-icon.png */; };
 		E599B6951E3FA64C00EBE6A0 /* Cash_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = E599B6941E3FA64C00EBE6A0 /* Cash_icon.png */; };
 		E599B6971E40D0AA00EBE6A0 /* Cash_icon_grey.png in Resources */ = {isa = PBXBuildFile; fileRef = E599B6961E40D0AA00EBE6A0 /* Cash_icon_grey.png */; };
@@ -106,6 +107,7 @@
 		E57BBD2C1E53CA040091538C /* smallO2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = smallO2.png; path = ../../../../Desktop/smallO2.png; sourceTree = "<group>"; };
 		E57BBD361E53E3F90091538C /* Screen Shot 2017-02-14 at 8.18.16 PM.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Screen Shot 2017-02-14 at 8.18.16 PM.png"; path = "../../../../Desktop/Screen Shot 2017-02-14 at 8.18.16 PM.png"; sourceTree = "<group>"; };
 		E57BBD381E53F0AA0091538C /* blueQuestionMark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = blueQuestionMark.png; path = ../../../../Downloads/blueQuestionMark.png; sourceTree = "<group>"; };
+		E57BBD3A1E6487730091538C /* smallOLarge1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = smallOLarge1.png; path = ../../../../Desktop/smallOLarge1.png; sourceTree = "<group>"; };
 		E599B6921E3EB30900EBE6A0 /* venmo-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "venmo-icon.png"; path = "../../../../Downloads/venmo-icon.png"; sourceTree = "<group>"; };
 		E599B6941E3FA64C00EBE6A0 /* Cash_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Cash_icon.png; path = ../../../../Downloads/Cash_icon.png; sourceTree = "<group>"; };
 		E599B6961E40D0AA00EBE6A0 /* Cash_icon_grey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Cash_icon_grey.png; path = ../../../../Downloads/Cash_icon_grey.png; sourceTree = "<group>"; };
@@ -267,6 +269,7 @@
 		E57BBD251E53AF0E0091538C /* Other */ = {
 			isa = PBXGroup;
 			children = (
+				E57BBD3A1E6487730091538C /* smallOLarge1.png */,
 				E57BBD381E53F0AA0091538C /* blueQuestionMark.png */,
 				E57BBD361E53E3F90091538C /* Screen Shot 2017-02-14 at 8.18.16 PM.png */,
 				E57BBD2C1E53CA040091538C /* smallO2.png */,
@@ -516,6 +519,7 @@
 				E5E19FB31DF99BAE00994E5F /* Editv3.png in Resources */,
 				E5E19FBF1DF99EB100994E5F /* blackWhite2Coin.png in Resources */,
 				E53649731DFAFA4B00920EA2 /* greenTextBubble.png in Resources */,
+				E57BBD3B1E6487730091538C /* smallOLarge1.png in Resources */,
 				E599B6991E40D2A500EBE6A0 /* venmo-icon_grey.png in Resources */,
 				E57BBD2D1E53CA040091538C /* smallO2.png in Resources */,
 				E5B461C61DFF2A1600DCEC51 /* appIcon2.png in Resources */,

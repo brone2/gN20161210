@@ -13,7 +13,7 @@ class explanationRequest: UIViewController {
     var isIntro = false
     
     var yPoint:CGFloat = 334
-    var distanceBetweenButtons: CGFloat = 35
+    var distanceBetweenButtons: CGFloat = 38
     
     @IBOutlet var itemNameButton: UIButton!
     @IBOutlet var willingToPayButton: UIButton!
@@ -39,26 +39,34 @@ class explanationRequest: UIViewController {
             
             self.yPoint = 320
             
-            self.distanceBetweenButtons = 25
+            self.distanceBetweenButtons = 30
             
-            self.inputsForRequestLabel.frame = CGRect(x: view.frame.width/2 - self.inputsForRequestLabel.frame.width/2, y: yPoint - 36, width: 195, height: 36)
+            self.inputsForRequestLabel.frame = CGRect(x: view.frame.width/2 - self.inputsForRequestLabel.frame.width/2, y: yPoint - 96, width: 195, height: 36)
             
             if self.isIntro {
-                self.continueButton.frame = CGRect(x: view.frame.width/2 - 50, y: yPoint + 200, width: 100, height: 30)
+                self.continueButton.frame = CGRect(x: view.frame.width/2 - 50, y: yPoint + 185, width: 100, height: 30)
             } else {
-                self.continueButton.frame = CGRect(x: view.frame.width/2 - 70, y: yPoint + 200, width: 140, height: 30)
+                self.continueButton.frame = CGRect(x: view.frame.width/2 - 70, y: yPoint + 185, width: 140, height: 30)
             }
 
         } else {
             
          if self.isIntro {
-            self.continueButton.frame = CGRect(x: view.frame.width/2 - 70, y: yPoint + 255, width: 140, height: 30)
+            self.continueButton.frame = CGRect(x: view.frame.width/2 - 70, y: yPoint + 215, width: 140, height: 30)
          } else {
-            self.continueButton.frame = CGRect(x: view.frame.width/2 - 50, y: yPoint + 255, width: 100, height: 30)
+            self.continueButton.frame = CGRect(x: view.frame.width/2 - 50, y: yPoint + 215, width: 100, height: 30)
             }
             
             
             
+        }
+   
+        
+        self.yPoint = 260
+        
+        
+        if isLargeScreen {
+            self.inputsForRequestLabel.frame = CGRect(x: view.frame.width/2 - self.inputsForRequestLabel.frame.width/2, y: yPoint - 42, width: 195, height: 36)
         }
         
         self.itemNameButton.frame = CGRect(x: view.frame.width/2 - 169/2, y: yPoint, width: 169, height: 30)
@@ -94,7 +102,7 @@ class explanationRequest: UIViewController {
     
     @IBAction func didTapWillingToPay(_ sender: Any) {
         
-           self.makeAlert(title: "Wiling to Pay", message: "Enter here the maximum price you are willing to pay for the item you are requesting. For example, if I am requesting a Snickers, but would not be willing to pay more than $2.00 for it, I would enter $2.00. This way if someone is at the store and finds a Snickers for $3.00, they would know not to purchase it for me as I am not willing to pay that amount")
+           self.makeAlert(title: "Willing to Pay", message: "Enter here the maximum price you are willing to pay for the item you are requesting. For example, if I am requesting a Snickers, but would not be willing to pay more than $2.00 for it, I would enter $2.00. This way if someone is at the store and finds a Snickers for $3.00, they would know not to purchase it for me as I am not willing to pay that amount")
         
         
     }
@@ -107,7 +115,7 @@ class explanationRequest: UIViewController {
     
     @IBAction func didTapDetail(_ sender: Any) {
         
-        self.makeAlert(title: "Detailed Information", message: "Enter here any extra details that will help make the delivery successful. For example, if you are requesting 6 pack of coke, you could say I am looking for a 6 pack of 12 ounce coke cans. They can be found in the first aisle of 7 - 11 in a red box with coke written on it. When you arrive at my dorm, please call me and I will come down and meet you")
+        self.makeAlert(title: "Detailed Information", message: "Enter here any extra details that will help make the delivery successful. For example, if you are requesting a 6 pack of coke, you could say I am looking for a 6 pack of 12 ounce Coke cans. When you arrive at my dorm, please call me and I will come down and meet you")
     }
     
     
@@ -120,7 +128,9 @@ class explanationRequest: UIViewController {
     
     @IBAction func didTapToken(_ sender: Any) {
         
-        self.makeAlert(title: "Tokens", message: "Whenever you recieve a delivery, you must pay the deliverer the price of the item, and you must give them one or two tokens. You have the option to offer one or two tokens, by selecting the image of one or two tokens. It is advised that you offer two tokens if you would like a delivery urgently, as this will better incentivize Goodneighbors to accept your request.")
+        self.makeAlert(title: "Tokens", message: "Tokens are the currency of the pay-it-forward delivery system. To request a delivery, you must offer one or two tokens to the person delivering. When the delivery is complete, you will transfer this token(s) to the delivering Goodneighbor in addition to paying them the cost of the item.")
+        
+        //"Whenever you recieve a delivery, you must pay the deliverer the price of the item, and you must give them one or two tokens. You have the option to offer one or two tokens, by selecting the image of one or two tokens. It is advised that you offer two tokens if you would like a delivery urgently, as this will better incentivize Goodneighbors to accept your request."
         
     }
     
