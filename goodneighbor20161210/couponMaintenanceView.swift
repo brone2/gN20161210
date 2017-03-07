@@ -134,9 +134,9 @@ class couponMaintenanceView: UIViewController {
             }
         }
             
-        else {
+        else {  //Code to allow for referral functionality
             
-            let referralName = self.couponText?.lowercased()
+            let referralCode = self.couponText
             
             self.databaseRef.child("users").observeSingleEvent(of: .value) { (snapshot:FIRDataSnapshot) in
                 
@@ -145,58 +145,70 @@ class couponMaintenanceView: UIViewController {
                 for userDict in snapshot! {
                     
                    let userInfo = userDict.value as? NSDictionary
-                   
-                   if let userName = userInfo?["fullName"] as? String {
+                
+                   if let userReferralCode = userInfo?["referralCode"] as? String {
                     
-                        let userNameLowerCase = userName.lowercased()
-                    
-                        if userNameLowerCase == referralName {
+                        if userReferralCode == referralCode {
                             
                             self.isVerified = true
-                            
                             self.referralUid = userDict.key as? String
-                        
-                            if userInfo?["referralRedeemed"] != nil {
+                            
+                            //Check user has not already used referral coupon
+                            if referralRedeemed {
                                 self.isAlreadyUsed = true
                             } else {
                                 self.isAlreadyUsed = false
                             }
-                        
-                    }
+                        }
                    }
-                }
+            }
                 
-                if self.isVerified == true && self.isAlreadyUsed == false { //Successful entry
+        if self.isVerified == true && self.isAlreadyUsed == false { //Successful entry
+            
+                referralRedeemed = true
+                //Give token to the user who referred
                     
+                     self.databaseRef.child("users").child(self.referralUid!).observeSingleEvent(of: .value, with: { snapshot in
+                        
+                        let snapshot = snapshot.value as? NSDictionary
+                        if let tempToken = snapshot?["tokenCount"] as? Int {
+                            
+                            let plusOneToken = tempToken + 1
+                            self.databaseRef.child("users").child(self.referralUid!).child("tokenCount").setValue(plusOneToken)
+                            
+                        }
+                     })
+                    
+                //Update current user token count
                     self.databaseRef.child("users").child((FIRAuth.auth()?.currentUser?.uid)!).observeSingleEvent(of: .value, with: { snapshot in
                         
                         let snapshot = snapshot.value as? NSDictionary
                         if let tempToken = snapshot?["tokenCount"] as? Int {
                             
-                            self.myTokens = tempToken
-                            self.myTokens! += 2
-                            self.databaseRef.child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("tokenCount").setValue(self.myTokens!)
+                        self.myTokens = tempToken
+                        self.myTokens! += 1
+                        self.databaseRef.child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("tokenCount").setValue(self.myTokens!)
+                        self.databaseRef.child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("referralRedeemed").setValue(true)
                             
-                                self.databaseRef.child("users").child(self.referralUid!).child("referralRedeemed").setValue(true)
-                            
-                                self.makeAlert(title: "Thank you!", message: "Thank you for your referral! You have been awarded two tokens and now have \(self.myTokens!) in your account")
+                        self.makeAlert(title: "Thank you!", message: "Thank you for your referral! You have been awarded a free token and now have \(self.myTokens!) tokens in your account")
+                        
                         }
-                  
                         
                     })
-                } else if self.isVerified == true && self.isAlreadyUsed == true {
                     
-                    self.makeAlert(title: "Already referred", message: "This user has already been referred. However, there are many other potential Goodneighbors out there that can earn you free tokens!")
+                } else if self.isAlreadyUsed == true {
                     
-                } else if self.couponText == "logout" {
+                    self.makeAlert(title: "Already referred", message: "This account has been credited a token for being referred. There are many other potential Goodneighbors out there for you to refer to recieve a free token!")
+                    
+                } else if self.couponText == "logout 1" {
                     
                     try! FIRAuth.auth()?.signOut()
                     self.performSegue(withIdentifier: "couponToLogIn", sender: nil)
                     
                 } else {
-                
+
                     
-                    self.makeAlert(title: "Name not found", message: "Unfortunately, it appears this user is not yet apart of the Goodneighbor community. Please make sure the name you entered matches the referrals facebook name at the time they downloaded the app.")
+                    self.makeAlert(title: "Name not found", message: "We are unable to find this referral code. Please double check the correct code is entered (it is case sensitive).")
                     
                 }
             }

@@ -9,13 +9,20 @@
 import UIKit
 import MessageUI
 import MessageUI.MFMailComposeViewController
+import Firebase
+import FirebaseAuth
+import FirebaseStorage
+import FirebaseDatabase
 
 class referralIncentiveExplained: UIViewController, MFMessageComposeViewControllerDelegate {
+    
+    var databaseRef:FIRDatabaseReference!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        self.databaseRef = FIRDatabase.database().reference()
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -33,7 +40,7 @@ class referralIncentiveExplained: UIViewController, MFMessageComposeViewControll
     
     @IBAction func didTapBack(_ sender: UIButton) {
         
-        self.dismiss(animated: true, completion: nil)
+        self.performSegue(withIdentifier: "promoBackToToken", sender: nil)
         
     }
     
@@ -44,9 +51,22 @@ class referralIncentiveExplained: UIViewController, MFMessageComposeViewControll
     
     func sendReferralText() {
         
-        let textMessage = "Download Goodneighbor Delivery and enter the referral code REFERRALCODE to get a free token!  https://itunes.apple.com/us/app/goodneighbor-delivery/id1186085872?mt=8"
+        if userReferralCode == "Not yet entered" {
+            
+            let randomNum:UInt32 = arc4random_uniform(1000)
+            let someString:String = String(randomNum)
+            
+            let referralCode = loggedInUserName + someString
+            userReferralCode = referralCode
+            
+        self.databaseRef.child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("referralCode").setValue(userReferralCode!)
+            
+            
+        }
         
-        let requesterCell = "0"
+        let textMessage = "Download Goodneighbor Delivery and enter the referral code \(userReferralCode!) to get a free token!  https://itunes.apple.com/us/app/goodneighbor-delivery/id1186085872?mt=8"
+        
+        let requesterCell = ""
         
         self.purchaseActualText(textMessage: textMessage, requesterCell: requesterCell)
         

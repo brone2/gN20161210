@@ -79,6 +79,10 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         super.viewDidLoad()
         
         
+        let randomNum:UInt32 = arc4random_uniform(100000)
+        let someString:String = String(randomNum)
+        print(someString)
+        
         self.image.isHidden = true
         
         /*let segueTap: UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.goToExplanation(_:)))

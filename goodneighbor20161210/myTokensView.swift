@@ -33,7 +33,7 @@ class myTokensView: UIViewController {
        /*
        let segueTap: UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.goToReferPage(_:)))
         questionMarkImage.addGestureRecognizer(segueTap)*/
-       referralLabel.text = "Earn a free tokens when a friend downloads the app!"
+       referralLabel.text = "Refer a friend and earn a free token!" 
        
         self.tokenBlueView.layer.cornerRadius = 4
         

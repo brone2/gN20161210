@@ -23,6 +23,8 @@ var isVerySmallScreen = false
 var isLargeScreen = false
 
 var userFullName: String?
+var userReferralCode: String?
+var referralRedeemed:Bool = false
 
 class initialViewController: UIViewController {
     
@@ -42,8 +44,10 @@ class initialViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+      
 //try! FIRAuth.auth()?.signOut()
+        
+       userReferralCode = "Not yet entered"
         
         let screenSize: CGRect = UIScreen.main.bounds
         
@@ -55,7 +59,7 @@ class initialViewController: UIViewController {
             
         }
         
-        if screenHeight < 570.0 && screenHeight > 500{
+        if screenHeight < 570.0 && screenHeight > 500 {
             
             isSmallScreen = true
             
@@ -114,12 +118,10 @@ class initialViewController: UIViewController {
                             
                             loggedInUserName = self.loggedInUserData?["name"] as! String
                             
-                           /* if self.loggedInUserData?["fullName"] as? String != nil {
-                                userFullName = (self.loggedInUserData["fullName"] as! String)
-                            } else {
-                                loggedInUserName = self.loggedInUserData?["fullName"] as! String
-                            }*/
-                            
+                            if self.loggedInUserData?["referralCode"] as?  String != nil {
+                               let referOptional = self.loggedInUserData?["referralCode"] as! String
+                                userReferralCode = referOptional
+                            }
                             if let _ = self.loggedInUserData?["fullName"] as? String {
                                 
                                 userFullName = self.loggedInUserData?["fullName"] as? String
@@ -127,6 +129,12 @@ class initialViewController: UIViewController {
                             } else {
                                 
                                 userFullName = loggedInUserName
+                                
+                            }
+                            
+                            if let _ = self.loggedInUserData?["referralRedeemed"] as? Bool {
+                                
+                                referralRedeemed = true
                                 
                             }
                             
@@ -149,16 +157,16 @@ class initialViewController: UIViewController {
                                 
                                 self.isPromotion = snapshot?["isTrue"] as! Bool
                                 
-                                if self.isPromotion {
+                                if self.isPromotion && isVerySmallScreen == false  {
                                     
                                     self.performSegue(withIdentifier: "goToPromoPage", sender: nil)
                                     
                                 } else {
                                 
                                 //For now set default page to request page
-                                //let homeViewController: UIViewController = mainStoryboard.instantiateViewController(withIdentifier: "shoppingList")
+                                let homeViewController: UIViewController = mainStoryboard.instantiateViewController(withIdentifier: "shoppingList")
                                     
-                                let homeViewController: UIViewController = mainStoryboard.instantiateViewController(withIdentifier: "requestItem")
+                                //let homeViewController: UIViewController = mainStoryboard.instantiateViewController(withIdentifier: "requestItem")
                                 
                                 self.present(homeViewController, animated: true, completion: nil)
                                     

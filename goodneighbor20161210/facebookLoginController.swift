@@ -15,6 +15,8 @@ import FirebaseDatabase
 import FBSDKLoginKit
 import CoreLocation
 
+
+
 class facebookLoginController: UIViewController, FBSDKLoginButtonDelegate {
     
     var url: String?
@@ -74,14 +76,22 @@ class facebookLoginController: UIViewController, FBSDKLoginButtonDelegate {
                         let gender = dict["gender"] as! String
                         
                         userFullName = fullName
-                            
+                        
+                        let randomNum:UInt32 = arc4random_uniform(1000)
+                        let someString:String = String(randomNum)
+                        
+                        let referralCode = dict["first_name"]! as! String + someString
+                        userReferralCode = referralCode
+                        
                         let latitude = 0.0000000000
                         let longitude = 0.0000000000
                         let deliveryRadius = 1.0000987
                         
+                        
+                        
                         let userId = (FIRAuth.auth()?.currentUser?.uid)!
                         
-                        let childUpdatesFbook = ["/users/\(userId)/name":dict["first_name"]!,"/users/\(userId)/fullName":dict["name"]!,"/users/\(userId)/gender":dict["gender"]!,"/users/\(userId)/buildingName":"N/A","/users/\(userId)/cellPhoneNumber":"0","/users/\(userId)/deliveryCount":0, "/users/\(userId)/recieveCount":0, "/users/\(userId)/tokenCount":2,"/users/\(userId)/profilePicReference":self.url!, "/users/\(userId)/longitude":longitude, "/users/\(userId)/latitude":latitude, "/users/\(userId)/deliveryRadius":deliveryRadius] as [String : Any]
+                        let childUpdatesFbook = ["/users/\(userId)/name":dict["first_name"]!,"/users/\(userId)/fullName":dict["name"]!,"/users/\(userId)/gender":dict["gender"]!,"/users/\(userId)/buildingName":"N/A","/users/\(userId)/cellPhoneNumber":"0","/users/\(userId)/deliveryCount":0, "/users/\(userId)/recieveCount":0, "/users/\(userId)/tokenCount":2,"/users/\(userId)/profilePicReference":self.url!, "/users/\(userId)/longitude":longitude, "/users/\(userId)/latitude":latitude, "/users/\(userId)/deliveryRadius":deliveryRadius, "/users/\(userId)/referralCode":userReferralCode!] as [String : Any]
                         
                         //Update
                         self.databaseRef.updateChildValues(childUpdatesFbook)
