@@ -32,6 +32,7 @@
 		E57BBD391E53F0AA0091538C /* blueQuestionMark.png in Resources */ = {isa = PBXBuildFile; fileRef = E57BBD381E53F0AA0091538C /* blueQuestionMark.png */; };
 		E57BBD3B1E6487730091538C /* smallOLarge1.png in Resources */ = {isa = PBXBuildFile; fileRef = E57BBD3A1E6487730091538C /* smallOLarge1.png */; };
 		E57BBD3D1E6E30A80091538C /* Coins-100.png in Resources */ = {isa = PBXBuildFile; fileRef = E57BBD3C1E6E30A80091538C /* Coins-100.png */; };
+		E57BBD3F1E6E96960091538C /* Sheet of Paper-100.png in Resources */ = {isa = PBXBuildFile; fileRef = E57BBD3E1E6E96960091538C /* Sheet of Paper-100.png */; };
 		E599B6931E3EB30A00EBE6A0 /* venmo-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = E599B6921E3EB30900EBE6A0 /* venmo-icon.png */; };
 		E599B6951E3FA64C00EBE6A0 /* Cash_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = E599B6941E3FA64C00EBE6A0 /* Cash_icon.png */; };
 		E599B6971E40D0AA00EBE6A0 /* Cash_icon_grey.png in Resources */ = {isa = PBXBuildFile; fileRef = E599B6961E40D0AA00EBE6A0 /* Cash_icon_grey.png */; };
@@ -110,6 +111,7 @@
 		E57BBD381E53F0AA0091538C /* blueQuestionMark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = blueQuestionMark.png; path = ../../../../Downloads/blueQuestionMark.png; sourceTree = "<group>"; };
 		E57BBD3A1E6487730091538C /* smallOLarge1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = smallOLarge1.png; path = ../../../../Desktop/smallOLarge1.png; sourceTree = "<group>"; };
 		E57BBD3C1E6E30A80091538C /* Coins-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Coins-100.png"; path = "../../../../Downloads/Coins-100.png"; sourceTree = "<group>"; };
+		E57BBD3E1E6E96960091538C /* Sheet of Paper-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Sheet of Paper-100.png"; path = "../../../../Downloads/Sheet of Paper-100.png"; sourceTree = "<group>"; };
 		E599B6921E3EB30900EBE6A0 /* venmo-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "venmo-icon.png"; path = "../../../../Downloads/venmo-icon.png"; sourceTree = "<group>"; };
 		E599B6941E3FA64C00EBE6A0 /* Cash_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Cash_icon.png; path = ../../../../Downloads/Cash_icon.png; sourceTree = "<group>"; };
 		E599B6961E40D0AA00EBE6A0 /* Cash_icon_grey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Cash_icon_grey.png; path = ../../../../Downloads/Cash_icon_grey.png; sourceTree = "<group>"; };
@@ -272,6 +274,7 @@
 			isa = PBXGroup;
 			children = (
 				E57BBD3A1E6487730091538C /* smallOLarge1.png */,
+				E57BBD3E1E6E96960091538C /* Sheet of Paper-100.png */,
 				E57BBD3C1E6E30A80091538C /* Coins-100.png */,
 				E57BBD381E53F0AA0091538C /* blueQuestionMark.png */,
 				E57BBD361E53E3F90091538C /* Screen Shot 2017-02-14 at 8.18.16 PM.png */,
@@ -530,6 +533,7 @@
 				E5E19F621DF96C0100994E5F /* Main.storyboard in Resources */,
 				E57BBD391E53F0AA0091538C /* blueQuestionMark.png in Resources */,
 				E5E19FBE1DF99EB100994E5F /* blackWhite1Coin.png in Resources */,
+				E57BBD3F1E6E96960091538C /* Sheet of Paper-100.png in Resources */,
 				E57A6B241E50A70D00C8BAFA /* shoppingListExplained2.png in Resources */,
 				E599B6931E3EB30A00EBE6A0 /* venmo-icon.png in Resources */,
 				E5E19FA31DF9873600994E5F /* GoogleService-Info.plist in Resources */,

@@ -666,7 +666,7 @@
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NIh-Nf-GRF">
                                 <rect key="frame" x="0.0" y="623" width="375" height="44"/>
                                 <items>
-                                    <barButtonItem image="list.png" id="BG6-T2-obH">
+                                    <barButtonItem image="Sheet of Paper-100.png" id="BG6-T2-obH">
                                         <color key="tintColor" red="0.0" green="0.57647058823529407" blue="0.85490196078431369" alpha="1" colorSpace="calibratedRGB"/>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="Jze-jq-S2r"/>
@@ -1621,7 +1621,7 @@
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eSZ-RG-5YZ">
                                 <rect key="frame" x="0.0" y="623" width="375" height="44"/>
                                 <items>
-                                    <barButtonItem image="list.png" id="3T7-0c-il0">
+                                    <barButtonItem image="Sheet of Paper-100.png" id="3T7-0c-il0">
                                         <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <connections>
                                             <segue destination="tt0-94-eDa" kind="show" animates="NO" id="Zdr-Pm-QQb"/>
@@ -2232,7 +2232,7 @@
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2nK-Vt-zuC">
                                 <rect key="frame" x="0.0" y="623" width="375" height="44"/>
                                 <items>
-                                    <barButtonItem image="list.png" id="POS-Jw-GTp">
+                                    <barButtonItem image="Sheet of Paper-100.png" id="POS-Jw-GTp">
                                         <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <connections>
                                             <segue destination="tt0-94-eDa" kind="show" animates="NO" id="qFy-62-rBF"/>
@@ -2424,7 +2424,7 @@
                                     <constraint firstAttribute="height" constant="44" id="emM-lQ-L9v"/>
                                 </constraints>
                                 <items>
-                                    <barButtonItem image="list.png" id="U5J-Se-Stb">
+                                    <barButtonItem image="Sheet of Paper-100.png" id="U5J-Se-Stb">
                                         <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <connections>
                                             <segue destination="tt0-94-eDa" kind="show" animates="NO" id="5ag-bU-vFb"/>
@@ -3564,7 +3564,7 @@
                                 </items>
                             </toolbar>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please select your building below. If you do not see your building, please add it" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e6C-s5-5g2">
-                                <rect key="frame" x="16" y="32" width="343" height="39"/>
+                                <rect key="frame" x="16" y="32" width="343" height="38.5"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                 <color key="textColor" red="0.070588235294117646" green="0.57647058823529407" blue="0.85490196078431369" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -3777,6 +3777,7 @@
         <image name="Editv3.png" width="29" height="29"/>
         <image name="Me2.jpg" width="2000" height="277"/>
         <image name="Screen Shot 2017-02-14 at 8.18.16 PM.png" width="102" height="156"/>
+        <image name="Sheet of Paper-100.png" width="30" height="30"/>
         <image name="appIcon2.png" width="127" height="124"/>
         <image name="avatar.png" width="26" height="26"/>
         <image name="blackWhite2Coin.png" width="46" height="38"/>
@@ -3785,7 +3786,6 @@
         <image name="greenTelephone.png" width="256" height="256"/>
         <image name="greenTextBubble.png" width="256" height="256"/>
         <image name="joinTheCommunity1.jpg" width="1000" height="139"/>
-        <image name="list.png" width="30" height="30"/>
         <image name="myTokens1.jpg" width="1000" height="139"/>
         <image name="referralImage.png" width="375" height="253"/>
         <image name="requestDelivey2.jpg" width="1000" height="139"/>
@@ -3801,13 +3801,13 @@
         <segue reference="46Q-Of-GCr"/>
         <segue reference="oP7-6V-YLG"/>
         <segue reference="9gD-sH-e4F"/>
-        <segue reference="E5z-9J-e2U"/>
+        <segue reference="eNf-UG-29a"/>
         <segue reference="Xlf-EA-jFq"/>
+        <segue reference="3RZ-eE-01M"/>
+        <segue reference="eT3-9b-yu6"/>
         <segue reference="Ddf-Qa-mo1"/>
         <segue reference="Cn8-dy-pnr"/>
         <segue reference="MTh-8f-L75"/>
-        <segue reference="3RZ-eE-01M"/>
-        <segue reference="1xF-HO-JCX"/>
         <segue reference="PEq-TB-AQ2"/>
         <segue reference="hec-q6-Yco"/>
     </inferredMetricsTieBreakers>
