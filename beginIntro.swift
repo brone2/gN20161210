@@ -25,19 +25,21 @@ class beginIntro: UIViewController {
     
     @IBAction func didTapContinue(_ sender: Any) {
         
-        self.performSegue(withIdentifier: "beginExp", sender: nil)
+        //self.performSegue(withIdentifier: "beginExp", sender: nil)
+        
+        self.performSegue(withIdentifier: "beginExample", sender: nil)
         
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) { //
         
-        if segue.identifier == "beginExp" {
+        /*if segue.identifier == "beginExample" {
             
-            let secondViewController = segue.destination as! explanationShoppingList
+            let secondViewController = segue.destination as! snickerIntroPage
             secondViewController.isIntro = self.isIntro
           
             
-        }
+        }*/
     }
 
 }

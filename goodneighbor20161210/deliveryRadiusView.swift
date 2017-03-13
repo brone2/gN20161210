@@ -66,10 +66,12 @@ class deliveryRadiusView: UIViewController {
         
             self.activityIndicator.stopAnimating()
             
-            if isVerySmallScreen {
+            if isVerySmallScreen == true || isSmallScreen == true {
                 self.performSegue(withIdentifier: "goRadiusHome", sender: nil)
             } else {
+                
             self.performSegue(withIdentifier: "goToExpIntro", sender: nil)
+                
             }
         }
         })

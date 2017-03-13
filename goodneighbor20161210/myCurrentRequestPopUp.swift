@@ -34,9 +34,6 @@ class myCurrentRequestPopUp: UIViewController, UITextViewDelegate, UITextFieldDe
         
         self.isAccepted = self.myCurrentRequests[self.selectedRowIndex]?["isAccepted"] as! Bool
         
-        
-        print(self.myCurrentRequests)
-        
         self.productNameLabel.text = String("\(self.myCurrentRequests[self.selectedRowIndex]?["itemName"] as! String)")
         self.descriptionTextView.text = self.myCurrentRequests[self.selectedRowIndex]?["description"] as! String
         

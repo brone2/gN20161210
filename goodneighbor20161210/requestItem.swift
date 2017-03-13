@@ -257,7 +257,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
             self.present(alertNotEnough, animated: true, completion: nil)
         } else {
             
-        let alert = UIAlertController(title: "Neighberhood Shopping List", message: "I agree to pay a maximum of \(self.priceLabel.text!) for \(self.nameLabel.text!). Once this item has been accepted for delivery it cannot be cancelled", preferredStyle: UIAlertControllerStyle.alert)
+        let alert = UIAlertController(title: "Post Request", message: "I agree to pay a maximum of \(self.priceLabel.text!) for \(self.nameLabel.text!). Once this item has been accepted for delivery it cannot be cancelled", preferredStyle: UIAlertControllerStyle.alert)
         
         alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (action) in
                 
@@ -288,7 +288,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
             
         } else if self.userLatitude == 0.10000 {
             self.cashPopUp()
-        } else if distanceInMetersFloat > 150 {
+        } else if distanceInMetersFloat > 250 {
             
             let alertPurchaseLocation = UIAlertController(title: "Reset Delivery Location?", message: "You are requesting this item from a location that is different from your currently registered delivery address. Would you like to reset your delivery locatin to your current Location?", preferredStyle: UIAlertControllerStyle.alert)
             
@@ -651,6 +651,9 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         let requestKeyPath = "/request/\(key)/requestKey"
         let keyValue = key as String
         
+        let completedPopUpUsedPath = "/request/\(key)/completedPopUpUsed"
+        let completedPopUpUsedValue = false
+        
         self.saveKeyPath = requestKeyPath
         self.saveKey = keyValue
         
@@ -659,7 +662,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
             let downloadUrlAbsoluteStringPath = "/request/\(key)/productImage"
             let downloadUrlAbsoluteStringValue = self.downloadUrlAbsoluteString
             
-            let childUpdates:Dictionary<String, Any> = [requestedTimeStamp: [".sv": "timestamp"],profilePicReferencePath: profilePicReferenceValue!,downloadUrlAbsoluteStringPath:downloadUrlAbsoluteStringValue!, requesterCellPath: requesterCellValue,pricePath: priceLabelValue, buildingNamePath: buildingNamePathValue, itemNamePath: itemNameValue,tokenPath: tokensLabelValue,descriptionPath:descriptionLabelValue,requesterNamePath:requesterNameValue,deliverToPath:deliverToValue,longitudePath:longitudeValue,latitudePath:latitudeValue,requestedTimePath:requestedTimeValue!,requesterUIDPath:requesterUIDValue,isAcceptedPath:isAcceptedValue,isCompletePath:isCompleteValue,requestKeyPath:keyValue, paymentTypePath:paymentTypeValue, purchaePricePath:purchaePriceValue]
+            let childUpdates:Dictionary<String, Any> = [requestedTimeStamp: [".sv": "timestamp"],profilePicReferencePath: profilePicReferenceValue!,downloadUrlAbsoluteStringPath:downloadUrlAbsoluteStringValue!, requesterCellPath: requesterCellValue,pricePath: priceLabelValue, buildingNamePath: buildingNamePathValue, itemNamePath: itemNameValue,tokenPath: tokensLabelValue,descriptionPath:descriptionLabelValue,requesterNamePath:requesterNameValue,deliverToPath:deliverToValue,longitudePath:longitudeValue,latitudePath:latitudeValue,requestedTimePath:requestedTimeValue!,requesterUIDPath:requesterUIDValue,isAcceptedPath:isAcceptedValue,isCompletePath:isCompleteValue,requestKeyPath:keyValue, paymentTypePath:paymentTypeValue, purchaePricePath:purchaePriceValue, completedPopUpUsedPath:completedPopUpUsedValue]
             
         self.databaseRef.updateChildValues(childUpdates)
             
@@ -677,7 +680,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         else
             
         {
-            let childUpdates:Dictionary<String, Any> = [requestedTimeStamp: [".sv": "timestamp"],profilePicReferencePath: profilePicReferenceValue!, requesterCellPath: requesterCellValue,pricePath: priceLabelValue, buildingNamePath: buildingNamePathValue, itemNamePath: itemNameValue,tokenPath: tokensLabelValue,descriptionPath:descriptionLabelValue,requesterNamePath:requesterNameValue,deliverToPath:deliverToValue,longitudePath:longitudeValue,latitudePath:latitudeValue,requestedTimePath:requestedTimeValue!,requesterUIDPath:requesterUIDValue,isAcceptedPath:isAcceptedValue,isCompletePath:isCompleteValue,requestKeyPath:keyValue, paymentTypePath:paymentTypeValue, purchaePricePath:purchaePriceValue]
+            let childUpdates:Dictionary<String, Any> = [requestedTimeStamp: [".sv": "timestamp"],profilePicReferencePath: profilePicReferenceValue!, requesterCellPath: requesterCellValue,pricePath: priceLabelValue, buildingNamePath: buildingNamePathValue, itemNamePath: itemNameValue,tokenPath: tokensLabelValue,descriptionPath:descriptionLabelValue,requesterNamePath:requesterNameValue,deliverToPath:deliverToValue,longitudePath:longitudeValue,latitudePath:latitudeValue,requestedTimePath:requestedTimeValue!,requesterUIDPath:requesterUIDValue,isAcceptedPath:isAcceptedValue,isCompletePath:isCompleteValue,requestKeyPath:keyValue, paymentTypePath:paymentTypeValue, purchaePricePath:purchaePriceValue, completedPopUpUsedPath:completedPopUpUsedValue]
             
             self.databaseRef.updateChildValues(childUpdates)
             
@@ -764,8 +767,6 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         
 }
     
-    
-    
     func keyBoardWillHide(_ notification: NSNotification){
  
         let duration = (notification as NSNotification).userInfo![UIKeyboardAnimationDurationUserInfoKey] as! Double
@@ -788,8 +789,6 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         hideKeyboard()
         
     }
-    
-    
     
     func hideKeyboard() {
         

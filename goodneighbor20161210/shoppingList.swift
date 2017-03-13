@@ -41,6 +41,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
     var myCurrentRequests = [NSDictionary?]()
     var shoppingListCurrentRequests = [NSDictionary?]()
     var sectionData = [Int:[NSDictionary?]]()
+    var requestPopUp:NSDictionary?
     
     var selectedRowIndex:Int?
     var rowHeight:CGFloat = 100
@@ -157,15 +158,12 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         } else if isLargeScreen {
             self.coverUpBlueView.frame = CGRect(x:129.5, y: 20.5, width: 13.9, height: 30)
             self.oCoverUpText.image = UIImage(named: "smallOLarge1.png")
-            //self.coverUpBlueView.isHidden = true
             self.oCoverUpText.frame = CGRect(x:129, y: 20.5, width: 14, height: 30)
         } else {
-             self.oCoverUpText.frame = CGRect(x: 113, y: 26.5, width: 20.5, height: 19)
-            //self.oCoverUpText.frame = CGRect(x: 112.5, y: 26, width: 21.5, height: 19.5)
+            self.oCoverUpText.frame = CGRect(x: 113, y: 26.5, width: 20.5, height: 19)
             self.coverUpBlueView.isHidden = true
         }
        
-        
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
         locationManager.startUpdatingLocation()
@@ -181,8 +179,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
      self.databaseRef.child("request").observe(.childAdded) { (snapshot: FIRDataSnapshot) in
         
             let snapshot = snapshot.value as! NSDictionary
-           // print(self.sectionData)
-            
+        
             let snapID = snapshot["requesterUID"] as? String
             let snapAccepted = snapshot["isAccepted"] as? Bool
             let snapCompleted = snapshot["isComplete"] as? Bool
@@ -208,7 +205,6 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                 if(snapID != self.loggedInUserId && snapAccepted != true){
              
                     self.shoppingListCurrentRequests.append(requestDict)
-                    
                     self.shoppingListCurrentRequests.sort{ Double($0?["distanceFromUser"] as! String)! < Double($1?["distanceFromUser"] as! String)! }
                   
                 }
@@ -224,8 +220,8 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                     self.myCurrentDeliveries.append(requestDict)
                
                 }
+        
                 self.sectionData = [0:self.myCurrentDeliveries,1:self.myCurrentRequests,2:self.shoppingListCurrentRequests]
-                
                 self.table.reloadData()
             
         }
@@ -306,6 +302,13 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             secondViewController.selectedRowIndex = selectedRowIndex
             
         }
+        
+        if segue.identifier == "listToCompletePopUp" {
+            
+            let secondViewController = segue.destination as! deliveryCompletePopUp
+            secondViewController.requestPopUp = self.requestPopUp
+            
+        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -344,12 +347,6 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         if indexPath.section == 0 { // if is my current deliveries
             
             let cell:myCurrentDeliveriesCell = tableView.dequeueReusableCell(withIdentifier: "myDeliveriesCell", for: indexPath) as! myCurrentDeliveriesCell
-            
-           // cell.redQuestionMark.tag = indexPath.row
-            
-            //let didTapQuestionMarkDelivery: UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.didTapMyDeliveryQuestionMark(_:)))
-            
-            //cell.redQuestionMark.addGestureRecognizer(didTapQuestionMarkDelivery)
             
             cell.purchaseCompleteButton.contentHorizontalAlignment = .left
 
@@ -401,11 +398,33 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                  cell.purchaseCompleteButton.setTitle("Awaiting Confirmation", for: [])
                  cell.deliverToLabel.text = "Purchased for \(self.sectionData[indexPath.section]![indexPath.row]?["purchasePrice"] as! String)"
                     
-                } else {  //is complete
+                } else {  //is complete WORKING HERE
                     
                     cell.purchaseCompleteButton.setTitle("Delivery Complete!", for: [])
                     cell.deliverToLabel.text = "Purchased for \(self.sectionData[indexPath.section]![indexPath.row]?["purchasePrice"] as! String)"
+                    self.requestPopUp = self.sectionData[indexPath.section]![indexPath.row]
                     
+                    if self.requestPopUp?["completedPopUpUsed"] != nil {
+                        
+                        let isPopUpComplete = self.requestPopUp?["completedPopUpUsed"] as! Bool
+                        
+                        if !isPopUpComplete {
+                            
+                            let tempDict = requestPopUp as! NSMutableDictionary //Mutable dict so I can change popup
+                            tempDict["completedPopUpUsed"] = true
+                            self.myCurrentDeliveries[indexPath.row] = tempDict
+                            self.sectionData[indexPath.section]?[indexPath.row] = tempDict
+                            
+                            let requestKey = requestPopUp?["requestKey"] as! String
+                            self.databaseRef.child("request").child(requestKey).child("completedPopUpUsed").setValue(true)
+                            
+                            self.performSegue(withIdentifier: "listToCompletePopUp", sender: nil)
+                            
+                        }
+                        
+                    
+                    
+                    }
                 }
                 
             }
@@ -578,7 +597,6 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                             cell.deliveringToLabel.tag = indexPath.row
                             let cellPhoneNumberTap:UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.didTapCellPhoneCopy(_:)))
                             cell.deliveringToLabel.addGestureRecognizer(cellPhoneNumberTap)
-                        
                     }
                 }
                 
@@ -604,14 +622,12 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                 
                 if isSmallScreen{
                     cell.nameLabel.text = "No current requests"
-                    //cell.distanceLabel.text = "Refer friends and earn tokens!"
                    cell.distanceLabel.text = "Click pencil below to add one!"
                 } else if isVerySmallScreen {
                     cell.distanceLabel.isHidden = true
                     cell.nameLabel.text = "No current requests"
                 } else {
                    cell.distanceLabel.text = "Select the pencil below and add one!"
-                   //cell.distanceLabel.text = "Refer friends and earn tokens!"
                    cell.nameLabel.text = "No current requests in your community"
                 }
                 
@@ -621,6 +637,8 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                 
                 return cell
             }
+            
+            print(sectionData)
             
             let payType:String = (self.sectionData[indexPath.section]![indexPath.row]?["paymentType"] as? String)!
             
@@ -699,7 +717,6 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             return cell
             
         }
-        
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -877,7 +894,6 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         
         alertPrice.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
 
-        
         let alertComplete = UIAlertController(title: "Request Completed", message: "If you have receive the item, and compensated the deliverer for the price he/she paid in full, this delivery is complete!", preferredStyle: UIAlertControllerStyle.alert)
         
         alertComplete.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (action) in
@@ -1073,21 +1089,12 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                     }
                     
                 let requestKey = self.sectionData[0]?[index]?["requestKey"] as! String
-                    
-             /*   self.databaseRef.child("request").child(requestKey).child("purchasePrice").setValue(self.purchasePrice)
-                self.databaseRef.child("request").child(requestKey).child("purchaseLatitude").setValue(self.userLatitude)
-                self.databaseRef.child("request").child(requestKey).child("purchaseLongitude").setValue(self.userLongitude)
-                self.databaseRef.child("request").child(requestKey).child("purchaseTimeStamp").setValue([".sv": "timestamp"])
-                    
-             */
-                    
-                    
                 let purchasePricePath = "/request/\(requestKey)/purchasePrice"
                 let purchaseLatitudePath = "/request/\(requestKey)/purchaseLatitude"
                 let purchaseLongitudePath = "/request/\(requestKey)/purchaseLongitude"
                 let purchaseTimeStampPath = "/request/\(requestKey)/purchaseTimeStamp"
                     
-                let childUpdatePurchaseComplete:Dictionary<String, Any> = [purchasePricePath: self.purchasePrice, purchaseLatitudePath:self.userLatitude,purchaseLongitudePath:self.userLongitude,purchaseTimeStampPath:[".sv": "timestamp"]]
+                let childUpdatePurchaseComplete:Dictionary<String, Any> = [purchasePricePath: self.purchasePrice!, purchaseLatitudePath:self.userLatitude,purchaseLongitudePath:self.userLongitude,purchaseTimeStampPath:[".sv": "timestamp"]]
                     
                 //Issue arising in that when a new requested is added to community, the Awaiting complete button become purchas and bottom label reverts to "will pay". To solve this manually update
                 
@@ -1113,9 +1120,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                  } else {
                     
                     self.purchaseText(itemName: itemName, requesterCell: requesterCell, requesterName: requesterName, purchasePrice: self.purchasePrice!, isVenmo: true)
-                    
                  }
-                
                 }
                 
                 alertController.addTextField {
@@ -1132,16 +1137,12 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             
             self.present(alertPurchaseComplete, animated: true, completion: nil)
             
-            
-            
-            
         } else if sender.titleLabel?.text == "Awaiting Confirmation"{
             
             let requesterName = self.sectionData[0]?[index]?["requesterName"] as! String
             let tokensOffered = self.sectionData[0]?[index]?["tokensOffered"] as! Int
             
             makeAlert(title: "Awaiting Delivery Confirmation", message: "After you have delivered the item and received payment, \(requesterName) will mark this delivery as complete and you will be awarded \(tokensOffered) token!")
-           
         }
     }
     
@@ -1169,7 +1170,6 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
      
     }
     
-    
     @IBAction func didTapMyDeliveryQuestion(_ sender: UIButton) {
         
         let index = sender.tag
@@ -1188,8 +1188,6 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                 
             } else {
                 
-                //self.questionMarkMessageDelivery = "Now that you have purchased \(self.sectionData[0]![index]?["itemName"] as! String), once you deliver it to \(self.sectionData[0]![index]?["requesterName"] as! String) and receive payment of \(self.sectionData[0]![index]?["purchasePrice"] as! String), \(self.sectionData[0]![index]?["requesterName"] as! String) will select \"Mark as Complete\" and you will receive \(self.sectionData[0]![index]?["tokensOffered"] as! Int) token"
-                
                 self.questionMarkMessageDelivery = "The final step is to deliver \(self.sectionData[0]![index]?["itemName"] as! String) to \(self.sectionData[0]![index]?["requesterName"] as! String) and receive payment of \(self.sectionData[0]![index]?["purchasePrice"] as! String). Once the delivery is complete \(self.sectionData[0]![index]?["requesterName"] as! String) will select \"Mark as Complete\" and you will receive \(self.sectionData[0]![index]?["tokensOffered"] as! Int) token"
                 
                 self.questionMarkMessageDeliveryTitle = "Delivery in Progress"
@@ -1202,40 +1200,9 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         
         self.makeAlert(title: self.questionMarkMessageDeliveryTitle!, message: self.questionMarkMessageDelivery!)
         
-        
     }
     
-    /*func didTapMyDeliveryQuestionMark(_ sender: UITapGestureRecognizer) {
-        
-        let index = sender.view!.tag
-        
-        let purchasePriceString: String = (self.sectionData[0]![index]?["purchasePrice"] as? String)!
-        print(index)
-        
-        let isComplete: Bool = self.sectionData[0]![index]?["isComplete"] as! Bool
-        
-        if !isComplete {
-        if purchasePriceString == "NA" {
-        
-        self.questionMarkMessageDelivery = "Once you have purchased \(self.sectionData[0]![index]?["itemName"] as! String), please tap Purchase Complete and then you will be able to enter the price you paid for it"
-            
-        self.questionMarkMessageDeliveryTitle = "Item not purchased"
-            
-        } else {
-            
-            self.questionMarkMessageDelivery = "Now that you have purchased \(self.sectionData[0]![index]?["itemName"] as! String), once you deliver it to \(self.sectionData[0]![index]?["requesterName"] as! String) and receive payment of \(self.sectionData[0]![index]?["purchasePrice"] as! String), \(self.sectionData[0]![index]?["requesterName"] as! String) will be able to mark the request as complete and you will receive \(self.sectionData[0]![index]?["tokensOffered"] as! Int) token"
-            
-            self.questionMarkMessageDeliveryTitle = "Delivery in Progress"
-        }
-        } else {
-            self.questionMarkMessageDelivery = "Request is Complete!"
-            self.questionMarkMessageDeliveryTitle = "Request is Complete!"
-            self.questionMarkImage.isEnabled = false
-        }
-        
-        self.makeAlert(title: self.questionMarkMessageDeliveryTitle!, message: self.questionMarkMessageDelivery!)
-        
-    }*/
+
     @IBAction func didTapMyRequestQuestion(_ sender: UIButton) {
         
         let index = sender.tag
@@ -1318,7 +1285,6 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         }
         
         self.makeAlert(title: self.questionMarkMessageRequestTitle!, message: self.questionMarkMessageRequest!)
-        
         
     }
     

@@ -120,8 +120,8 @@ class meViewController: UIViewController {
                 
                 self.userInMyRadiusLabel.text = "\(self.usersInMyRadius - 1) members of your community use goodneighbor!"
                 
-            }   
-        }
+                }   
+            }
         }
     }
 
@@ -146,7 +146,7 @@ class meViewController: UIViewController {
         
         self.performSegue(withIdentifier: "goToPast", sender: nil)
         
-          }
+        }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) { //
         
@@ -163,10 +163,6 @@ class meViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    
-    
-    
     
     @IBAction func didTapPhoneButton(_ sender: UIButton) {
         
@@ -270,9 +266,6 @@ class meViewController: UIViewController {
         self.present(alertController, animated: true, completion: nil)
         */
     }
-    
-    
-    
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
