@@ -1335,13 +1335,13 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         
         if !isVenmo {
         
-            let textMessage = "Hey \(requesterName), I have purchased \(itemName) for \(purchasePrice). Please have \(purchasePrice) cash ready to pay me when I arrive. Thanks!"
+            let textMessage = "Hey \(requesterName), I have purchased \(itemName) for \(purchasePrice). Please have \(purchasePrice) cash ready to pay me when I arrive; I will bring a receipt to verify the purchase price of \(purchasePrice). Thanks!"
             
             self.purchaseActualText(textMessage: textMessage, requesterCell: requesterCell)
             
         } else {
             
-            let textMessage = "Hey \(requesterName), I have purchased \(itemName) for \(purchasePrice). Please be ready to venmo me \(purchasePrice) when I arrive. You can copy my phone number by tapping on Copy Phone Number written in bold blue. Thanks!"
+            let textMessage = "Hey \(requesterName), I have purchased \(itemName) for \(purchasePrice). Please be ready to venmo me \(purchasePrice) when I arrive; I will bring a receipt to verify the purchase price of \(purchasePrice). You can copy my phone number by tapping on \"Copy Phone Number\" written in bold blue. Thanks!"
             
             self.purchaseActualText(textMessage: textMessage, requesterCell: requesterCell)
             

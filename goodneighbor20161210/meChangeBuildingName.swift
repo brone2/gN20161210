@@ -43,7 +43,7 @@ class meChangeBuildingName: UIViewController, UITableViewDelegate,UITableViewDat
             
             let distanceMilesFloat = Float(distanceMiles)
             
-            if distanceMilesFloat < 0.0500 {
+            if distanceMilesFloat < 0.7500 {
                 
                 let requestDict = snapshot as! NSMutableDictionary
                 let distanceMilesFloatString = String(format: "%.2f", distanceMilesFloat)

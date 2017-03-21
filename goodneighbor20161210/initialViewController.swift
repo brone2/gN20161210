@@ -26,6 +26,8 @@ var userFullName: String?
 var userReferralCode: String?
 var referralRedeemed:Bool = false
 
+var myBuilding:String?
+
 class initialViewController: UIViewController {
     
     var loggedInUserData: AnyObject?
@@ -115,6 +117,8 @@ class initialViewController: UIViewController {
                         self.databaseRef.child("users").child(self.loggedInUserId!).observeSingleEvent(of: .value) { (snapshot:FIRDataSnapshot) in
                             
                             self.loggedInUserData = snapshot.value as? NSDictionary
+                            
+                            myBuilding = self.loggedInUserData?["buildingName"] as? String
                             
                             loggedInUserName = self.loggedInUserData?["name"] as! String
                             
