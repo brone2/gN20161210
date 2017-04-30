@@ -26,6 +26,7 @@ class meViewController: UIViewController {
     
     @IBOutlet var userInMyRadiusLabel: UILabel!
     
+    @IBOutlet var topImag: UIImageView!
     @IBOutlet var couponRedemptionBackground: UIView!
     @IBOutlet var logOutButton: UIButton!
     @IBOutlet var termsOfServiceButton: UIButton!
@@ -35,6 +36,13 @@ class meViewController: UIViewController {
     @IBOutlet var viewPastRequestButton: UIButton!
     @IBOutlet var resetHomeLocationButton: UIButton!
     @IBOutlet var couponRedemptionButton: UIButton!
+    @IBOutlet var profilePicImage: UIImageView!
+    @IBOutlet var topWhiteBackgroundView: UIView!
+    
+    var leadingConstraint: NSLayoutConstraint?
+    var leadingConstraintValue:CGFloat?
+    
+    var activeBuildingMates = [String]()
     
     var myPastRecieve = [NSDictionary?]()
     var myPastDeliveries = [NSDictionary?]()
@@ -49,6 +57,37 @@ class meViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.profilePicImage.layer.cornerRadius = 40
+        self.profilePicImage.layer.masksToBounds = true
+        self.profilePicImage.contentMode = .scaleAspectFit
+        self.profilePicImage.layer.borderWidth = 2.0
+        self.profilePicImage.layer.borderColor = UIColor(red: 16/255, green: 126/255, blue: 207/255, alpha: 1).cgColor
+    
+        if isSmallScreen || isVerySmallScreen {
+            
+            self.profilePicImage.isHidden = true
+            self.leadingConstraintValue = -15.0
+            
+            self.leadingConstraint = self.topImag.bottomAnchor.constraint(equalTo: self.topWhiteBackgroundView.topAnchor, constant: self.leadingConstraintValue!)
+            NSLayoutConstraint.activate([self.leadingConstraint!])
+            
+        } else {
+            
+            if let image = myProfilePicRef {
+                
+                let data = try? Data(contentsOf: URL(string: image)!)
+                
+                self.profilePicImage.image = UIImage(data: data!)
+                
+            }
+            
+            let imageTap:UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapMediaInTweet(_:)))
+            
+            self.profilePicImage.addGestureRecognizer(imageTap)
+            
+        }
+   
+
        self.logOutButton.isHidden = true
         
         //For ipad small hide coupon redemption
@@ -118,11 +157,50 @@ class meViewController: UIViewController {
                 
                 self.usersInMyRadius += 1
                 
-                self.userInMyRadiusLabel.text = "\(self.usersInMyRadius - 1) members of your community use goodneighbor!"
+                self.userInMyRadiusLabel.text = "\(self.usersInMyRadius - 1) goodneighbors in your community!"
                 
-                }   
+                }
+                
+                //For user count check of ambassadors
+               /* if let userBuilding = snapshot3["buildingName"] as? String{
+                if userBuilding == "Wohlford" {
+                    print(snapshot3["fullName"] as? String)
+                }
+            }*/
+                
             }
         }
+        
+        /*self.databaseRef.child("request").observe(.childAdded) { (snapshot4: FIRDataSnapshot) in
+            
+            let snapshot4 = snapshot4.value as! NSDictionary
+          
+            
+            if let userTime = snapshot4["purchaseTimeStamp"] as? Int {
+               
+                let requestBuilding = snapshot4["buildingName"] as? String
+                //let userTimeInt = Int(userTime)
+                
+               if userTime > 191265775752 && (requestBuilding == "Hamilton Holmes" || requestBuilding == "Raoul Hall"  || requestBuilding == "Complex" || requestBuilding == "Longstreet means" )  {
+               //if userTime>1490676932011 && (requestBuilding == "Fawcett") {
+                //Adele
+               //if userTime>1490676932011 && (requestBuilding == "Wohlford" || requestBuilding == "Boswell") {
+                    
+                    if  self.activeBuildingMates.contains(snapshot4["requesterName"] as! String)  {
+                    } else {
+                    self.activeBuildingMates.append(snapshot4["requesterName"] as! String)
+                    }
+                    if  self.activeBuildingMates.contains(snapshot4["accepterName"] as! String) {
+                    } else {
+                        self.activeBuildingMates.append(snapshot4["accepterName"] as! String)
+                    }
+                    
+                }
+            }
+            print(self.activeBuildingMates)
+            print(self.activeBuildingMates.count)
+        }*/
+        
     }
 
     @IBAction func didTapCouponRedemption(_ sender: UIButton) {
@@ -269,6 +347,27 @@ class meViewController: UIViewController {
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
+    }
+    func didTapMediaInTweet(_ sender: UITapGestureRecognizer) {
+        let imageView = sender.view as! UIImageView
+        let newImageView = UIImageView(image: imageView.image)
+        
+        newImageView.frame = self.view.frame
+        
+        newImageView.backgroundColor = UIColor.black
+        newImageView.contentMode = .scaleAspectFit
+        newImageView.isUserInteractionEnabled = true
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.dismissFullScreenImage))
+        
+        newImageView.addGestureRecognizer(tap)
+        self.view.addSubview(newImageView)
+        
+    }
+    
+    
+    func dismissFullScreenImage(sender: UITapGestureRecognizer){
+        sender.view?.removeFromSuperview()
     }
 
 }

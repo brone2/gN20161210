@@ -16,6 +16,7 @@ import CoreLocation
 
 
 
+
 var autoLoginTryCount = 0
 
 class loginViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate  {
@@ -47,7 +48,7 @@ class loginViewController: UIViewController, UIImagePickerControllerDelegate, UI
     var proPic = 0
     
     var loggedInUserId: String?
-   
+    var userNotifID: String?
     
     @IBAction func didTapSignUp(_ sender: UIButton) {
         
@@ -91,7 +92,7 @@ class loginViewController: UIViewController, UIImagePickerControllerDelegate, UI
                         //Choose png of jpeg or whatever
                         metadata.contentType = "image/png"
                         
-                        if self.imageData  != nil{
+                        if self.imageData  != nil {
                             let profilePicStorageRef = self.storageRef.child("request/\(key)/image_request")
                             
                             _ = profilePicStorageRef.put(self.imageData!, metadata: metadata,  completion: { (metadata, error) in
@@ -120,6 +121,8 @@ class loginViewController: UIViewController, UIImagePickerControllerDelegate, UI
                         
                         //Update
                         self.databaseRef.updateChildValues(childUpdates)
+                        
+                        FIRAnalytics.setUserPropertyString(userFullName, forName: "fullName")
                         
                         self.performSegue(withIdentifier: "goToTerms", sender: nil)
                     }
@@ -210,7 +213,8 @@ class loginViewController: UIViewController, UIImagePickerControllerDelegate, UI
     
     func checkUser(){
     
-        if self.loginHelp == 1 {
+        
+      /*  if self.loginHelp == 1 {
         
         FIRAuth.auth()?.addStateDidChangeListener({ (auth, user) in
             if user != nil {
@@ -251,7 +255,7 @@ class loginViewController: UIViewController, UIImagePickerControllerDelegate, UI
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             self.loginHelp = 2
             print(self.loginHelp)
-    }
+    }*/
     }
 
     

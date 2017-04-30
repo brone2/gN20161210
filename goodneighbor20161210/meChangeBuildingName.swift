@@ -71,6 +71,9 @@ class meChangeBuildingName: UIViewController, UITableViewDelegate,UITableViewDat
         
         let buildingName = self.buildingsNearMe[selectedRowIndex]?["buildingName"]
         
+        let thisBuilding = buildingName as? String
+        myBuilding = thisBuilding!
+        
         let childUpdates = ["/users/\((FIRAuth.auth()?.currentUser?.uid)!)/latitude":buildingLatitude!, "/users/\((FIRAuth.auth()?.currentUser?.uid)!)/longitude":buildingLongitude!, "/users/\((FIRAuth.auth()?.currentUser?.uid)!)/buildingName":buildingName!] as [String : Any]
         
         self.databaseRef.updateChildValues(childUpdates)

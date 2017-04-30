@@ -12,6 +12,7 @@ import FirebaseAuth
 import FirebaseDatabase
 import FirebaseStorage
 import CoreLocation
+import OneSignal
 
 
 
@@ -37,6 +38,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
     var downloadUrlAbsoluteString: String?
     var paymentType = "Venmo"
     var requestPrice = "$0.00"
+    var myBuildingMates = [String]()
     
     var locationManager = CLLocationManager()
     var userLocation: CLLocation?
@@ -234,12 +236,14 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
     
     @IBAction func didTapRequest(_ sender: Any) {
         
+    OneSignal.postNotification(["contents": ["en": "\(userFullName!) posted a request!"], "include_player_ids": ["58ffaf31-7506-4cf5-b874-ebce01981ba4"],"ios_sound": "nil"])
+        
     self.databaseRef.child("users").child(self.loggedInUser!).observeSingleEvent(of: .value) { (snapshot:FIRDataSnapshot) in
         
         currentTokenCount = self.loggedInUserData?["tokenCount"] as? Int
         
-        if self.itemNameLabel.text == "" || self.priceLabel.text == "" || self.priceLabel.text == "" || self.priceLabel.text == "$" || self.descriptionTextView.text! == "" {
-            let alertNotEnough = UIAlertController(title: "Missing Required Fields", message: "Please fill out all required fields", preferredStyle: UIAlertControllerStyle.alert)
+        if self.itemNameLabel.text == "" || self.priceLabel.text == "" || self.priceLabel.text == "" || self.priceLabel.text == "$" || self.descriptionTextView.text! == "Ex: Please pick up a six pack of diet coke, but regular coke is fine if there's no diet. I live in Lisner Dorm. Call me with any questions." {
+            let alertNotEnough = UIAlertController(title: "Missing Information", message: "Please fill out all fields", preferredStyle: UIAlertControllerStyle.alert)
             
             alertNotEnough.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
                 return
@@ -419,7 +423,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         
         if self.paymentType == "Cash" {
             self.venmoImage.image = UIImage(named: "venmo-icon.png")
-            self.cashImage.image = UIImage(named: "Cash_icon_grey.png")
+            self.cashImage.image = UIImage(named: "grey_cash.png")
             self.paymentType = "Venmo"
             print(self.paymentType)
         }
@@ -656,6 +660,25 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         
         self.saveKeyPath = requestKeyPath
         self.saveKey = keyValue
+    
+    //Send out push notifications
+      //  DispatchQueue.main.async {
+      DispatchQueue.global().async {
+        
+            for mateID in 0..<self.myBuildingMates.count {
+            print(mateID)
+            print("EEEEEE")
+            print(self.myBuildingMates[mateID])
+            
+            /*let deadlineTime = DispatchTime.now() + .seconds(1)
+                
+            DispatchQueue.main.asyncAfter(deadline: deadlineTime) {*/
+                
+              OneSignal.postNotification(["contents": ["en": "\(requesterNameValue) has requested \(itemNameValue)!"], "include_player_ids": [self.myBuildingMates[mateID]],"ios_sound": "nil"])
+                
+            }
+       }
+     //   }
         
         if self.imageData != nil{
             
@@ -782,6 +805,52 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
      override func viewDidAppear(_ animated: Bool) {
         enableKeyboardHideOnTap()
         self.toolbarBottomConstraintInitialValue = toolbarBottomConstraint.constant
+        
+        self.myBuildingMates = []
+        
+        //myBuildingMates - Store people to send to that are in your building and have an ID and are not you
+        self.databaseRef.child("users").observe(.childAdded) { (snapshot: FIRDataSnapshot) in
+            
+            //Go ahead and save the fullName here
+            
+            let userID = snapshot.key
+            
+            let snapshot = snapshot.value as! NSDictionary
+            
+            let userLatitude = snapshot["latitude"] as? CLLocationDegrees
+            let userLongitude = snapshot["longitude"] as? CLLocationDegrees
+            
+            let userLocation = CLLocation(latitude: userLatitude!, longitude: userLongitude!)
+            let distanceInMeters = myLocation!.distance(from: userLocation)
+            let distanceMiles = distanceInMeters/1609.344897
+            let distanceMilesFloat = Float(distanceMiles)
+            
+            if distanceMilesFloat < 0.20 && userID != self.loggedInUser {
+                
+                if snapshot["notifID"] != nil {
+                    
+                    let userNotifID = snapshot["notifID"] as? String
+                    self.myBuildingMates.append(userNotifID!)
+                    print(self.myBuildingMates)
+                    
+                }
+                
+            }
+            
+          /*  if let userBuilding = snapshot["buildingName"] as? String {
+            
+            if userBuilding == myBuilding &&  userID != self.loggedInUser &&  myBuilding != "N/A" {
+                
+            if snapshot["notifID"] != nil {
+                
+                let userNotifID = snapshot["notifID"] as? String
+                self.myBuildingMates.append(userNotifID!)
+                print(self.myBuildingMates)
+                
+              }
+            }
+        }*/
+        }
     }
 
     @IBAction func didTapDone(_ sender: UIBarButtonItem) {

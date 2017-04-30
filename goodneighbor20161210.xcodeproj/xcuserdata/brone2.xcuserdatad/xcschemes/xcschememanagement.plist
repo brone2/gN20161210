@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>OneSignalNotificationServiceExtension.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>9</integer>
+		</dict>
 		<key>goodneighbor20161210.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -12,6 +17,11 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>E52BC5591E81D53F00169976</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>E5E19F581DF96C0100994E5F</key>
 		<dict>
 			<key>primary</key>

@@ -11,6 +11,8 @@ import Firebase
 import FirebaseAuth
 import FirebaseStorage
 import FirebaseDatabase
+import OneSignal
+
 
 class couponMaintenanceView: UIViewController {
 
@@ -70,7 +72,32 @@ class couponMaintenanceView: UIViewController {
             
             self.uidLabel.text = FIRAuth.auth()?.currentUser?.uid
             
-        } else if self.couponText == "dailyMaintenance" {
+        }
+        else if self.couponText == "sendNotif" {
+         
+            //OneSignal.postNotification(["contents": ["en": "Someone in your dorm has posted a request!"], "include_player_ids": ["58ffaf31-7506-4cf5-b874-ebce01981ba4"]])
+          
+             //OneSignal.postNotification(["contents": ["en": "It appears you have not registered your dorm! Register your dorm to see what your friends are requesting :)"], "include_player_ids": ["538471d8-733e-4a4a-bbb0-43be97d265ca"]])
+            //"538471d8-733e-4a4a-bbb0-43be97d265ca" Toli
+            
+            
+            //Victor
+             //  OneSignal.postNotification(["contents": ["en": "A girl to cancel dinner plans and then give no suggestion on rescheduling!!! "], "include_player_ids": ["a757c9f4-14db-45e9-886a-e0d26dd38f68"]])
+        //Cherner
+             //OneSignal.postNotification(["contents": ["en": "Victor has requested a hairy nutsack to be dipped into his mouth"], "include_player_ids": ["a4789cf0-a0aa-4aa8-a7fc-76a756da177e"]])
+        //The king neil"58ffaf31-7506-4cf5-b874-ebce01981ba4"
+            
+        //OneSignal.postNotification(["contents": ["en": "Harry has requested a Bottle of Butterbeer"], "include_player_ids": ["58ffaf31-7506-4cf5-b874-ebce01981ba4"]])
+        
+        //Morning Mom "6ec6cb06-0501-4509-974a-fc6a940dc8a3"
+            //OneSignal.postNotification(["contents": ["en": "I hope you have a great week mom! I Love you!"], "include_player_ids": ["6ec6cb06-0501-4509-974a-fc6a940dc8a3"]])
+        
+        }
+            
+        
+         
+        
+        else if self.couponText == "dailyMaintenance" {
             
             self.databaseRef.child("request").observe(.childAdded) { (snapshot:FIRDataSnapshot) in
                 

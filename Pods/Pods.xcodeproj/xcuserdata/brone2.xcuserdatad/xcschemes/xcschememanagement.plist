@@ -34,6 +34,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-OneSignalNotificationServiceExtension.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-goodneighbor20161210.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -53,6 +58,11 @@
 			<true/>
 		</dict>
 		<key>44CAD6CE523055ED339E87154473A254</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>4C91F21CD6F5C81D14D962A1E78C8445</key>
 		<dict>
 			<key>primary</key>
 			<true/>

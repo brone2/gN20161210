@@ -11,6 +11,7 @@ import Firebase
 import FirebaseAuth
 import FirebaseDatabase
 import CoreLocation
+import OneSignal
 
 class deliveryRadiusView: UIViewController {
 
@@ -96,8 +97,17 @@ class deliveryRadiusView: UIViewController {
         slider.minimumValue = 0.010000
         slider.maximumValue = 1.0000
         self.deliveryRadius = 0.499789
-
-        // Do any additional setup after loading the view.
+        
+       OneSignal.postNotification(["contents": ["en": "\(userFullName!) has made an account!"], "include_player_ids": ["58ffaf31-7506-4cf5-b874-ebce01981ba4"],"ios_sound": "nil"])
+        
+        
+        //Save pushNotification ID
+        OneSignal.idsAvailable({(_ userId, _ pushToken) in
+            print("UserId:\(userId)")
+                print((FIRAuth.auth()?.currentUser?.uid)!)
+                let myNotifID = userId
+                self.databaseRef.child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("notifID").setValue(myNotifID!)
+        })
     }
 
     override func didReceiveMemoryWarning() {

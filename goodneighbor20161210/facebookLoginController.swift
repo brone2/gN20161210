@@ -15,8 +15,6 @@ import FirebaseDatabase
 import FBSDKLoginKit
 import CoreLocation
 
-
-
 class facebookLoginController: UIViewController, FBSDKLoginButtonDelegate {
     
     var url: String?
@@ -24,6 +22,7 @@ class facebookLoginController: UIViewController, FBSDKLoginButtonDelegate {
     var databaseRef = FIRDatabase.database().reference()
     var proPicURL: String?
     var loggedInUserId: String?
+    var pushNotifID: String?
     
     @IBOutlet var signUpButtonOutlet: customButton!
     
@@ -88,10 +87,9 @@ class facebookLoginController: UIViewController, FBSDKLoginButtonDelegate {
                         let deliveryRadius = 1.0000987
                         
                         
+                        let userUId = (FIRAuth.auth()?.currentUser?.uid)!
                         
-                        let userId = (FIRAuth.auth()?.currentUser?.uid)!
-                        
-                        let childUpdatesFbook = ["/users/\(userId)/name":dict["first_name"]!,"/users/\(userId)/fullName":dict["name"]!,"/users/\(userId)/gender":dict["gender"]!,"/users/\(userId)/buildingName":"N/A","/users/\(userId)/cellPhoneNumber":"0","/users/\(userId)/deliveryCount":0, "/users/\(userId)/recieveCount":0, "/users/\(userId)/tokenCount":2,"/users/\(userId)/profilePicReference":self.url!, "/users/\(userId)/longitude":longitude, "/users/\(userId)/latitude":latitude, "/users/\(userId)/deliveryRadius":deliveryRadius, "/users/\(userId)/referralCode":userReferralCode!] as [String : Any]
+                        let childUpdatesFbook = ["/users/\(userUId)/name":dict["first_name"]!,"/users/\(userUId)/fullName":dict["name"]!,"/users/\(userUId)/gender":dict["gender"]!,"/users/\(userUId)/buildingName":"N/A","/users/\(userUId)/cellPhoneNumber":"0","/users/\(userUId)/deliveryCount":0, "/users/\(userUId)/recieveCount":0, "/users/\(userUId)/tokenCount":2,"/users/\(userUId)/profilePicReference":self.url!, "/users/\(userUId)/longitude":longitude, "/users/\(userUId)/latitude":latitude, "/users/\(userUId)/deliveryRadius":deliveryRadius, "/users/\(userUId)/referralCode":userReferralCode!] as [String : Any]
                         
                         //Update
                         self.databaseRef.updateChildValues(childUpdatesFbook)

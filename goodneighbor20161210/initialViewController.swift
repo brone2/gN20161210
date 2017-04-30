@@ -13,6 +13,7 @@ import FirebaseStorage
 import FirebaseDatabase
 import FBSDKLoginKit
 import CoreLocation
+import OneSignal
 
 var myLocation: CLLocation?
 var myRadius: Float?
@@ -46,8 +47,9 @@ class initialViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-      
+
 //try! FIRAuth.auth()?.signOut()
+        
         
        userReferralCode = "Not yet entered"
         
@@ -102,11 +104,11 @@ class initialViewController: UIViewController {
         
             FIRAuth.auth()?.addStateDidChangeListener({ (auth, user) in
                 
+                
                 if autoLoginHelp == 0 {
                 
                 if user != nil {
                     
-                        print("timer invalidated")
                         self.timer.invalidate()
                     
                         let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
@@ -118,9 +120,32 @@ class initialViewController: UIViewController {
                             
                             self.loggedInUserData = snapshot.value as? NSDictionary
                             
+                        //If account is registered but for some reason not completed
+                        //IF PROBLEM HAPPENS AGAIN UNCOMMENT BELOW
+                            if self.loggedInUserData == nil {
+                                try! FIRAuth.auth()?.signOut()
+                                self.performSegue(withIdentifier: "goToFbookLogin", sender: nil)
+                            }
+                            
+                            else {
+                            
                             myBuilding = self.loggedInUserData?["buildingName"] as? String
                             
                             loggedInUserName = self.loggedInUserData?["name"] as! String
+                                
+                            //Save pushNotification ID if needed
+                            OneSignal.idsAvailable({(_ userId, _ pushToken) in
+                                print("UserId:\(userId)")
+                                
+                                if self.loggedInUserData?["notifID"] as? String != nil {
+                                    print("Already has notifID")
+                                } else {
+                                print(self.loggedInUserId!)
+                                let myNotifID = userId
+                                self.databaseRef.child("users").child(self.loggedInUserId!).child("notifID").setValue(myNotifID!)
+                                    
+                                }
+                            })
                             
                             if self.loggedInUserData?["referralCode"] as?  String != nil {
                                let referOptional = self.loggedInUserData?["referralCode"] as! String
@@ -173,14 +198,12 @@ class initialViewController: UIViewController {
                                 //let homeViewController: UIViewController = mainStoryboard.instantiateViewController(withIdentifier: "requestItem")
                                 
                                 self.present(homeViewController, animated: true, completion: nil)
-                                    
                                 }
-                                
                             }
-                            
-                           
                         }
+                    }
                 } else {
+                    
                 self.performSegue(withIdentifier: "goToFbookLogin", sender: nil)
                 }
                 }
