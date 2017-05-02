@@ -98,9 +98,6 @@ class deliveryRadiusView: UIViewController {
         slider.maximumValue = 1.0000
         self.deliveryRadius = 0.499789
         
-       OneSignal.postNotification(["contents": ["en": "\(userFullName!) has made an account!"], "include_player_ids": ["58ffaf31-7506-4cf5-b874-ebce01981ba4"],"ios_sound": "nil"])
-        
-        
         //Save pushNotification ID
         OneSignal.idsAvailable({(_ userId, _ pushToken) in
             print("UserId:\(userId)")
@@ -108,6 +105,19 @@ class deliveryRadiusView: UIViewController {
                 let myNotifID = userId
                 self.databaseRef.child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("notifID").setValue(myNotifID!)
         })
+        
+       //Send push notif to me!!!
+        self.databaseRef.child("users").child("MmChVhtwk2P42w51cSbGkcrREoD2").observeSingleEvent(of: .value, with: { snapshot in
+            
+            let snapshot = snapshot.value as? NSDictionary
+            if let tempNeilNotif = snapshot?["notifID"] as? String{
+                neilNotif = tempNeilNotif
+            }
+            print(neilNotif)
+            OneSignal.postNotification(["contents": ["en": "\(userFullName!) has made an account!"], "include_player_ids": [neilNotif],"ios_sound": "nil"])
+         
+        })
+        
     }
 
     override func didReceiveMemoryWarning() {

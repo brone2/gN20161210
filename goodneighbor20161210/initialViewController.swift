@@ -26,6 +26,7 @@ var isLargeScreen = false
 var userFullName: String?
 var userReferralCode: String?
 var referralRedeemed:Bool = false
+var neilNotif: String = "hello"
 
 var myBuilding:String?
 
@@ -179,6 +180,16 @@ class initialViewController: UIViewController {
                             
                             myRadius  = self.loggedInUserData?["deliveryRadius"] as? Float
                             FIRAnalytics.logEvent(withName: "openApp", parameters: nil)
+                                
+                            //Store me push notification info
+                            self.databaseRef.child("users").child("MmChVhtwk2P42w51cSbGkcrREoD2").observeSingleEvent(of: .value, with: { snapshot in
+                                
+                                    let snapshot = snapshot.value as? NSDictionary
+                                    if let tempNeilNotif = snapshot?["notifID"] as? String{
+                                        neilNotif = tempNeilNotif
+                                    }
+                            
+                            })
                             
                             self.databaseRef.child("promoteShare").observeSingleEvent(of: .value) { (snapshot:FIRDataSnapshot) in
                                 
