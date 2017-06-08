@@ -160,6 +160,11 @@ class meViewController: UIViewController {
                 self.userInMyRadiusLabel.text = "\(self.usersInMyRadius - 1) goodneighbors in your community!"
                 
                 }
+                if let userState = snapshot3["state"] as? String {
+                    if userState == "GA " {
+                    print(snapshot3["fullName"])
+                    }
+                }
                 
                 //For user count check of ambassadors
                /* if let userBuilding = snapshot3["buildingName"] as? String{

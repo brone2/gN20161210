@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		43277D9F4E84E8447A58241D /* libPods-OneSignalNotificationServiceExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A126C5675A31D89AEB264109 /* libPods-OneSignalNotificationServiceExtension.a */; };
 		AA26570F4C6289AFF0D3D243 /* Pods_goodneighbor20161210.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE9BC30A54DB8E9F4050CFA2 /* Pods_goodneighbor20161210.framework */; };
+		E504E1AC1EBE5BB400424F96 /* letter.png in Resources */ = {isa = PBXBuildFile; fileRef = E504E1AB1EBE5BB400424F96 /* letter.png */; };
+		E504E1B21EBF4CA500424F96 /* Paper-30.png in Resources */ = {isa = PBXBuildFile; fileRef = E504E1B11EBF4CA500424F96 /* Paper-30.png */; };
 		E5084FDB1E03EDE400D1F388 /* buildingNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5084FDA1E03EDE400D1F388 /* buildingNameView.swift */; };
 		E5084FDD1E04576900D1F388 /* meChangeBuildingName.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5084FDC1E04576900D1F388 /* meChangeBuildingName.swift */; };
 		E5084FDF1E046A0600D1F388 /* termsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5084FDE1E046A0600D1F388 /* termsViewController.swift */; };
@@ -27,6 +29,9 @@
 		E536497C1DFB21F200920EA2 /* viewDetailGeneralShoppingList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536497B1DFB21F200920EA2 /* viewDetailGeneralShoppingList.swift */; };
 		E536497E1DFB6C1A00920EA2 /* meViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536497D1DFB6C1A00920EA2 /* meViewController.swift */; };
 		E53649811DFC733600920EA2 /* submitPhoneNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53649801DFC733600920EA2 /* submitPhoneNumberView.swift */; };
+		E54577A61EDC88910047148F /* coins-5er.png in Resources */ = {isa = PBXBuildFile; fileRef = E54577A51EDC88910047148F /* coins-5er.png */; };
+		E54577B21EE415A80047148F /* coin01.png in Resources */ = {isa = PBXBuildFile; fileRef = E54577B11EE415A80047148F /* coin01.png */; };
+		E54A770B1EE4184700BF9EE2 /* note01.png in Resources */ = {isa = PBXBuildFile; fileRef = E54A770A1EE4184700BF9EE2 /* note01.png */; };
 		E57A6B1B1E4C4E2900C8BAFA /* promoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57A6B1A1E4C4E2900C8BAFA /* promoViewController.swift */; };
 		E57A6B1D1E4D0D0400C8BAFA /* referralIncentiveExplained.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57A6B1C1E4D0D0400C8BAFA /* referralIncentiveExplained.swift */; };
 		E57A6B1F1E4D101C00C8BAFA /* referralImage.png in Resources */ = {isa = PBXBuildFile; fileRef = E57A6B1E1E4D101C00C8BAFA /* referralImage.png */; };
@@ -132,6 +137,8 @@
 		42BB8615B2CD128EBDB209C1 /* Pods-goodneighbor20161210.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-goodneighbor20161210.release.xcconfig"; path = "Pods/Target Support Files/Pods-goodneighbor20161210/Pods-goodneighbor20161210.release.xcconfig"; sourceTree = "<group>"; };
 		A126C5675A31D89AEB264109 /* libPods-OneSignalNotificationServiceExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-OneSignalNotificationServiceExtension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B13682AF78527F469AD96BB9 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
+		E504E1AB1EBE5BB400424F96 /* letter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = letter.png; path = ../../5er/letter.png; sourceTree = "<group>"; };
+		E504E1B11EBF4CA500424F96 /* Paper-30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Paper-30.png"; path = "../../../../Downloads/Paper-30.png"; sourceTree = "<group>"; };
 		E5084FDA1E03EDE400D1F388 /* buildingNameView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = buildingNameView.swift; sourceTree = "<group>"; };
 		E5084FDC1E04576900D1F388 /* meChangeBuildingName.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = meChangeBuildingName.swift; sourceTree = "<group>"; };
 		E5084FDE1E046A0600D1F388 /* termsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = termsViewController.swift; sourceTree = "<group>"; };
@@ -151,6 +158,9 @@
 		E536497B1DFB21F200920EA2 /* viewDetailGeneralShoppingList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = viewDetailGeneralShoppingList.swift; sourceTree = "<group>"; };
 		E536497D1DFB6C1A00920EA2 /* meViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = meViewController.swift; sourceTree = "<group>"; };
 		E53649801DFC733600920EA2 /* submitPhoneNumberView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = submitPhoneNumberView.swift; sourceTree = "<group>"; };
+		E54577A51EDC88910047148F /* coins-5er.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "coins-5er.png"; path = "../../../../Downloads/coins-5er.png"; sourceTree = "<group>"; };
+		E54577B11EE415A80047148F /* coin01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = coin01.png; path = ../../../../Downloads/coin01.png; sourceTree = "<group>"; };
+		E54A770A1EE4184700BF9EE2 /* note01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = note01.png; path = ../../../../Downloads/note01.png; sourceTree = "<group>"; };
 		E57A6B1A1E4C4E2900C8BAFA /* promoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = promoViewController.swift; sourceTree = "<group>"; };
 		E57A6B1C1E4D0D0400C8BAFA /* referralIncentiveExplained.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = referralIncentiveExplained.swift; sourceTree = "<group>"; };
 		E57A6B1E1E4D101C00C8BAFA /* referralImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = referralImage.png; path = ../../../../Desktop/referralImage.png; sourceTree = "<group>"; };
@@ -360,8 +370,13 @@
 		E57BBD251E53AF0E0091538C /* Other */ = {
 			isa = PBXGroup;
 			children = (
+				E54A770A1EE4184700BF9EE2 /* note01.png */,
+				E54577A51EDC88910047148F /* coins-5er.png */,
+				E54577B11EE415A80047148F /* coin01.png */,
+				E504E1AB1EBE5BB400424F96 /* letter.png */,
 				E57BBD3A1E6487730091538C /* smallOLarge1.png */,
 				E57BBD3E1E6E96960091538C /* Sheet of Paper-100.png */,
+				E504E1B11EBF4CA500424F96 /* Paper-30.png */,
 				E57BBD3C1E6E30A80091538C /* Coins-100.png */,
 				E57BBD381E53F0AA0091538C /* blueQuestionMark.png */,
 				E57BBD361E53E3F90091538C /* Screen Shot 2017-02-14 at 8.18.16 PM.png */,
@@ -660,6 +675,7 @@
 				E5E19FC11DF9A0A900994E5F /* saveImage2.png in Resources */,
 				E5E19F6A1DF96C0100994E5F /* LaunchScreen.storyboard in Resources */,
 				E57A6B1F1E4D101C00C8BAFA /* referralImage.png in Resources */,
+				E504E1AC1EBE5BB400424F96 /* letter.png in Resources */,
 				E5E19F9D1DF9843B00994E5F /* joinTheCommunity1.jpg in Resources */,
 				E57BBD371E53E3F90091538C /* Screen Shot 2017-02-14 at 8.18.16 PM.png in Resources */,
 				E510DDC71E75C6A100A97A53 /* justinComplete.png in Resources */,
@@ -671,6 +687,7 @@
 				E599B6951E3FA64C00EBE6A0 /* Cash_icon.png in Resources */,
 				E57BBD501E73A3030091538C /* purchaseCompleteIntro.png in Resources */,
 				E5E19F671DF96C0100994E5F /* Assets.xcassets in Resources */,
+				E54577B21EE415A80047148F /* coin01.png in Resources */,
 				E57BBD4A1E73A02E0091538C /* steveImage.jpeg in Resources */,
 				E53649721DFAFA4B00920EA2 /* greenTelephone.png in Resources */,
 				E57BBD481E739A360091538C /* firstViewList.png in Resources */,
@@ -678,7 +695,9 @@
 				E5B461C81DFF411100DCEC51 /* Cancel-250.png in Resources */,
 				E57A6B261E50ACAF00C8BAFA /* questionRed.png in Resources */,
 				E5E19FB31DF99BAE00994E5F /* Editv3.png in Resources */,
+				E54577A61EDC88910047148F /* coins-5er.png in Resources */,
 				E5E19FBF1DF99EB100994E5F /* blackWhite2Coin.png in Resources */,
+				E54A770B1EE4184700BF9EE2 /* note01.png in Resources */,
 				E53649731DFAFA4B00920EA2 /* greenTextBubble.png in Resources */,
 				E57BBD3B1E6487730091538C /* smallOLarge1.png in Resources */,
 				E599B6991E40D2A500EBE6A0 /* venmo-icon_grey.png in Resources */,
@@ -699,6 +718,7 @@
 				E5E19F9E1DF9843B00994E5F /* Me2.jpg in Resources */,
 				E5E19FB21DF99BAE00994E5F /* Coins3-50.png in Resources */,
 				E5B978B01EABCC0D0070E9EA /* grey_cash.png in Resources */,
+				E504E1B21EBF4CA500424F96 /* Paper-30.png in Resources */,
 				E5E19F9F1DF9843B00994E5F /* myTokens1.jpg in Resources */,
 				E5B461C41DFF299C00DCEC51 /* 2FullToken.png in Resources */,
 			);

@@ -29,10 +29,51 @@ class couponMaintenanceView: UIViewController {
     var myTokens:Int?
     var referralUid:String?
     
+    var myBuildingMates = [String]()
+    
     
     override func viewDidAppear(_ animated: Bool) {
         let nowTime = (UInt64(NSDate().timeIntervalSince1970 * 1000.0))
         print(nowTime)
+        
+        
+        
+            self.myBuildingMates = ["d29acf14-ce6c-4d58-b1b8-2c28ac464e22"]
+            
+            //myBuildingMates - Store people to send to that are in your building and have an ID and are not you
+            self.databaseRef.child("users").observe(.childAdded) { (snapshot: FIRDataSnapshot) in
+                
+                //Go ahead and save the fullName here
+                
+                let userID = snapshot.key
+                
+                let snapshot = snapshot.value as! NSDictionary
+            print(userID)
+            
+             let userRecieve = snapshot["recieveCount"] as! Int
+             let userDeliver = snapshot["deliveryCount"] as! Int
+                
+                if let userBuilding = snapshot["buildingName"] as? String {
+                
+                if let userState = snapshot["state"] as? String {
+                 
+                 if userBuilding != "N/A" &&  (userState == "CA " || userState == "IL " || userState == "OH " || userState == "NY ") && (userRecieve != 0 || userDeliver != 0)  {
+                 
+                 if snapshot["notifID"] != nil {
+                 
+                 let userNotifID = snapshot["notifID"] as? String
+                 self.myBuildingMates.append(userNotifID!)
+                 print(self.myBuildingMates)
+                 print(self.myBuildingMates.count)
+                 
+            }
+            }
+            }
+            }
+            }
+        
+        
+
     }
     
     override func viewDidLoad() {
@@ -75,9 +116,25 @@ class couponMaintenanceView: UIViewController {
         }
         else if self.couponText == "sendNotif" {
          
-            //OneSignal.postNotification(["contents": ["en": "Someone in your dorm has posted a request!"], "include_player_ids": ["58ffaf31-7506-4cf5-b874-ebce01981ba4"]])
-          
+            //OneSignal.postNotification(["contents": ["en": "Best of luck studying for finals! Remember to use Goodneighbor to request deliveries from friends :)"]: ["23c8722c-2211-43a2-98a1-01c9c0c8def8"]])
+           
              //OneSignal.postNotification(["contents": ["en": "It appears you have not registered your dorm! Register your dorm to see what your friends are requesting :)"], "include_player_ids": ["538471d8-733e-4a4a-bbb0-43be97d265ca"]])
+            
+            /*for mateID in 0..<self.myBuildingMates.count {
+                print(mateID)
+                print("EEEEEE")
+                print(self.myBuildingMates[mateID])
+                
+                /*let deadlineTime = DispatchTime.now() + .seconds(1)
+                 
+                 DispatchQueue.main.asyncAfter(deadline: deadlineTime) {*/
+                
+                 OneSignal.postNotification(["contents": ["en": "Best of luck studying for finals! Remember to use Goodneighbor to request deliveries from friends :)"], "include_player_ids": [self.myBuildingMates[mateID]],"ios_sound": "nil"])
+                
+            }*/
+            
+           
+            
             //"538471d8-733e-4a4a-bbb0-43be97d265ca" Toli
             
             

@@ -51,6 +51,9 @@ class initialViewController: UIViewController {
 
 //try! FIRAuth.auth()?.signOut()
         
+        print(FIRAuth.auth()?.currentUser?.uid)
+        print("aaaaaaaa")
+        
         
        userReferralCode = "Not yet entered"
         
@@ -188,7 +191,8 @@ class initialViewController: UIViewController {
                                     if let tempNeilNotif = snapshot?["notifID"] as? String{
                                         neilNotif = tempNeilNotif
                                     }
-                            
+                            print(neilNotif)
+                                print("mmmmmm")
                             })
                             
                             self.databaseRef.child("promoteShare").observeSingleEvent(of: .value) { (snapshot:FIRDataSnapshot) in

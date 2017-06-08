@@ -164,6 +164,21 @@ class requestDeliveryFirstIntro: UIViewController {
                 
             }
         
+        
+            
+            
+            
+            if segue.identifier == "skipToComplete2" {
+                
+                let newViewController = segue.destination as! deliveryCompletePopUp
+                newViewController.isIntro = true
+                
+            }
+            
+        
+
+        
+        
     }
     
     override var prefersStatusBarHidden: Bool {

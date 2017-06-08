@@ -39,6 +39,13 @@ class snickerIntroPage: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    
+    @IBAction func didTapSkip(_ sender: Any) {
+        
+        self.performSegue(withIdentifier: "skipToComplete", sender: nil)
+        
+    }
+    
 
     @IBAction func didTapNext(_ sender: Any) {
         
@@ -78,6 +85,19 @@ class snickerIntroPage: UIViewController {
 
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) { //
+        
+        
+        
+        if segue.identifier == "skipToComplete" {
+            
+            let newViewController = segue.destination as! deliveryCompletePopUp
+            newViewController.isIntro = true
+            
+        }
+        
+    }
+
     /*
     // MARK: - Navigation
 

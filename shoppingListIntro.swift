@@ -21,6 +21,11 @@ class shoppingListIntro: UIViewController {
     
     var nextCount = 0
     
+    @IBAction func didTapSkip(_ sender: UIButton) {
+        
+        self.performSegue(withIdentifier: "introToFallCoin", sender: nil)
+        
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
     

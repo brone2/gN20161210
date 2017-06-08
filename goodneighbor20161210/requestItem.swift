@@ -236,7 +236,10 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
     
     @IBAction func didTapRequest(_ sender: Any) {
         
+        print(neilNotif)
+        
     OneSignal.postNotification(["contents": ["en": "\(userFullName!) posted a request!"], "include_player_ids": [neilNotif],"ios_sound": "nil"])
+
         
     self.databaseRef.child("users").child(self.loggedInUser!).observeSingleEvent(of: .value) { (snapshot:FIRDataSnapshot) in
         

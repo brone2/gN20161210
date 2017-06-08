@@ -124,7 +124,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KcA-Se-pRF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-905" y="-492"/>
+            <point key="canvasLocation" x="-506" y="-143"/>
         </scene>
         <!--facebookLoginController-->
         <scene sceneID="krz-sK-FMr">
@@ -226,12 +226,25 @@
                                         <color key="textColor" red="0.0" green="0.57647058823529407" blue="0.85490196078431369" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4yZ-Z3-cRv">
+                                        <rect key="frame" x="317" y="446" width="46" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="V5Z-5Q-zaj"/>
+                                            <constraint firstAttribute="width" constant="46" id="pP0-6P-PPw"/>
+                                        </constraints>
+                                        <state key="normal" title="Skip"/>
+                                        <connections>
+                                            <action selector="didTapSkip:" destination="hiZ-6U-VrX" eventType="touchUpInside" id="NOP-FC-ehj"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstItem="neU-78-CBN" firstAttribute="centerX" secondItem="2Ga-nc-XSa" secondAttribute="centerX" id="1be-lK-76e"/>
                                     <constraint firstItem="Kuy-Ev-mxs" firstAttribute="top" secondItem="neU-78-CBN" secondAttribute="bottom" constant="126" id="Vhx-Ac-rAr"/>
+                                    <constraint firstAttribute="bottom" secondItem="4yZ-Z3-cRv" secondAttribute="bottom" constant="6" id="eDl-7T-EMp"/>
                                     <constraint firstItem="neU-78-CBN" firstAttribute="top" secondItem="2Ga-nc-XSa" secondAttribute="top" constant="16" id="vFq-Gk-UIQ"/>
+                                    <constraint firstAttribute="trailing" secondItem="4yZ-Z3-cRv" secondAttribute="trailing" constant="12" id="wFh-tS-0A0"/>
                                     <constraint firstItem="Kuy-Ev-mxs" firstAttribute="centerX" secondItem="2Ga-nc-XSa" secondAttribute="centerX" id="yS1-Zv-6LU"/>
                                 </constraints>
                             </view>
@@ -333,8 +346,23 @@
                                             <action selector="didTapNext:" destination="4yE-Tg-JDE" eventType="touchUpInside" id="WJV-3g-oAK"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BzP-Bb-Yuq">
+                                        <rect key="frame" x="317" y="495" width="46" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="cZj-nV-Qta"/>
+                                            <constraint firstAttribute="width" constant="46" id="uKa-3n-f5R"/>
+                                        </constraints>
+                                        <state key="normal" title="Skip"/>
+                                        <connections>
+                                            <segue destination="3it-QA-jhQ" kind="show" identifier="skipToComplete2" id="QAZ-7x-AgN"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.80000001190000003" green="0.80000001190000003" blue="0.80000001190000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="BzP-Bb-Yuq" secondAttribute="bottom" constant="3" id="5tk-73-aWM"/>
+                                    <constraint firstAttribute="trailing" secondItem="BzP-Bb-Yuq" secondAttribute="trailing" constant="12" id="8HD-Gs-3yO"/>
+                                </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -367,7 +395,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mHd-Fg-BnD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3826.4000000000001" y="1199.5502248875564"/>
+            <point key="canvasLocation" x="-3826" y="1223"/>
         </scene>
         <!--Snicker Intro Page-->
         <scene sceneID="a6W-bG-vi1">
@@ -445,6 +473,18 @@
                                     <action selector="didTapNext:" destination="wjE-sX-HoO" eventType="touchUpInside" id="HLt-B7-pa6"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WOm-Se-Kga">
+                                <rect key="frame" x="317" y="631" width="46" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="mCd-wR-bnf"/>
+                                    <constraint firstAttribute="width" constant="46" id="pYs-6x-GOd"/>
+                                </constraints>
+                                <state key="normal" title="Skip"/>
+                                <connections>
+                                    <action selector="didTapSkip:" destination="wjE-sX-HoO" eventType="touchUpInside" id="9hY-BZ-96S"/>
+                                    <segue destination="3it-QA-jhQ" kind="show" identifier="skipToComplete" id="9TB-sV-3pl"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.92156862745098034" green="0.92156862745098034" blue="0.94509803921568625" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -454,9 +494,11 @@
                             <constraint firstItem="Odw-6P-4Hn" firstAttribute="centerX" secondItem="ylW-b3-cu1" secondAttribute="centerX" id="Nrj-kg-F4T"/>
                             <constraint firstItem="22B-xA-04p" firstAttribute="top" secondItem="vCt-51-W0z" secondAttribute="bottom" constant="83" id="OA4-2D-WTF"/>
                             <constraint firstItem="vCt-51-W0z" firstAttribute="centerX" secondItem="ylW-b3-cu1" secondAttribute="centerX" id="OOv-t8-aq9"/>
+                            <constraint firstItem="ZyO-0c-1WD" firstAttribute="top" secondItem="WOm-Se-Kga" secondAttribute="bottom" constant="6" id="RrB-KA-uXk"/>
                             <constraint firstItem="hrg-mq-5uA" firstAttribute="centerX" secondItem="ylW-b3-cu1" secondAttribute="centerX" id="c9Q-wb-KVZ"/>
                             <constraint firstItem="vCt-51-W0z" firstAttribute="top" secondItem="g70-3T-Gty" secondAttribute="bottom" constant="16" id="gLJ-1C-LAG"/>
                             <constraint firstItem="22B-xA-04p" firstAttribute="centerX" secondItem="ylW-b3-cu1" secondAttribute="centerX" id="iDv-12-LYJ"/>
+                            <constraint firstAttribute="trailing" secondItem="WOm-Se-Kga" secondAttribute="trailing" constant="12" id="jbU-PQ-HvY"/>
                             <constraint firstItem="qAo-ym-5JU" firstAttribute="top" secondItem="vCt-51-W0z" secondAttribute="bottom" constant="83" id="sDn-RU-St0"/>
                             <constraint firstItem="MaX-ON-CZf" firstAttribute="top" secondItem="Odw-6P-4Hn" secondAttribute="bottom" constant="133" id="yhK-6v-Gk1"/>
                             <constraint firstItem="qAo-ym-5JU" firstAttribute="centerX" secondItem="ylW-b3-cu1" secondAttribute="centerX" id="zmc-uL-0Os"/>
@@ -607,7 +649,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MTu-3e-dFf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2858.4000000000001" y="527.58620689655174"/>
+            <point key="canvasLocation" x="-1727" y="1200"/>
         </scene>
         <!--deliveryCompletePopup-->
         <scene sceneID="zhQ-HK-MAv">
@@ -1167,7 +1209,7 @@
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NIh-Nf-GRF">
                                 <rect key="frame" x="0.0" y="623" width="375" height="44"/>
                                 <items>
-                                    <barButtonItem image="Sheet of Paper-100.png" id="BG6-T2-obH">
+                                    <barButtonItem image="note01.png" id="BG6-T2-obH">
                                         <color key="tintColor" red="0.0" green="0.57647058823529407" blue="0.85490196078431369" alpha="1" colorSpace="calibratedRGB"/>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="Jze-jq-S2r"/>
@@ -1178,7 +1220,7 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="f5l-4b-fCd"/>
-                                    <barButtonItem image="Coins-100.png" id="4jq-nh-Q3J">
+                                    <barButtonItem image="coin01.png" id="4jq-nh-Q3J">
                                         <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <connections>
                                             <segue destination="uHf-lN-eGM" kind="show" animates="NO" id="eT3-9b-yu6"/>
@@ -1201,7 +1243,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="109"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2BZ-Tz-Kip" id="A7K-7m-wUp">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="108.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="108"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="appIcon2.png" translatesAutoresizingMaskIntoConstraints="NO" id="paG-Vu-ECh">
@@ -1353,7 +1395,7 @@
                                         <rect key="frame" x="0.0" y="137" width="375" height="120"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="x1s-Sg-Ayq" id="6dn-lh-eeg">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="119.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="119"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="appIcon2.png" translatesAutoresizingMaskIntoConstraints="NO" id="Fx3-F3-vdo">
@@ -1494,7 +1536,7 @@
                                         <rect key="frame" x="0.0" y="257" width="375" height="106"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7cq-m0-FcC" id="QRL-1C-XKa">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="105.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="105"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="appIcon2.png" translatesAutoresizingMaskIntoConstraints="NO" id="b3B-mX-xWe">
@@ -2123,7 +2165,7 @@
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eSZ-RG-5YZ">
                                 <rect key="frame" x="0.0" y="623" width="375" height="44"/>
                                 <items>
-                                    <barButtonItem image="Sheet of Paper-100.png" id="3T7-0c-il0">
+                                    <barButtonItem image="note01.png" id="3T7-0c-il0">
                                         <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <connections>
                                             <segue destination="tt0-94-eDa" kind="show" animates="NO" id="Zdr-Pm-QQb"/>
@@ -2132,7 +2174,7 @@
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="my3-IP-vxW"/>
                                     <barButtonItem image="Editv3.png" id="X0U-He-hxm"/>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="1dv-nD-O3q"/>
-                                    <barButtonItem image="Coins-100.png" id="pWd-zP-7wh">
+                                    <barButtonItem image="coin01.png" id="pWd-zP-7wh">
                                         <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <connections>
                                             <segue destination="uHf-lN-eGM" kind="show" animates="NO" id="ksH-Iz-MyS"/>
@@ -2734,7 +2776,7 @@
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2nK-Vt-zuC">
                                 <rect key="frame" x="0.0" y="623" width="375" height="44"/>
                                 <items>
-                                    <barButtonItem image="Sheet of Paper-100.png" id="POS-Jw-GTp">
+                                    <barButtonItem image="note01.png" id="POS-Jw-GTp">
                                         <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <connections>
                                             <segue destination="tt0-94-eDa" kind="show" animates="NO" id="qFy-62-rBF"/>
@@ -2748,7 +2790,7 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="UXd-du-ezR"/>
-                                    <barButtonItem image="Coins-100.png" id="8Al-mY-ew4"/>
+                                    <barButtonItem image="coin01.png" id="8Al-mY-ew4"/>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="Loi-2C-OzA"/>
                                     <barButtonItem image="avatar.png" id="oZR-3B-dEd">
                                         <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -2926,7 +2968,7 @@
                                     <constraint firstAttribute="height" constant="44" id="emM-lQ-L9v"/>
                                 </constraints>
                                 <items>
-                                    <barButtonItem image="Sheet of Paper-100.png" id="U5J-Se-Stb">
+                                    <barButtonItem image="note01.png" id="U5J-Se-Stb">
                                         <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <connections>
                                             <segue destination="tt0-94-eDa" kind="show" animates="NO" id="5ag-bU-vFb"/>
@@ -2940,7 +2982,7 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="uBp-ty-Tg1"/>
-                                    <barButtonItem image="Coins-100.png" id="lPO-RJ-Db6">
+                                    <barButtonItem image="coin01.png" id="lPO-RJ-Db6">
                                         <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <connections>
                                             <segue destination="uHf-lN-eGM" kind="show" animates="NO" id="Uy6-Ur-myb"/>
@@ -3191,7 +3233,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="70"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Zon-ta-z9Z" id="8MX-ln-jVe">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="69.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="69"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Bgf-Vd-i0Q">
@@ -3389,7 +3431,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="w3y-vj-48I" id="GZ8-yx-vg4">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -4048,7 +4090,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wuG-vX-r2S" id="0wu-8F-4dq">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -4284,20 +4326,19 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4aI-Jf-OEp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2858" y="-142"/>
+            <point key="canvasLocation" x="-3826" y="-142"/>
         </scene>
     </scenes>
     <resources>
         <image name="1FullToken.png" width="37" height="38"/>
         <image name="2FullToken.png" width="46" height="38"/>
-        <image name="Coins-100.png" width="28" height="28"/>
         <image name="Editv3.png" width="29" height="29"/>
         <image name="Me2.jpg" width="2000" height="277"/>
         <image name="Screen Shot 2017-02-14 at 8.18.16 PM.png" width="102" height="156"/>
-        <image name="Sheet of Paper-100.png" width="30" height="30"/>
         <image name="appIcon2.png" width="127" height="124"/>
         <image name="avatar.png" width="26" height="26"/>
         <image name="blackWhite2Coin.png" width="46" height="38"/>
+        <image name="coin01.png" width="30" height="30"/>
         <image name="convenienceIntroLine.png" width="899" height="281"/>
         <image name="firstList2.png" width="742" height="1330"/>
         <image name="goodneighberIntroLine.png" width="1000" height="313"/>
@@ -4308,6 +4349,7 @@
         <image name="joinTheCommunity1.jpg" width="1000" height="139"/>
         <image name="myImage.jpg" width="200" height="200"/>
         <image name="myTokens1.jpg" width="1000" height="139"/>
+        <image name="note01.png" width="30" height="30"/>
         <image name="referralImage.png" width="375" height="253"/>
         <image name="requestDelivey2.jpg" width="1000" height="139"/>
         <image name="requestViewImage2.png" width="746" height="1328"/>
@@ -4319,8 +4361,8 @@
         <image name="venmo-icon_grey.png" width="360" height="361"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="wX0-Ki-UHa"/>
-        <segue reference="tb2-nH-oLs"/>
+        <segue reference="exZ-YP-r3R"/>
+        <segue reference="Y8j-My-CJT"/>
         <segue reference="3Gq-Kg-BQY"/>
         <segue reference="nzL-4F-Ybh"/>
         <segue reference="hTh-rO-ESU"/>
@@ -4328,13 +4370,13 @@
         <segue reference="rTN-ao-NSx"/>
         <segue reference="Ipa-WE-6yj"/>
         <segue reference="HYy-gC-uE8"/>
-        <segue reference="eNf-UG-29a"/>
-        <segue reference="3RZ-eE-01M"/>
         <segue reference="ksH-Iz-MyS"/>
-        <segue reference="MTh-8f-L75"/>
-        <segue reference="Ltw-oT-xHs"/>
+        <segue reference="3RZ-eE-01M"/>
+        <segue reference="eNf-UG-29a"/>
+        <segue reference="PEq-TB-AQ2"/>
+        <segue reference="okK-Lf-vrD"/>
+        <segue reference="NhQ-d3-Xpj"/>
+        <segue reference="Ddf-Qa-mo1"/>
         <segue reference="n7l-GL-iGm"/>
-        <segue reference="exZ-YP-r3R"/>
-        <segue reference="cui-a2-TD0"/>
     </inferredMetricsTieBreakers>
 </document>
