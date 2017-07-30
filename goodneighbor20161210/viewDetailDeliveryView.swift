@@ -21,6 +21,9 @@ class viewDetailDeliveryView: UIViewController, UITextViewDelegate, UITextFieldD
     @IBOutlet var requestByLabel: UILabel!
     @IBOutlet var deliveryLocation: UILabel!
     
+    var isMyRun = false
+    var myRun = [NSDictionary?]()
+    
     var currentUserName:String!
     var loggedInUserId:String!
     var acceptedTime = NSDate()
@@ -28,10 +31,64 @@ class viewDetailDeliveryView: UIViewController, UITextViewDelegate, UITextFieldD
     var myCurrentDeliveries = [NSDictionary?]()
     var selectedRowIndex:Int!
     
+    var isRun = false
+    var runRequest = [NSDictionary?]()
+    
+    @IBOutlet var grayView: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.grayView.layer.cornerRadius = 5
+        self.grayView.layer.masksToBounds = true
+        
+        self.productImage.layer.cornerRadius = 3
+        self.productImage.layer.masksToBounds = true
+        self.productImage.contentMode = .scaleAspectFill
+
+        descriptionTextView.layer.borderWidth = 1
+        descriptionTextView.layer.borderColor = UIColor.black.cgColor
+
+        
         self.loggedInUserId = FIRAuth.auth()?.currentUser?.uid
+        
+        if isMyRun {
+            
+            self.requestByLabel.text = String("My run to \(self.myRun[self.selectedRowIndex]?["runTo"] as! String)")
+            self.deliveryLocation.text = String("Run will end around \(self.myRun[self.selectedRowIndex]?["timeRun"] as! String)")
+            self.productNameLabel.text = "Description"
+            
+            let requestCount = self.myRun[selectedRowIndex]?["requestCount"] as! Int
+
+            self.distanceLabel.text = String("\(requestCount) requests to this run")
+            
+            self.descriptionTextView.text = self.myRun[self.selectedRowIndex]?["notesField"] as! String
+            
+            
+            if let image = self.myRun[self.selectedRowIndex]?["profilePicReference"] as? String {
+                
+                let data = try? Data(contentsOf: URL(string: image)!)
+                
+                self.profilePicImage.image = UIImage(data: data!)
+                
+            }
+            
+            self.profilePicImage.layer.cornerRadius = 40
+            self.profilePicImage.layer.masksToBounds = true
+            self.profilePicImage.contentMode = .scaleAspectFit
+            self.profilePicImage.layer.borderWidth = 2.0
+            self.profilePicImage.layer.borderColor = UIColor(red: 16/255, green: 126/255, blue: 207/255, alpha: 1).cgColor
+            
+            if let image = self.myRun[self.selectedRowIndex]?["productImage"] as? String {
+                
+                let data = try? Data(contentsOf: URL(string: image)!)
+                
+                self.productImage.image = UIImage(data: data!)
+                
+            }
+        } else {
+        
+        if !isRun {
+            
         self.requestByLabel.text = String("Requested by \(self.myCurrentDeliveries[self.selectedRowIndex]?["requesterName"] as! String)")
         self.deliveryLocation.text = String("Please deliver to \(self.myCurrentDeliveries[self.selectedRowIndex]?["deliverTo"] as! String)")
         self.productNameLabel.text = String("\(self.myCurrentDeliveries[self.selectedRowIndex]?["itemName"] as! String)")
@@ -40,7 +97,7 @@ class viewDetailDeliveryView: UIViewController, UITextViewDelegate, UITextFieldD
         
         if buildingCheck != "N/A" {
             
-            self.distanceLabel.text = String("Located \(self.self.myCurrentDeliveries[self.selectedRowIndex]?["distanceFromUser"] as! String) mi away in \(buildingCheck!)")
+            self.distanceLabel.text = String("Lives in \(buildingCheck!)")
             
         } else {
             
@@ -72,6 +129,53 @@ class viewDetailDeliveryView: UIViewController, UITextViewDelegate, UITextFieldD
             self.productImage.image = UIImage(data: data!)
             
         }
+        } else {
+           print(runRequest)
+            self.requestByLabel.text = String("Requested by \(self.runRequest[self.selectedRowIndex]?["requesterName"] as! String)")
+            self.deliveryLocation.text = String("Please deliver to \(self.runRequest[self.selectedRowIndex]?["deliverTo"] as! String)")
+            self.productNameLabel.text = String("\(self.runRequest[self.selectedRowIndex]?["itemName"] as! String)")
+            
+            let buildingCheck = self.self.runRequest[self.selectedRowIndex]?["buildingName"] as? String
+            
+            if buildingCheck != "N/A" {
+                
+                self.distanceLabel.text = String("Lives in \(buildingCheck!)")
+                
+            } else {
+                
+                self.distanceLabel.text = String("Located \(self.self.runRequest[self.selectedRowIndex]?["distanceFromUser"] as! String) mi away from you")
+                
+            }
+            
+            self.descriptionTextView.text = self.runRequest[self.selectedRowIndex]?["description"] as! String
+            
+            
+            if let image = self.runRequest[self.selectedRowIndex]?["profilePicReference"] as? String {
+                
+                let data = try? Data(contentsOf: URL(string: image)!)
+                
+                self.profilePicImage.image = UIImage(data: data!)
+                
+            }
+            
+            self.profilePicImage.layer.cornerRadius = 40
+            self.profilePicImage.layer.masksToBounds = true
+            self.profilePicImage.contentMode = .scaleAspectFit
+            self.profilePicImage.layer.borderWidth = 2.0
+            self.profilePicImage.layer.borderColor = UIColor(red: 16/255, green: 126/255, blue: 207/255, alpha: 1).cgColor
+            
+            if let image = self.runRequest[self.selectedRowIndex]?["productImage"] as? String {
+                
+                let data = try? Data(contentsOf: URL(string: image)!)
+                
+                self.productImage.image = UIImage(data: data!)
+                
+            }
+
+            
+            
+            
+        }
         
         let imageTap:UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapMediaInTweet(_:)))
         let imageTap2:UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapMediaInTweet(_:)))
@@ -79,6 +183,7 @@ class viewDetailDeliveryView: UIViewController, UITextViewDelegate, UITextFieldD
         self.profilePicImage.addGestureRecognizer(imageTap2)
         self.productImage.addGestureRecognizer(imageTap)
 
+    }
     }
 
     override func didReceiveMemoryWarning() {
@@ -109,5 +214,10 @@ class viewDetailDeliveryView: UIViewController, UITextViewDelegate, UITextFieldD
     func dismissFullScreenImage(sender: UITapGestureRecognizer){
         sender.view?.removeFromSuperview()
     }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
 
 }

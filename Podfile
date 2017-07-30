@@ -21,5 +21,6 @@ pod ‘FBSDKCoreKit’
 pod ‘FBSDKShareKit’
 pod ‘FBSDKLoginKit’
 pod 'OneSignal', '~> 2.0'
+pod 'JSQMessagesViewController'
 
 end

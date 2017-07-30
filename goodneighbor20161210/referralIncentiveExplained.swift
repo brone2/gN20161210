@@ -17,11 +17,16 @@ import FirebaseDatabase
 class referralIncentiveExplained: UIViewController, MFMessageComposeViewControllerDelegate {
     
     var databaseRef:FIRDatabaseReference!
+    @IBOutlet var greyView: UIView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.databaseRef = FIRDatabase.database().reference()
+        
+        self.greyView.layer.cornerRadius = 5
+        self.greyView.layer.masksToBounds = true
+
         
     }
 

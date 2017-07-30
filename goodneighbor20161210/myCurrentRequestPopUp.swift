@@ -27,9 +27,22 @@ class myCurrentRequestPopUp: UIViewController, UITextViewDelegate, UITextFieldDe
     var selectedRowIndex:Int!
     var isAccepted = false
     
+    @IBOutlet var grayView: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.grayView.layer.cornerRadius = 5
+        self.grayView.layer.masksToBounds = true
+        
+        
+        self.productImage.layer.cornerRadius = 3
+        self.productImage.layer.masksToBounds = true
+        self.productImage.contentMode = .scaleAspectFill
+        
+        descriptionTextView.layer.borderWidth = 1
+        descriptionTextView.layer.borderColor = UIColor.black.cgColor
+
+        
         self.loggedInUserId = FIRAuth.auth()?.currentUser?.uid
         
         self.isAccepted = self.myCurrentRequests[self.selectedRowIndex]?["isAccepted"] as! Bool
@@ -69,6 +82,8 @@ class myCurrentRequestPopUp: UIViewController, UITextViewDelegate, UITextFieldDe
             
             
         }
+
+ 
         
         self.profilePicImage.layer.cornerRadius = 40
         self.profilePicImage.layer.masksToBounds = true

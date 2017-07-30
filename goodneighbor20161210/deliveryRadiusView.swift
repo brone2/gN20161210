@@ -18,6 +18,7 @@ class deliveryRadiusView: UIViewController {
     @IBOutlet var distanceLabel: UILabel!
     @IBOutlet var slider: UISlider!
     @IBOutlet var feetLabel: UILabel!
+    @IBOutlet var grayView: UIView!
     
     var loggedInUserId:String!
     var loggedInUserData: AnyObject?
@@ -94,6 +95,9 @@ class deliveryRadiusView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.grayView.layer.cornerRadius = 3
+        self.grayView.layer.masksToBounds = true
+
         slider.minimumValue = 0.010000
         slider.maximumValue = 1.0000
         self.deliveryRadius = 0.499789

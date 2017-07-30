@@ -16,6 +16,7 @@ import MessageUI
 import MessageUI.MFMailComposeViewController
 import MapKit
 import CoreLocation
+import OneSignal
 
 var myProfilePicRef:String!
 var myCellNumber:String!
@@ -24,7 +25,7 @@ var currentTokenCount: Int!
 
 class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource, MFMessageComposeViewControllerDelegate, CLLocationManagerDelegate  {
     
-    var tableHeaderArray = ["My Current Deliveries","My Current Requests","Community Requests"]
+    var tableHeaderArray = ["l","MY CURRENT DELIVERIES","MY CURRENT REQUESTS","COMMUNITY REQUESTS"]
     
     @IBOutlet var oCoverUpText: UIImageView!
     @IBOutlet var coverUpBlueView: UIView!
@@ -37,11 +38,20 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
     var loggedInUserData: AnyObject?
     var acceptorUserData: AnyObject?
     
+    
+    var otherUserId: String?
+    var otherUserNotifId: String?
+    var otherUserName: String?
+    var otherUserImageRef: String?
     var myCurrentDeliveries = [NSDictionary?]()
     var myCurrentRequests = [NSDictionary?]()
     var shoppingListCurrentRequests = [NSDictionary?]()
     var sectionData = [Int:[NSDictionary?]]()
     var requestPopUp:NSDictionary?
+    var isGeneralChat = false
+    var isMyRequestChat = false
+    var requestKey:String?
+    var requesterNotifID = "NA"
     
     var selectedRowIndex:Int?
     var rowHeight:CGFloat = 100
@@ -167,6 +177,10 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
         locationManager.startUpdatingLocation()
+    
+        self.table.layer.cornerRadius = 10
+        
+        self.table.layer.masksToBounds = true
         
         self.sectionData = [0:self.myCurrentDeliveries,1:self.myCurrentRequests,2:self.shoppingListCurrentRequests]
         
@@ -185,6 +199,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             let snapCompleted = snapshot["isComplete"] as? Bool
             let accepterID = snapshot["accepterUID"] as? String
         
+        
             let userLatitude = snapshot["latitude"] as? CLLocationDegrees
             let userLongitude = snapshot["longitude"] as? CLLocationDegrees
         
@@ -192,6 +207,8 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             let distanceInMeters = myLocation!.distance(from: userLocation)
             let distanceMiles = distanceInMeters/1609.344897
             let distanceMilesFloat = Float(distanceMiles)
+        
+            let isRun = snapshot["isRun"] as? Bool
             
             //Filter out all request outside geolocation
             //if distanceMilesFloat < myRadius! {
@@ -199,10 +216,12 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                 let requestDict = snapshot as! NSMutableDictionary
                 let distanceMilesFloatString = String(format: "%.1f", distanceMilesFloat)
                 requestDict["distanceFromUser"] = distanceMilesFloatString
+        
                 
                 //General shopping list requests, those that are not already accepted and not sent by you
+        
                 if distanceMilesFloat < myRadius! {
-                if(snapID != self.loggedInUserId && snapAccepted != true){
+                if(snapID != self.loggedInUserId && snapAccepted != true && isRun == nil){
              
                     self.shoppingListCurrentRequests.append(requestDict)
                     self.shoppingListCurrentRequests.sort{ Double($0?["distanceFromUser"] as! String)! < Double($1?["distanceFromUser"] as! String)! }
@@ -216,46 +235,49 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                 }
                 
                 //My Deliveries
-                if(accepterID == self.loggedInUserId && snapCompleted != true ){
-                    self.myCurrentDeliveries.append(requestDict)
+                if isRun == nil {
+                    if(accepterID == self.loggedInUserId && snapCompleted != true && snapAccepted == true){
+                        self.myCurrentDeliveries.append(requestDict)
                
+                    }
                 }
         
                 self.sectionData = [0:self.myCurrentDeliveries,1:self.myCurrentRequests,2:self.shoppingListCurrentRequests]
                 self.table.reloadData()
             
         }
+        
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
         
-        return sectionData.count
+        return sectionData.count + 1
         
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        if (self.sectionData[0]?.count) == 0 && (self.sectionData[1]?.count) == 0 && (self.sectionData[2]?.count) == 0 {
+        if (self.sectionData[0]?.count) == 0 && (self.sectionData[1]?.count) == 0 && (self.sectionData[2]?.count) == 0 || indexPath.section == 0 {
             
-            self.performSegue(withIdentifier: "listToRequest", sender: nil)
+            self.performSegue(withIdentifier: "listToRequestSeguer", sender: nil)
             
         } else {
             
-            if indexPath.section == 0 {
+            if indexPath.section == 0 + 1 {
                 self.selectedRowIndex = indexPath.row
                 self.performSegue(withIdentifier: "generalToDeliveryDetail", sender: nil)
             }
             
             //Check added on plane
-            if indexPath.section == 1 {
+            if indexPath.section == 1 + 1 {
                 self.selectedRowIndex = indexPath.row
                 self.performSegue(withIdentifier: "myRequestDetailSegue", sender: nil)
             }
             
-            if indexPath.section == 2 {
+            if indexPath.section == 2 + 1 {
                 
                 //Need to handle live update issue where another user accepts delivery but it remains on screen
-                let isAccepted:Bool = self.sectionData[indexPath.section]![indexPath.row]?["isAccepted"] as! Bool
+                let isAccepted:Bool = self.sectionData[indexPath.section - 1]![indexPath.row]?["isAccepted"] as! Bool
                 
                 if isAccepted == false {
                     
@@ -295,6 +317,19 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             
         }
         
+        if segue.identifier == "enableNotifsSegue" {
+            
+            let secondViewController = segue.destination as! enableNotifsView
+            
+            if myLocation?.coordinate.latitude == 0.000000 {
+                
+                secondViewController.isLocation = true
+                
+            }
+            
+            
+        }
+        
         if segue.identifier == "generalToDetail" {
             
             let secondViewController = segue.destination as! viewDetailGeneralShoppingList
@@ -309,21 +344,53 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             secondViewController.requestPopUp = self.requestPopUp
             
         }
+        
+        if segue.identifier == "goToChat" {
+            
+          /*let secondViewController = segue.destination as! chatView
+            secondViewController.otherUserId = self.otherUserId!*/
+           let navVc = segue.destination as! UINavigationController // 1
+          let channelVc = navVc.viewControllers.first as! chatView //
+    
+            
+        channelVc.otherUserId = self.otherUserId!
+        channelVc.otherUserName = self.otherUserName!
+    if self.otherUserNotifId != nil {
+        channelVc.otherUserNotifId = self.otherUserNotifId!
+    } else {
+        channelVc.otherUserNotifId = "NA"
+    }
+        channelVc.requestKey = self.requestKey
+            
+            if isGeneralChat {
+                channelVc.generalRequestChat = true
+            }
+            
+            if isMyRequestChat {
+                channelVc.isRequesterViewing = true
+            }
+        }
+        
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        if section != 2 {
+        if section == 0 {
+            return 1
+        } else {
+        if section != 3 {
             
-            return((self.sectionData[section]?.count))!
+            return((self.sectionData[section - 1]?.count))!
             
         } else {
             
             if (self.sectionData[0]?.count) == 0 && (self.sectionData[1]?.count) == 0 && (self.sectionData[2]?.count) == 0 {
-                return 1
+                //return 1
+                return 0
             } else {
-                return((self.sectionData[section]?.count))!
+                return((self.sectionData[section - 1]?.count))!
             }
+        }
         }
     }
     
@@ -344,27 +411,54 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         
     //Table populated: First section is my Current Deliveries, Second is my Current Request, Third is community Request
         
-        if indexPath.section == 0 { // if is my current deliveries
+        if indexPath.section == 0 {
+            
+            let cell:postRequestCell = tableView.dequeueReusableCell(withIdentifier: "requestDelCell", for: indexPath) as! postRequestCell
+            
+            cell.pic.layer.cornerRadius = 3.0
+            cell.pic.layer.masksToBounds = true
+            cell.pic.contentMode = .scaleAspectFit
+            //cell.pic.layer.borderWidth = 1.0
+            cell.pic.layer.borderColor = UIColor(red: 255/255, green: 230/255, blue: 63/255, alpha: 1).cgColor
+            
+             return cell
+
+        }  else if indexPath.section == 0 + 1 { // if is my current deliveries
             
             let cell:myCurrentDeliveriesCell = tableView.dequeueReusableCell(withIdentifier: "myDeliveriesCell", for: indexPath) as! myCurrentDeliveriesCell
             
             cell.purchaseCompleteButton.contentHorizontalAlignment = .left
+            
+            //Chat bubbles
+            if let accepterUIDNotif = (self.sectionData[indexPath.section - 1]![indexPath.row]?["accepterNotifId"] as? String) {
+                
+                if let isNewMessage:Bool = (self.sectionData[indexPath.section - 1]![indexPath.row]?["isNewMessageAccepter"] as? Bool)! {
+                    
+                    if isNewMessage {
+                        cell.chatImage.image = UIImage(named: "fillBlueChat1.png")
+                    } else {
+                        cell.chatImage.image = UIImage(named: "fillBlueChat.png")
+                    }
+                    
+                }
+                
+            }
 
-            let buildingCheck = self.sectionData[indexPath.section]![indexPath.row]?["buildingName"] as? String
+            let buildingCheck = self.sectionData[indexPath.section  - 1]![indexPath.row]?["buildingName"] as? String
             
             if buildingCheck != "N/A" {
                 
-                cell.distanceLabel.text = String("\(self.sectionData[indexPath.section]![indexPath.row]?["requesterName"] as! String) - \(buildingCheck!) (\(self.sectionData[indexPath.section]![indexPath.row]?["distanceFromUser"] as! String) mi)")
+                cell.distanceLabel.text = String("\(self.sectionData[indexPath.section - 1]![indexPath.row]?["requesterName"] as! String) - \(buildingCheck!) (\(self.sectionData[indexPath.section - 1]![indexPath.row]?["distanceFromUser"] as! String) mi)")
                 
             } else {
                 
-                cell.distanceLabel.text = String("\(self.sectionData[indexPath.section]![indexPath.row]?["requesterName"] as! String) lives \(self.sectionData[indexPath.section]![indexPath.row]?["distanceFromUser"] as! String) mi from you")
+                cell.distanceLabel.text = String("\(self.sectionData[indexPath.section - 1]![indexPath.row]?["requesterName"] as! String) lives \(self.sectionData[indexPath.section - 1]![indexPath.row]?["distanceFromUser"] as! String) mi from you")
                 
             }
             
-            cell.nameLabel.text = self.sectionData[indexPath.section]![indexPath.row]?["itemName"] as? String
+            cell.nameLabel.text = self.sectionData[indexPath.section - 1]![indexPath.row]?["itemName"] as? String
             
-            let payType:String = (self.sectionData[indexPath.section]![indexPath.row]?["paymentType"] as? String)!
+            let payType:String = (self.sectionData[indexPath.section - 1]![indexPath.row]?["paymentType"] as? String)!
             
             cell.payTypeImage.tag = indexPath.row
             
@@ -378,7 +472,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                  cell.payTypeImage.addGestureRecognizer(payTypeCashTap)
             }
             
-            let purchasePriceString: String = (self.sectionData[indexPath.section]![indexPath.row]?["purchasePrice"] as? String)!
+            let purchasePriceString: String = (self.sectionData[indexPath.section - 1]![indexPath.row]?["purchasePrice"] as? String)!
             
             cell.purchaseCompleteButton.tag = indexPath.row
             
@@ -387,22 +481,22 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             if purchasePriceString == "NA" {
                 
                 cell.purchaseCompleteButton.setTitle("Purchase Complete", for: [])
-                cell.deliverToLabel.text = "Will pay \(self.sectionData[indexPath.section]![indexPath.row]?["price"] as! String)"
+                cell.deliverToLabel.text = "Will pay \(self.sectionData[indexPath.section - 1]![indexPath.row]?["price"] as! String)"
                
             } else {
                 
-                let isComplete: Bool = self.sectionData[indexPath.section]![indexPath.row]?["isComplete"] as! Bool
+                let isComplete: Bool = self.sectionData[indexPath.section - 1]![indexPath.row]?["isComplete"] as! Bool
                 
                 if !isComplete { //is not complete
                 
                  cell.purchaseCompleteButton.setTitle("Awaiting Confirmation", for: [])
-                 cell.deliverToLabel.text = "Purchased for \(self.sectionData[indexPath.section]![indexPath.row]?["purchasePrice"] as! String)"
+                 cell.deliverToLabel.text = "Purchased for \(self.sectionData[indexPath.section - 1]![indexPath.row]?["purchasePrice"] as! String)"
                     
                 } else {  //is complete WORKING HERE
                     
                     cell.purchaseCompleteButton.setTitle("Delivery Complete!", for: [])
-                    cell.deliverToLabel.text = "Purchased for \(self.sectionData[indexPath.section]![indexPath.row]?["purchasePrice"] as! String)"
-                    self.requestPopUp = self.sectionData[indexPath.section]![indexPath.row]
+                    cell.deliverToLabel.text = "Purchased for \(self.sectionData[indexPath.section - 1]![indexPath.row]?["purchasePrice"] as! String)"
+                    self.requestPopUp = self.sectionData[indexPath.section - 1]![indexPath.row]
                     
                     if self.requestPopUp?["completedPopUpUsed"] != nil {
                         
@@ -413,7 +507,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                             let tempDict = requestPopUp as! NSMutableDictionary //Mutable dict so I can change popup
                             tempDict["completedPopUpUsed"] = true
                             self.myCurrentDeliveries[indexPath.row] = tempDict
-                            self.sectionData[indexPath.section]?[indexPath.row] = tempDict
+                            self.sectionData[indexPath.section - 1]?[indexPath.row] = tempDict
                             
                             let requestKey = requestPopUp?["requestKey"] as! String
                             self.databaseRef.child("request").child(requestKey).child("completedPopUpUsed").setValue(true)
@@ -421,24 +515,22 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                             self.performSegue(withIdentifier: "listToCompletePopUp", sender: nil)
                             
                         }
-                        
-                    
                     
                     }
                 }
                 
             }
             
-            let tokenCountHelp:Int = (self.sectionData[indexPath.section]![indexPath.row]?["tokensOffered"] as? Int)!
+            let tokenCountHelp:Int = (self.sectionData[indexPath.section - 1]![indexPath.row]?["tokensOffered"] as? Int)!
             
             cell.coinImage.tag = indexPath.row
             
             if tokenCountHelp == 1 {
-                cell.coinImage.image = UIImage(named: "1FullToken.png")
+                cell.coinImage.image = UIImage(named: "1handshakeIcon.png")
                 cell.coinImage.addGestureRecognizer(oneTokenTap)
             }
             if tokenCountHelp == 2 {
-                cell.coinImage.image = UIImage(named: "2FullToken.png")
+                cell.coinImage.image = UIImage(named: "2handshakeIcon.png")
                 cell.coinImage.addGestureRecognizer(twoTokenTap)
             }
             
@@ -450,12 +542,12 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             let chatImageTap:UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.didTapChatImage(_:)))
             cell.chatImage.addGestureRecognizer(chatImageTap)
             
-            cell.phoneImage.tag = indexPath.row
+           /* cell.phoneImage.tag = indexPath.row
             let phoneImageTap:UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.didTapPhoneImage(_:)))
-            cell.phoneImage.addGestureRecognizer(phoneImageTap)
+            cell.phoneImage.addGestureRecognizer(phoneImageTap)*/
             
             DispatchQueue.main.async{
-                if let image = self.sectionData[indexPath.section]![indexPath.row]?["profilePicReference"] as? String {
+                if let image = self.sectionData[indexPath.section - 1]![indexPath.row]?["profilePicReference"] as? String {
                     
                     let url = URL(string: image)
                     
@@ -467,32 +559,44 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             cell.profilePic.layer.masksToBounds = true
             cell.profilePic.contentMode = .scaleAspectFit
             cell.profilePic.layer.borderWidth = 2.0
-            cell.profilePic.layer.borderColor = UIColor(red: 32/255, green: 90/255, blue: 130/255, alpha: 1).cgColor
+            cell.profilePic.layer.borderColor = UIColor(red: 16/255, green: 126/255, blue: 207/255, alpha: 1).cgColor
             
             return cell
             
         }
             
-        else if indexPath.section == 1 { //if is my current request
+        else if indexPath.section == 1 + 1 { //if is my current request
             
             let cell:myCurrentRequestsCell = tableView.dequeueReusableCell(withIdentifier: "myRequestsCell", for: indexPath) as! myCurrentRequestsCell
             
-            cell.nameLabel.text = self.sectionData[indexPath.section]![indexPath.row]?["itemName"] as? String
+            cell.nameLabel.text = self.sectionData[indexPath.section - 1]![indexPath.row]?["itemName"] as? String
             
             cell.blueQuestionMark.tag = indexPath.row
             
-            let purchasePriceString: String = (self.sectionData[indexPath.section]![indexPath.row]?["purchasePrice"] as? String)!
+            DispatchQueue.main.async{
+                if let image = myProfilePicRef {
+                    let url = URL(string: image)
+                    cell.profilePic!.sd_setImage(with: url, placeholderImage: UIImage(named:"saveImage2.png")!)
+                }}
+            
+            cell.profilePic.layer.cornerRadius = 27.5
+            cell.profilePic.layer.masksToBounds = true
+            cell.profilePic.contentMode = .scaleAspectFit
+            cell.profilePic.layer.borderWidth = 2.0
+            cell.profilePic.layer.borderColor = UIColor(red: 16/255, green: 126/255, blue: 207/255, alpha: 1).cgColor
+            
+            let purchasePriceString: String = (self.sectionData[indexPath.section - 1]![indexPath.row]?["purchasePrice"] as? String)!
             
             if purchasePriceString == "NA" {
-            cell.deliverToLabel.text = self.sectionData[indexPath.section]![indexPath.row]?["deliverTo"] as? String
+            cell.deliverToLabel.text = self.sectionData[indexPath.section - 1]![indexPath.row]?["deliverTo"] as? String
             } else {
-            cell.deliverToLabel.text = "Purchased for \(self.sectionData[indexPath.section]![indexPath.row]?["purchasePrice"] as! String)"
+            cell.deliverToLabel.text = "Purchased for \(self.sectionData[indexPath.section - 1]![indexPath.row]?["purchasePrice"] as! String)"
            // cell.deliverToLabel.textColor = UIColor.red
             }
             
-            let tokenCountHelp:Int = (self.sectionData[indexPath.section]![indexPath.row]?["tokensOffered"] as? Int)!
+            let tokenCountHelp:Int = (self.sectionData[indexPath.section - 1]![indexPath.row]?["tokensOffered"] as? Int)!
             
-            let payType:String = (self.sectionData[indexPath.section]![indexPath.row]?["paymentType"] as? String)!
+            let payType:String = (self.sectionData[indexPath.section - 1]![indexPath.row]?["paymentType"] as? String)!
             
             if payType == "Venmo" {
                 cell.payTypeImage.image = UIImage(named: "venmo-icon.png")
@@ -504,12 +608,13 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                 cell.payTypeImage.addGestureRecognizer(payTypeCashTap)
             }
             
-            let isAccepted:Bool = self.sectionData[indexPath.section]![indexPath.row]?["isAccepted"] as! Bool
+            let isAccepted:Bool = self.sectionData[indexPath.section - 1]![indexPath.row]?["isAccepted"] as! Bool
             
-            let isCompleted:Bool = self.sectionData[indexPath.section]![indexPath.row]?["isComplete"] as! Bool
+            let isCompleted:Bool = self.sectionData[indexPath.section - 1]![indexPath.row]?["isComplete"] as! Bool
             
             cell.cancelCompleteButton.tag = indexPath.row
             
+            cell.chatImage.tag = indexPath.row
             if isAccepted == false {
                 
                 cell.deliveringToLabel.text = "Not yet accepted"
@@ -517,8 +622,8 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                 cell.cancelCompleteButton.removeTarget(nil, action: nil, for: .allEvents)
                 cell.cancelCompleteButton.addTarget(self, action: #selector(self.didTapCancelButton(_:)), for: .touchUpInside)
                 
-                cell.chatImage.image = UIImage(named: "grayTextBubble.png")
-                cell.phoneImage.image = UIImage(named: "grayTelephone.png")
+        
+               // cell.phoneImage.image = UIImage(named: "grayTelephone.png")
                 cell.cancelCompleteButton.setTitle("Cancel Request", for: [])
                 cell.cancelCompleteButton.contentHorizontalAlignment = .left
                 cell.cancelCompleteButton.setTitleColor(UIColor.red, for: [])
@@ -533,10 +638,43 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                     cell.coinImage.addGestureRecognizer(twoTokenTapMyRequest)
                 }
                 
+                if let chatName:String = (self.sectionData[indexPath.section - 1]![indexPath.row]?["accepterNotifId"] as? String)! {
+                print(chatName)
+                if chatName == "NA" {
+                    
+                    cell.chatImage.image = UIImage(named: "emptyGrayChat.png")
+                    
+                    let chatImageTap4:UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.didTapChatNotAccepted(_:)))
+                    cell.chatImage.addGestureRecognizer(chatImageTap4)
+                    
+                } else {
+                    
+                    if let accepterUIDNotif = (self.sectionData[indexPath.section - 1]![indexPath.row]?["accepterNotifId"] as? String) {
+                        
+                        if let isNewMessage:Bool = (self.sectionData[indexPath.section - 1]![indexPath.row]?["isNewMessageRequester"] as? Bool)! {
+                            
+                            let chatImageTap2:UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.didTapChatImageRequest(_:)))
+                            cell.chatImage.addGestureRecognizer(chatImageTap2)
+                            
+                            if isNewMessage {
+                                cell.chatImage.image = UIImage(named: "fillBlueChat1.png")
+                            } else {
+                                cell.chatImage.image = UIImage(named: "fillBlueChat.png")
+                            }
+                            
+                        }
+                        
+                    }
+                }
+                }
+            
+               
+                
+                
             } else { //isAccepted == true
                 
                 DispatchQueue.main.async{
-                    if let image = self.sectionData[indexPath.section]![indexPath.row]?["accepterProfilePicRef"] as? String {
+                    if let image = self.sectionData[indexPath.section - 1]![indexPath.row]?["accepterProfilePicRef"] as? String {
                         let url = URL(string: image)
                         cell.profilePic!.sd_setImage(with: url, placeholderImage: UIImage(named:"saveImage2.png")!)
                     }}
@@ -554,15 +692,32 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                     cell.chatImage.isHidden = true
                 }
                 
-                cell.chatImage.image = UIImage(named: "greenTextBubble.png")
-                cell.chatImage.tag = indexPath.row
+                if let chatName:String = (self.sectionData[indexPath.section - 1]![indexPath.row]?["accepterNotifId"] as? String)! {
+                      
+                        if let accepterUIDNotif = (self.sectionData[indexPath.section - 1]![indexPath.row]?["accepterNotifId"] as? String) {
+                            
+                            if let isNewMessage:Bool = (self.sectionData[indexPath.section - 1]![indexPath.row]?["isNewMessageRequester"] as? Bool)! {
+                                
+                                if isNewMessage {
+                                    cell.chatImage.image = UIImage(named: "fillBlueChat1.png")
+                                } else {
+                                    cell.chatImage.image = UIImage(named: "fillBlueChat.png")
+                                }
+                                
+                            }
+                            
+                        }
+                    
+                }
+                
+                
                 let chatImageTap2:UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.didTapChatImageRequest(_:)))
                 cell.chatImage.addGestureRecognizer(chatImageTap2)
               
-                cell.phoneImage.image = UIImage(named: "greenTelephone.png")
+               /* cell.phoneImage.image = UIImage(named: "greenTelephone.png")
                 cell.phoneImage.tag = indexPath.row
                 let phoneImageTap:UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.didTapPhoneImageRequest(_:)))
-                cell.phoneImage.addGestureRecognizer(phoneImageTap)
+                cell.phoneImage.addGestureRecognizer(phoneImageTap)*/
                
                 cell.cancelCompleteButton.contentHorizontalAlignment = .left
                 cell.cancelCompleteButton.setTitleColor(UIColor(red:0.054902, green: 0.376471, blue:0.61568, alpha:1.0), for: [])
@@ -570,7 +725,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                 //Delivery Line become pay instruction
                 if purchasePriceString == "NA" {
                     
-                cell.deliveringToLabel.text = String("Delivery from \(self.sectionData[indexPath.section]![indexPath.row]?["accepterName"] as! String)")
+                cell.deliveringToLabel.text = String("Delivery from \(self.sectionData[indexPath.section - 1]![indexPath.row]?["accepterName"] as! String)")
                     
                 cell.cancelCompleteButton.setTitle("In Progress", for: [])
                 
@@ -587,10 +742,10 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                     }
                     
                     if payType == "Cash" {
-                        cell.deliveringToLabel.text = "Please have \(self.sectionData[indexPath.section]![indexPath.row]?["purchasePrice"] as! String) cash for delivery"
+                        cell.deliveringToLabel.text = "Please have \(self.sectionData[indexPath.section - 1]![indexPath.row]?["purchasePrice"] as! String) cash for delivery"
                     } else { //is Venmo Payment
                             
-                            cell.deliveringToLabel.text = "Copy Phone Number"
+                            cell.deliveringToLabel.text = "Copy phone# for Venmo"
                             cell.deliveringToLabel.font = UIFont.boldSystemFont(ofSize: 13.0)
                             cell.deliveringToLabel.textColor = UIColor(red: 14/255, green: 96/255, blue: 157/255, alpha: 1)
                         
@@ -603,22 +758,22 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                 cell.payTypeImage.tag = indexPath.row
                 
                 if tokenCountHelp == 1 {
-                    cell.coinImage.image = UIImage(named: "1FullToken.png")
+                    cell.coinImage.image = UIImage(named: "1handshakeIcon.png")
                     cell.coinImage.addGestureRecognizer(oneTokenTap)
                 }
                 if tokenCountHelp == 2 {
-                    cell.coinImage.image = UIImage(named: "2FullToken.png")
+                    cell.coinImage.image = UIImage(named: "2handshakeIcon.png")
                     cell.coinImage.addGestureRecognizer(twoTokenTap)
                 }
             }
             
             return cell
             
-        } else { //if is community request
+        } else { //if is general request
             
             let cell:shoppingListCell = tableView.dequeueReusableCell(withIdentifier: "shoppingListCell", for: indexPath) as! shoppingListCell
             
-            if (self.sectionData[indexPath.section]?.count) == 0 {
+            if (self.sectionData[indexPath.section - 1]?.count) == 0 {
                 
                 if isSmallScreen{
                     cell.nameLabel.text = "No current requests"
@@ -634,15 +789,41 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                 cell.deliverToLabel.text = ""
                 cell.willingToPayLabel.isHidden = true
                 cell.payTypeImage.isHidden = true
+                cell.coinImage.isHidden = true
+                cell.chatBubble.isHidden = true
                 
                 return cell
             }
             
             print(sectionData)
+            cell.coinImage.isHidden = false
+            cell.chatBubble.isHidden = false
             
-            let payType:String = (self.sectionData[indexPath.section]![indexPath.row]?["paymentType"] as? String)!
+           
+            print(indexPath.section)
+            let payType:String = (self.sectionData[indexPath.section - 1]![indexPath.row]?["paymentType"] as? String)!
+            
+    //Determine Chat bubble image
+            if let accepterUIDNotif = (self.sectionData[indexPath.section - 1]![indexPath.row]?["accepterNotifId"] as? String) {
+                
+                if accepterUIDNotif != myNotif {
+                    cell.chatBubble.image = UIImage(named: "emptyBlueChat.png")
+                } else {
+                    
+                 let isNewMessage:Bool = (self.sectionData[indexPath.section - 1]![indexPath.row]?["isNewMessageAccepter"] as? Bool)!
+                    
+                    if isNewMessage {
+                        cell.chatBubble.image = UIImage(named: "fillBlueChat1.png")
+                    } else {
+                        cell.chatBubble.image = UIImage(named: "fillBlueChat.png")
+                    }
+                    
+                }
+            }
+        
             
             cell.payTypeImage.tag = indexPath.row
+            cell.chatBubble.tag = indexPath.row
             
             if payType == "Venmo" {
                 cell.payTypeImage.image = UIImage(named: "venmo-icon.png")
@@ -654,13 +835,16 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                 cell.payTypeImage.addGestureRecognizer(payTypeCashTap)
             }
             
-            cell.deliverToLabel.text = self.sectionData[indexPath.section]![indexPath.row]?["deliverTo"] as? String
-            cell.distanceLabel.text = self.sectionData[indexPath.section]![indexPath.row]?["latitude"] as? String
-            cell.nameLabel.text = self.sectionData[indexPath.section]![indexPath.row]?["itemName"] as? String
+            cell.deliverToLabel.text = self.sectionData[indexPath.section - 1]![indexPath.row]?["deliverTo"] as? String
+            cell.distanceLabel.text = self.sectionData[indexPath.section - 1]![indexPath.row]?["latitude"] as? String
+            cell.nameLabel.text = self.sectionData[indexPath.section - 1]![indexPath.row]?["itemName"] as? String
             
-           let payAmount = self.sectionData[indexPath.section]![indexPath.row]?["price"] as! String
+           let payAmount = self.sectionData[indexPath.section - 1]![indexPath.row]?["price"] as! String
             
-           if payAmount.characters.count < 6 {
+        let chatImageTap3:UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.didTapChatImageGeneralRequest(_:)))
+        cell.chatBubble.addGestureRecognizer(chatImageTap3)
+            
+           /*if payAmount.characters.count < 6 {
             
             let leadingConstraint = cell.payTypeImage.trailingAnchor.constraint(equalTo: cell.willingToPayLabel.trailingAnchor, constant: 14)
             NSLayoutConstraint.activate([leadingConstraint])
@@ -670,36 +854,36 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             let leadingConstraint = cell.payTypeImage.trailingAnchor.constraint(equalTo: cell.willingToPayLabel.trailingAnchor, constant: 22)
             NSLayoutConstraint.activate([leadingConstraint])
             
-            }
+            }*/
             
-            cell.willingToPayLabel.text = "Willing to pay \(self.sectionData[indexPath.section]![indexPath.row]?["price"] as! String) via"
+            cell.willingToPayLabel.text = "Willing to pay \(self.sectionData[indexPath.section - 1]![indexPath.row]?["price"] as! String)"
             
-            let buildingCheck = self.sectionData[indexPath.section]![indexPath.row]?["buildingName"] as? String
+            let buildingCheck = self.sectionData[indexPath.section - 1]![indexPath.row]?["buildingName"] as? String
             
             if buildingCheck != "N/A" {
                 
-                cell.distanceLabel.text = String("\(self.sectionData[indexPath.section]![indexPath.row]?["requesterName"] as! String) - \(buildingCheck!) (\(self.sectionData[indexPath.section]![indexPath.row]?["distanceFromUser"] as! String) mi)")
+                cell.distanceLabel.text = String("\(self.sectionData[indexPath.section - 1]![indexPath.row]?["requesterName"] as! String) - \(buildingCheck!) (\(self.sectionData[indexPath.section - 1]![indexPath.row]?["distanceFromUser"] as! String) mi)")
                 
             } else {
                 
-                cell.distanceLabel.text = String("\(self.sectionData[indexPath.section]![indexPath.row]?["requesterName"] as! String) lives \(self.sectionData[indexPath.section]![indexPath.row]?["distanceFromUser"] as! String) mi from you")
+                cell.distanceLabel.text = String("\(self.sectionData[indexPath.section - 1]![indexPath.row]?["requesterName"] as! String) lives \(self.sectionData[indexPath.section - 1]![indexPath.row]?["distanceFromUser"] as! String) mi from you")
                 
             }
             
-            let tokenCountHelp:Int? = self.sectionData[indexPath.section]![indexPath.row]?["tokensOffered"] as? Int
+            let tokenCountHelp:Int? = self.sectionData[indexPath.section - 1]![indexPath.row]?["tokensOffered"] as? Int
             
             cell.coinImage.tag = indexPath.row
             
             if tokenCountHelp == 1 {
-                cell.coinImage.image = UIImage(named: "1FullToken.png")
+                cell.coinImage.image = UIImage(named: "1handshakeIcon.png")
                 cell.coinImage.addGestureRecognizer(oneTokenTap)
             }
             if tokenCountHelp == 2 {
-                cell.coinImage.image = UIImage(named: "2FullToken.png")
+                cell.coinImage.image = UIImage(named: "2handshakeIcon.png")
                 cell.coinImage.addGestureRecognizer(twoTokenTap)
             }
             DispatchQueue.main.async{
-                if let image = self.sectionData[indexPath.section]![indexPath.row]?["profilePicReference"] as? String {
+                if let image = self.sectionData[indexPath.section - 1]![indexPath.row]?["profilePicReference"] as? String {
                     
                     let url = URL(string: image)
                     cell.profilePic!.sd_setImage(with: url, placeholderImage: UIImage(named:"saveImage2.png")!)
@@ -721,35 +905,89 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-        if (self.sectionData[0]?.count) == 0 && (self.sectionData[1]?.count) == 0 && (self.sectionData[2]?.count) == 0 {
+        /*if (self.sectionData[0]?.count) == 0 && (self.sectionData[1]?.count) == 0 && (self.sectionData[2]?.count) == 0 {
     
-            self.rowHeight = 75
+          //  self.rowHeight = 75
+              self.rowHeight = 80
            
-        } else if indexPath.section == 2 {
+        } */
+        if indexPath.section == 3 {
             
             self.rowHeight = 102
             
-        } else if indexPath.section == 0 || indexPath.section == 1  {
+        } else if indexPath.section == 1 || indexPath.section == 2  {
             
             self.rowHeight = 105
             
+        } else if indexPath.section == 0 {
+            
+            self.rowHeight = 62
+            
         }
+      
         
     return self.rowHeight
       
     }
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+   /* func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         
         let headers = tableHeaderArray[section]
         
-        let emptyCheck = self.sectionData[section]! as! [NSDictionary]
+        if section != 0 {
+        let emptyCheck = self.sectionData[section - 1]! as! [NSDictionary]
         
-        if emptyCheck == [] && section != 2 {
+        if emptyCheck == [] && section != 3 {
             return nil
         }
         
         return headers
+        } else {
+            return nil
+        }
+        //return nil
+    }*/
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        
+        let header = tableView.dequeueReusableCell(withIdentifier: "headerCellList") as! shoppingHeader
+        
+        if section != 0 {
+            let emptyCheck = self.sectionData[section - 1]! as! [NSDictionary]
+            
+            if emptyCheck == [] {
+                return nil
+            }
+            header.headerText.text = tableHeaderArray[section]
+            return header
+            
+        } else {
+            return nil
+        }
+        //return nil
+        
+        // return header
+    }
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        print(section)
+        if section != 0 {
+            print(section)
+        }
+        
+        if section != 0 {
+            print(section)
+            let emptyCheck = self.sectionData[section - 1]! as! [NSDictionary]
+            
+            if emptyCheck == [] {
+                return 0
+            }
+            
+            return 25
+            
+        } else {
+            return 0
+        }
+        
     }
     
     
@@ -760,6 +998,18 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
     
     override func viewDidAppear(_ animated: Bool) {
         //self.databaseRef.child("promoteShare").child("isTrue").setValue(true)
+        
+        let notificationType = UIApplication.shared.currentUserNotificationSettings!.types
+        if notificationType.rawValue == 0 {
+            self.performSegue(withIdentifier: "enableNotifsSegue", sender: nil)
+        }
+        
+        if myLocation?.coordinate.latitude == 0.000000 {
+            
+            self.performSegue(withIdentifier: "enableNotifsSegue", sender: nil)
+            
+        }
+        
         self.table.reloadData()
     }
     
@@ -767,12 +1017,20 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         self.view.endEditing(true)
     }
     
-    
+ //My Delivery
     func didTapChatImage(_ gesture: UITapGestureRecognizer)  {
         
         let imageTag = gesture.view!.tag
+        self.otherUserId = self.sectionData[0]![imageTag]?["requesterUID"] as? String
+        self.otherUserName = self.sectionData[0]![imageTag]?["requesterName"] as? String
+        self.otherUserImageRef = self.sectionData[0]![imageTag]?["profilePicReference"] as? String
+        self.otherUserNotifId = self.sectionData[0]![imageTag]?["requesterNotifID"] as? String
+        self.requestKey = self.sectionData[0]![imageTag]?["requestKey"] as? String
+        self.databaseRef.child("request").child(self.requestKey!).child("isNewMessageAccepter").setValue(false)
+        self.performSegue(withIdentifier: "goToChat", sender: nil)
         
-        let requesterCell = self.sectionData[0]![imageTag]?["requesterCell"] as? String
+        
+        /*let requesterCell = self.sectionData[0]![imageTag]?["requesterCell"] as? String
         let requesterName = self.sectionData[0]![imageTag]?["requesterName"] as? String
         
         let textMessage = "Hey \(requesterName!), "
@@ -783,10 +1041,10 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             controller.recipients = [requesterCell!]
             controller.messageComposeDelegate = self;
             self.present(controller, animated: true, completion: nil)
-        }
+        }*/
     }
     
-    func didTapPhoneImage(_ gesture: UITapGestureRecognizer)  {
+    /*func didTapPhoneImage(_ gesture: UITapGestureRecognizer)  {
         
         let imageTag = gesture.view!.tag
         
@@ -817,13 +1075,24 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             }
         }
         
-    }
+    }*/
+    
+    //My Request
     
     func didTapChatImageRequest(_ gesture: UITapGestureRecognizer)  {
         
         let imageTag = gesture.view!.tag
+        self.otherUserId = self.sectionData[1]![imageTag]?["accepterUID"] as? String
+        self.otherUserName = self.sectionData[1]![imageTag]?["accepterName"] as? String
+        //self.otherUserImageRef = self.sectionData[1]![imageTag]?["accepterProfilePicRef"] as? String
+        self.otherUserNotifId = self.sectionData[1]![imageTag]?["accepterNotifId"] as? String
+        self.requestKey = self.sectionData[1]![imageTag]?["requestKey"] as? String
+        self.databaseRef.child("request").child(self.requestKey!).child("isNewMessageRequester").setValue(false)
+        self.isMyRequestChat = true
+        self.performSegue(withIdentifier: "goToChat", sender: nil)
+        print(self.requestKey!)
         
-        
+       /*
         let requesterCell = self.sectionData[1]![imageTag]?["accepterCell"] as? String
         let requesterName = self.sectionData[1]![imageTag]?["accepterName"] as? String
         
@@ -835,9 +1104,33 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             controller.recipients = [requesterCell!]
             controller.messageComposeDelegate = self;
             self.present(controller, animated: true, completion: nil)
-        }
+        }*/
     }
     
+    func didTapChatImageGeneralRequest(_ gesture: UITapGestureRecognizer)  {
+      
+        let imageTag = gesture.view!.tag
+        self.otherUserId = self.sectionData[2]![imageTag]?["requesterUID"] as? String
+        self.otherUserName = self.sectionData[2]![imageTag]?["requesterName"] as? String
+        self.otherUserImageRef = self.sectionData[2]![imageTag]?["requesterProfilePicRef"] as? String
+        self.otherUserNotifId = self.sectionData[2]![imageTag]?["requesterNotifID"] as? String
+        self.isGeneralChat = true
+        self.requestKey = self.sectionData[2]![imageTag]?["requestKey"] as? String
+        
+        self.databaseRef.child("request").child(self.requestKey!).child("isNewMessageAccepter").setValue(false)
+        
+        self.performSegue(withIdentifier: "goToChat", sender: nil)
+        
+       
+    }
+    
+    func didTapChatNotAccepted(_ gesture: UITapGestureRecognizer)  {
+        
+        let imageTag = gesture.view!.tag
+        
+        self.makeAlert(title: "Not yet accepted", message: "Once someone has accepted your request, you will be able to message them to organize your delivery")
+        
+    }
     func didTapCancelButton(_ sender: UIButton)  {
         
         if sender.titleLabel?.text == "Cancel Request" {
@@ -876,9 +1169,9 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             let accepterName = self.sectionData[1]![index]?["accepterName"] as? String
             let itemName = self.sectionData[1]![index]?["itemName"] as? String
             
-            makeAlert(title: "Delivery In Progress", message: "\(accepterName!) has not yet purchased \(itemName!). Feel free to reach out to \(accepterName!) by clicking on the green chat button")
+            makeAlert(title: "Delivery In Progress", message: "\(accepterName!) has not yet purchased \(itemName!). Feel free to reach out to \(accepterName!) by clicking on the blue chat bubble")
             
-        } else {
+        } else { //Mark as Complete
             
         self.locationManager.startUpdatingLocation()
         
@@ -908,6 +1201,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             let requesterUIDToken = self.sectionData[1]![index]?["requesterUID"] as? String
             let tokensToTransfer = self.sectionData[1]![index]?["tokensOffered"] as? Int
             let requestKey = self.sectionData[1]![index]?["requestKey"] as? String
+            let accepterNotif = self.sectionData[1]![index]?["accepterNotifId"] as? String
             
             //Move the request to completedRequestNode
             let itemName = self.sectionData[1]![index]?["itemName"] as? String
@@ -947,6 +1241,24 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             let distanceInMetersFloat = Float(distanceInMeters)
             let distanceInMetersFloatString = String(format: "%.1f", distanceInMeters)
             
+           // self.databaseRef.child("request").child(requestKey!).child("isComplete").setValue(true)
+            
+            let isCompletePath = "/request/\(requestKey!)/isComplete"
+            
+            //let childUpdateComplete:Dictionary<String, Any> = [isCompletePath:true]
+            
+           // self.databaseRef.updateChildValues(childUpdateComplete)
+   
+            
+            OneSignal.postNotification(["headings" : ["en": "Thank you for your request!"],
+                                        "contents" : ["en": "\(tokensToTransfer!) Token has been paid to \(accepterName!) from your account"],
+                                        "include_player_ids": [myNotif],
+                                        "ios_sound": "nil"])
+            
+            OneSignal.postNotification(["headings" : ["en": "Thank you for your delivery!"],
+                                        "contents" : ["en": "\(tokensToTransfer!) Token has been transferred to your account"],
+                                        "include_player_ids": [accepterNotif!],
+                                        "ios_sound": "nil"])
             
             if distanceInMetersFloat > 20 {
                 
@@ -974,7 +1286,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             }
             
             
-            let childUpdateMoveNode:Dictionary<String, Any> = [accepterNamePath:accepterName!,accepterProfilePicRefPath:accepterProfilePicRef!,accepterUIDPath:accepterUIDToken!,itemNamePath:itemName!,pricePath:price!,profilePicReferencePath:profilePicReference!,requestedTimeStampPath:requestedTimeStamp!,requesterNamePath:requesterName!,requesterUIDPath:requesterUID!,requestedTimePath:requestedTime!,tokensOfferedPath:tokensToTransfer!,keyPath:requestKey!,distanceTraveledPath:distanceInMetersFloatString,isTestPath:self.isTest, timeRequestToPurchaseMinutesPath:timeRequestToPurchaseMinutes]
+            let childUpdateMoveNode:Dictionary<String, Any> = [accepterNamePath:accepterName!,accepterProfilePicRefPath:accepterProfilePicRef!,accepterUIDPath:accepterUIDToken!,itemNamePath:itemName!,pricePath:price!,profilePicReferencePath:profilePicReference!,requestedTimeStampPath:requestedTimeStamp!,requesterNamePath:requesterName!,requesterUIDPath:requesterUID!,requestedTimePath:requestedTime!,tokensOfferedPath:tokensToTransfer!,keyPath:requestKey!,distanceTraveledPath:distanceInMetersFloatString,isTestPath:self.isTest, timeRequestToPurchaseMinutesPath:timeRequestToPurchaseMinutes,isCompletePath:true]
             
             self.databaseRef.updateChildValues(childUpdateMoveNode)
             
@@ -1001,7 +1313,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                         
                     self.databaseRef.updateChildValues(childUpdates)
                         
-                    self.databaseRef.child("request").child(requestKey!).child("isComplete").setValue(true)
+                   // self.databaseRef.child("request").child(requestKey!).child("isComplete").setValue(true)
                 
                 }
             }
@@ -1022,6 +1334,13 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         
         let requesterCell = self.sectionData[0]![index]?["requesterCell"] as! String
         let requesterName = self.sectionData[0]![index]?["requesterName"] as! String
+        let requesterUID = self.sectionData[0]![index]?["requesterUID"] as! String
+        let requestKey = self.sectionData[0]![index]?["requestKey"] as! String
+        
+        if let requesterNotifIDTemp = self.sectionData[0]![index]?["requesterNotifID"] as? String {
+            self.requesterNotifID = requesterNotifIDTemp
+        }
+        
         let itemName = self.sectionData[0]![index]?["itemName"] as! String
         
         if sender.titleLabel?.text == "Purchase Complete" {
@@ -1093,7 +1412,8 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                 let purchaseLatitudePath = "/request/\(requestKey)/purchaseLatitude"
                 let purchaseLongitudePath = "/request/\(requestKey)/purchaseLongitude"
                 let purchaseTimeStampPath = "/request/\(requestKey)/purchaseTimeStamp"
-                    
+                let requesterName = self.sectionData[0]?[index]?["requesterName"] as! String
+
                 let childUpdatePurchaseComplete:Dictionary<String, Any> = [purchasePricePath: self.purchasePrice!, purchaseLatitudePath:self.userLatitude,purchaseLongitudePath:self.userLongitude,purchaseTimeStampPath:[".sv": "timestamp"]]
                     
                 //Issue arising in that when a new requested is added to community, the Awaiting complete button become purchas and bottom label reverts to "will pay". To solve this manually update
@@ -1112,14 +1432,14 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                     let cashAlert = UIAlertController(title: "Cash Payment Notice", message: "As this delivery will be paid in cash, the amount owed will be \(self.purchasePrice!)", preferredStyle: UIAlertControllerStyle.alert)
                     
                     cashAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
-                        self.purchaseText(itemName: itemName, requesterCell: requesterCell, requesterName: requesterName, purchasePrice: self.purchasePrice!, isVenmo: false)
+                        self.purchaseText(itemName: itemName, requesterCell: requesterUID, requesterName: requestKey, purchasePrice: self.purchasePrice!, isVenmo: false, notifID: self.requesterNotifID)
                     }))
                     
                     self.present(cashAlert, animated: true, completion: nil)
                     
                  } else {
                     
-                    self.purchaseText(itemName: itemName, requesterCell: requesterCell, requesterName: requesterName, purchasePrice: self.purchasePrice!, isVenmo: true)
+                    self.purchaseText(itemName: itemName, requesterCell: requesterUID, requesterName: requestKey, purchasePrice: self.purchasePrice!, isVenmo: true,notifID: self.requesterNotifID)
                  }
                 }
                 
@@ -1222,7 +1542,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                 let purchasePriceString: String = (self.sectionData[1]![index]?["purchasePrice"] as? String)!
                 
                 if purchasePriceString == "NA" {
-                    self.questionMarkMessageRequest = "Your request of \(self.sectionData[1]![index]?["itemName"] as! String) has been accepted. When \(self.sectionData[1]![index]?["accepterName"] as! String) has purchased the item you will get a text message."
+                    self.questionMarkMessageRequest = "Your request of \(self.sectionData[1]![index]?["itemName"] as! String) has been accepted. When \(self.sectionData[1]![index]?["accepterName"] as! String) has purchased the item you will get a notification."
                     
                     self.questionMarkMessageRequestTitle = "Item not yet Purchased"
                     
@@ -1265,7 +1585,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             let purchasePriceString: String = (self.sectionData[1]![index]?["purchasePrice"] as? String)!
             
                 if purchasePriceString == "NA" {
-                    self.questionMarkMessageRequest = "Your request of \(self.sectionData[1]![index]?["itemName"] as! String) has been accepted. When \(self.sectionData[1]![index]?["accepterName"] as! String) has purchased the item you will get a text message."
+                    self.questionMarkMessageRequest = "Your request of \(self.sectionData[1]![index]?["itemName"] as! String) has been accepted. When \(self.sectionData[1]![index]?["accepterName"] as! String) has purchased the item you will get a notification."
                     
                     self.questionMarkMessageRequestTitle = "Item not yet Purchased"
                     
@@ -1331,27 +1651,58 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         
     }
     
-    func purchaseText(itemName: String, requesterCell: String, requesterName: String, purchasePrice: String, isVenmo: Bool) {
+    func purchaseText(itemName: String, requesterCell: String, requesterName: String, purchasePrice: String, isVenmo: Bool, notifID: String) {
+        
+        self.databaseRef.child("request").child(requesterName).child("isNewMessageRequester").setValue(true) //requesterName = requesterKey
         
         if !isVenmo {
-        
-            let textMessage = "Hey \(requesterName), I have purchased \(itemName) for \(purchasePrice). Please have \(purchasePrice) cash ready to pay me when I arrive. Thanks!"
             
-            self.purchaseActualText(textMessage: textMessage, requesterCell: requesterCell)
+            let messageHeader = "\(loggedInUserName!) has purchased \(itemName) for \(purchasePrice)"
+            let textMessage = "Please have \(purchasePrice) cash ready to pay when \(loggedInUserName!) arrives!"
             
+            let itemRef = databaseRef.child("messages").childByAutoId()
+            
+            let text = "I have purchased \(itemName) for \(purchasePrice), please have \(purchasePrice) cash ready to pay when I arrive."
+            
+            let messageItem = [
+                "senderId": self.loggedInUserId,
+                "senderName": loggedInUserName,
+                "text": text,
+                "otherUserId": requesterCell //is requesterCell = requestUID
+            ]
+            
+            itemRef.setValue(messageItem)
+            
+            self.purchaseActualText(textMessage: textMessage, requesterCell: requesterCell, notifID: notifID, messageHeader: messageHeader)
+
         } else {
             
-            let textMessage = "Hey \(requesterName), I have purchased \(itemName) for \(purchasePrice). Please be ready to venmo me \(purchasePrice) when I arrive. You can copy my phone number by tapping on \"Copy Phone Number\" written in bold blue. Thanks!"
+            let messageHeader = "\(loggedInUserName!) has purchased \(itemName) for \(purchasePrice)"
+            let textMessage = "Please venmo \(loggedInUserName!) \(purchasePrice) when he arrives!"
             
-            self.purchaseActualText(textMessage: textMessage, requesterCell: requesterCell)
+            let itemRef = databaseRef.child("messages").childByAutoId()
+            
+            let text = "I have purchased \(itemName) for \(purchasePrice), please be ready to venmo me \(purchasePrice) when I arrive."
+            
+            let messageItem = [
+                "senderId": self.loggedInUserId,
+                "senderName": loggedInUserName,
+                "text": text,
+                "otherUserId": requesterCell //is requesterCell = requestUID
+            ]
+            
+            itemRef.setValue(messageItem)
+
+            
+            self.purchaseActualText(textMessage: textMessage, requesterCell: requesterCell,  notifID: notifID, messageHeader: messageHeader)
             
         }
         
     }
     
-    func purchaseActualText(textMessage: String, requesterCell: String) {
+    func purchaseActualText(textMessage: String, requesterCell: String, notifID: String, messageHeader: String) {
     
-    if (MFMessageComposeViewController.canSendText()) {
+    /*if (MFMessageComposeViewController.canSendText()) {
         
         let controller = MFMessageComposeViewController();
         controller.body = textMessage;
@@ -1359,10 +1710,16 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         controller.messageComposeDelegate = self;
         self.present(controller, animated: true, completion: nil)
 
-        }
+        }*/
+        
+        OneSignal.postNotification(["headings" : ["en": messageHeader],
+                                    "contents" : ["en": textMessage],
+                                    "include_player_ids": [notifID],
+                                    "ios_sound": "nil"])
+    
     }
     
-     func makeAlert(title: String, message: String)  {
+    func makeAlert(title: String, message: String)  {
         
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
         

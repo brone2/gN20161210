@@ -21,6 +21,7 @@ class couponMaintenanceView: UIViewController {
     
     let databaseRef = FIRDatabase.database().reference()
     
+    @IBOutlet var grayView: UIView!
     var couponText: String?
     var timeThreshold: Int?
     let threeHours: Int = 10800000
@@ -79,7 +80,9 @@ class couponMaintenanceView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        self.grayView.layer.cornerRadius = 2
+        self.grayView.layer.masksToBounds = true
+
     }
 
     override func didReceiveMemoryWarning() {

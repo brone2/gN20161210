@@ -12,9 +12,11 @@ import FirebaseDatabase
 import FirebaseAuth
 import MessageUI
 import MessageUI.MFMailComposeViewController
+import OneSignal
 
 class viewDetailGeneralShoppingList: UIViewController, UITextViewDelegate, UITextFieldDelegate, MFMessageComposeViewControllerDelegate {
     
+    @IBOutlet var grayView: UIView!
     @IBOutlet var decriptionTextView: UITextView!
     @IBOutlet var requestedByLabel: UILabel!
     @IBOutlet var profilePicImage: UIImageView!
@@ -30,34 +32,56 @@ class viewDetailGeneralShoppingList: UIViewController, UITextViewDelegate, UITex
     var databaseRef = FIRDatabase.database().reference()
     var shoppingListCurrentRequests = [NSDictionary?]()
     var selectedRowIndex:Int!
+    
+    var isRun = false
+    var runRequest = [NSDictionary?]()
+    
+    var currentDataDict = [NSDictionary?]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.flagButton.contentHorizontalAlignment = .left
+        self.grayView.layer.cornerRadius = 5
+        self.grayView.layer.masksToBounds = true
         
+        self.decriptionTextView.layer.borderWidth = 1
+        self.decriptionTextView.layer.borderColor = UIColor.black.cgColor
         
+        self.productImage.layer.cornerRadius = 3
+        self.productImage.layer.masksToBounds = true
+        self.productImage.contentMode = .scaleAspectFill
+
+        
+        self.flagButton.contentHorizontalAlignment = .right
+        
+        if isRun{
+            self.currentDataDict = self.runRequest
+        } else {
+            self.currentDataDict = self.shoppingListCurrentRequests
+        }
+        
+       print(runRequest)
         self.loggedInUserId = FIRAuth.auth()?.currentUser?.uid
-        self.requestedByLabel.text = String("Requested by \(self.shoppingListCurrentRequests[self.selectedRowIndex]?["requesterName"] as! String)")
-        self.productNameLabel.text = String("\(self.shoppingListCurrentRequests[self.selectedRowIndex]?["itemName"] as! String)")
+        self.requestedByLabel.text = String("Requested by \(self.currentDataDict[self.selectedRowIndex]?["requesterName"] as! String)")
+        self.productNameLabel.text = String("\(self.currentDataDict[self.selectedRowIndex]?["itemName"] as! String)")
  
         
-        let buildingCheck = self.shoppingListCurrentRequests[self.selectedRowIndex]?["buildingName"] as? String
+        let buildingCheck = self.currentDataDict[self.selectedRowIndex]?["buildingName"] as? String
         
         if buildingCheck != "N/A" {
             
-             self.distanceLabel.text = String("Located \(self.shoppingListCurrentRequests[self.selectedRowIndex]?["distanceFromUser"] as! String) mi away in \(buildingCheck!)")
+             self.distanceLabel.text = String("Lives in \(buildingCheck!)")
             
         } else {
 
-        self.distanceLabel.text = String("Located \(self.shoppingListCurrentRequests[self.selectedRowIndex]?["distanceFromUser"] as! String) mi away from you")
+        self.distanceLabel.text = String("Located \(self.currentDataDict[self.selectedRowIndex]?["distanceFromUser"] as! String) mi away from you")
             
         }
         
-        self.decriptionTextView.text = self.shoppingListCurrentRequests[self.selectedRowIndex]?["description"] as! String
+        self.decriptionTextView.text = self.currentDataDict[self.selectedRowIndex]?["description"] as! String
         
         
-        if let image = self.shoppingListCurrentRequests[self.selectedRowIndex]?["profilePicReference"] as? String {
+        if let image = self.currentDataDict[self.selectedRowIndex]?["profilePicReference"] as? String {
             
             let data = try? Data(contentsOf: URL(string: image)!)
             
@@ -72,7 +96,7 @@ class viewDetailGeneralShoppingList: UIViewController, UITextViewDelegate, UITex
         self.profilePicImage.layer.borderColor = UIColor(red: 16/255, green: 126/255, blue: 207/255, alpha: 1).cgColor
         
         //if let image = self.shoppingListCurrentRequests[self.selectedRowIndex]?["image_request"] as? String {
-        if let image = self.shoppingListCurrentRequests[self.selectedRowIndex]?["productImage"] as? String {
+        if let image = self.currentDataDict[self.selectedRowIndex]?["productImage"] as? String {
             
             let data = try? Data(contentsOf: URL(string: image)!)
             
@@ -101,6 +125,8 @@ class viewDetailGeneralShoppingList: UIViewController, UITextViewDelegate, UITex
         
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
             
+        if !self.isRun {
+            
         let requestKey = self.shoppingListCurrentRequests[self.selectedRowIndex]?["requestKey"] as? String
         let requestPath = "request/\(requestKey!)"
         let childUpdates = [requestPath:NSNull()]
@@ -112,7 +138,7 @@ class viewDetailGeneralShoppingList: UIViewController, UITextViewDelegate, UITex
         self.databaseRef.child("request").child((self.shoppingListCurrentRequests[self.selectedRowIndex]?["requestKey"] as? String)!).child("isAccepted").setValue(true)
             
         self.databaseRef.child("request").child((self.shoppingListCurrentRequests[self.selectedRowIndex]?["requestKey"] as? String)!).child("isFlagged").setValue(true)*/
-            
+            }
             let alertFin = UIAlertController(title: "Thank you", message: "The request has been removed and this user's account is currently under review", preferredStyle: UIAlertControllerStyle.alert)
             
             alertFin.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
@@ -121,6 +147,7 @@ class viewDetailGeneralShoppingList: UIViewController, UITextViewDelegate, UITex
             self.present(alertFin, animated: true, completion: nil)
             
         }))
+        
         
         self.present(alert, animated: true, completion: nil)
         
@@ -133,7 +160,8 @@ class viewDetailGeneralShoppingList: UIViewController, UITextViewDelegate, UITex
         
         self.deliverAcceptedCompletion()
         
-        let phoneAlert = UIAlertController(title: "Please Enter Phone Number", message: "Please enter your phone number so that \(self.shoppingListCurrentRequests[self.selectedRowIndex]?["requesterName"] as! String) may venmo you payment upon completion", preferredStyle: UIAlertControllerStyle.alert)
+        
+        let phoneAlert = UIAlertController(title: "Please Enter Phone Number", message: "Please enter your phone number so that the requester may venmo you payment upon delivery", preferredStyle: UIAlertControllerStyle.alert)
         
         phoneAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
             self.performSegue(withIdentifier: "viewGeneralToEnterPhone", sender: nil)
@@ -151,7 +179,7 @@ class viewDetailGeneralShoppingList: UIViewController, UITextViewDelegate, UITex
     
     func acceptDelivery() {
         
-        let alert = UIAlertController(title: "Accept Delivery", message: "Thank you for accepting this delivery! Please keep in contact with the requestor to ensure a smooth delivery process", preferredStyle: UIAlertControllerStyle.alert)
+        let alert = UIAlertController(title: "Accept Delivery", message: "Thank you for accepting this delivery! Please keep in contact with the requester to ensure a smooth delivery process", preferredStyle: UIAlertControllerStyle.alert)
         
         alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (action) in
             //nothing happens
@@ -170,35 +198,82 @@ class viewDetailGeneralShoppingList: UIViewController, UITextViewDelegate, UITex
     
     func deliverAcceptedCompletion() {
     
-       let childUpdates = ["/request/\((self.shoppingListCurrentRequests[self.selectedRowIndex]?["requestKey"] as? String)!)/isAccepted":true,"/request/\((self.shoppingListCurrentRequests[self.selectedRowIndex]?["requestKey"] as? String)!)/accepterCell":myCellNumber as String,"/request/\((self.shoppingListCurrentRequests[self.selectedRowIndex]?["requestKey"] as? String)!)/accepterUID": FIRAuth.auth()?.currentUser?.uid,"/request/\((self.shoppingListCurrentRequests[self.selectedRowIndex]?["requestKey"] as? String)!)/accepterName":loggedInUserName, "/request/\((self.shoppingListCurrentRequests[self.selectedRowIndex]?["requestKey"] as? String)!)/accepterProfilePicRef":myProfilePicRef] as [String : Any]
+        if !isRun {
+        let childUpdates = ["/request/\((self.shoppingListCurrentRequests[self.selectedRowIndex]?["requestKey"] as? String)!)/isAccepted":true,"/request/\((self.shoppingListCurrentRequests[self.selectedRowIndex]?["requestKey"] as? String)!)/accepterCell":myCellNumber as String,"/request/\((self.shoppingListCurrentRequests[self.selectedRowIndex]?["requestKey"] as? String)!)/accepterUID": FIRAuth.auth()?.currentUser?.uid,"/request/\((self.shoppingListCurrentRequests[self.selectedRowIndex]?["requestKey"] as? String)!)/accepterName":loggedInUserName, "/request/\((self.shoppingListCurrentRequests[self.selectedRowIndex]?["requestKey"] as? String)!)/accepterProfilePicRef":myProfilePicRef, "/request/\((self.shoppingListCurrentRequests[self.selectedRowIndex]?["requestKey"] as? String)!)/accepterNotifId":myNotif] as [String : Any]
          
          self.databaseRef.updateChildValues(childUpdates)
+        } else {
+           
+             let runKey = self.runRequest[self.selectedRowIndex]?["requestKey"] as! String
+             let itemRef = databaseRef.child("request").child(runKey).child("isAccepted")
+             itemRef.setValue(true)
+        }
         
-        if myCellNumber != "0" {
+       
          
-         let requesterCell = self.shoppingListCurrentRequests[self.selectedRowIndex]?["requesterCell"] as? String
-         let requesterName = self.shoppingListCurrentRequests[self.selectedRowIndex]?["requesterName"] as? String
-         let itemName = self.shoppingListCurrentRequests[self.selectedRowIndex]?["itemName"] as? String
-         let itemPrice = self.shoppingListCurrentRequests[self.selectedRowIndex]?["price"] as? String
+         let requesterCell = self.currentDataDict[self.selectedRowIndex]?["requesterCell"] as? String
+         let requesterName = self.currentDataDict[self.selectedRowIndex]?["requesterName"] as? String
+         let itemName = self.currentDataDict[self.selectedRowIndex]?["itemName"] as? String
+         let itemPrice = self.currentDataDict[self.selectedRowIndex]?["price"] as? String
+         let requesterUID = self.currentDataDict[self.selectedRowIndex]?["requesterUID"] as? String
+         let requesterNotif = self.currentDataDict[self.selectedRowIndex]?["requesterNotifID"] as? String
+        //Send Initial text message
+            
+            let itemRef = databaseRef.child("messages").childByAutoId()
+            
+            // 2
+            
+            let text = "Hey \(requesterName!), I am happy to deliver \(itemName!). Please message me back confirming you are committed to pay me a price up to \(itemPrice!), as well as a specific location of delivery. Thanks, \(loggedInUserName!) "
+            
+            let messageItem = [
+                "senderId": self.loggedInUserId,
+                "senderName": loggedInUserName,
+                "text": text,
+                "otherUserId": requesterUID
+            ]
+            
+            // 3
+            itemRef.setValue(messageItem)
+            
+            if isRun {
+                 let requestKey = self.runRequest[self.selectedRowIndex]?["requestKey"] as? String
+                 self.databaseRef.child("request").child(requestKey!).child("isNewMessageRequester").setValue(true)
+            } else {
+                let requestKey = self.shoppingListCurrentRequests[self.selectedRowIndex]?["requestKey"] as? String
+                self.databaseRef.child("request").child(requestKey!).child("isNewMessageRequester").setValue(true)
+            }
          
-         let textMessage = "Hey \(requesterName!), I am happy to deliver \(itemName!). Please message me back confirming you are committed to recompensate me a price up to \(itemPrice!), as well as a specific location of delivery. Thanks, \(loggedInUserName!) "
+            
+         
+    
+        //Send Push Notif to requester
+        
+            if requesterNotif != nil {
+            OneSignal.postNotification(["headings" : ["en": "\(userFullName!) has accepted your request!"],
+                                        "contents" : ["en": "Please message \(userFullName!) to let them any specifics of your request"],
+                                        "include_player_ids": [requesterNotif!],
+                                        "ios_sound": "nil"])
+            }
+ 
          // print(textMessage)
          
-         if (MFMessageComposeViewController.canSendText()) {
+     /*    if (MFMessageComposeViewController.canSendText()) {
          let controller = MFMessageComposeViewController();
          controller.body = textMessage;
          controller.recipients = [requesterCell!]
          controller.messageComposeDelegate = self;
          self.present(controller, animated: true, completion: nil)
-         }
-    
+         }*/
+        if myCellNumber != "0" {
+  self.seger()
         }
         
     }
     
     
     @IBAction func didTapBack(_ sender: Any) {
-        self.performSegue(withIdentifier: "detailToGeneralRefreshSegue", sender: nil)
+        //self.performSegue(withIdentifier: "detailToGeneralRefreshSegue", sender: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
     
@@ -212,20 +287,33 @@ class viewDetailGeneralShoppingList: UIViewController, UITextViewDelegate, UITex
     }
 
     func seger (){
-     self.performSegue(withIdentifier: "detailToGeneralRefreshSegue", sender: nil)
+        if isRun {
+            self.performSegue(withIdentifier: "reqToRun", sender: nil)
+        } else {
+            self.performSegue(withIdentifier: "detailToGeneralRefreshSegue", sender: nil)
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if segue.identifier == "viewGeneralToEnterPhone" {
             
+            if !isRun {
             let newViewController = segue.destination as! submitPhoneNumberView
             newViewController.isRequest = false
             newViewController.saveKey = (self.shoppingListCurrentRequests[self.selectedRowIndex]?["requestKey"] as? String)!
-            newViewController.textMessage = "Hey \(self.shoppingListCurrentRequests[self.selectedRowIndex]?["requesterName"] as! String), I am happy to deliver \(self.shoppingListCurrentRequests[self.selectedRowIndex]?["itemName"] as! String). Please message me back confirming you are committed to recompensate me a price up to \(self.shoppingListCurrentRequests[self.selectedRowIndex]?["price"] as! String), as well as a specific location of delivery. Thanks, \(loggedInUserName!)"
+            newViewController.textMessage = "Hey \(self.shoppingListCurrentRequests[self.selectedRowIndex]?["requesterName"] as! String), I am happy to deliver \(self.shoppingListCurrentRequests[self.selectedRowIndex]?["itemName"] as! String). Please message me back confirming you are committed to pay me a price up to \(self.shoppingListCurrentRequests[self.selectedRowIndex]?["price"] as! String), as well as a specific location of delivery. Thanks, \(loggedInUserName!)"
             newViewController.phoneNumber = (self.shoppingListCurrentRequests[self.selectedRowIndex]?["requesterCell"] as! String)
             
-            
+            } else {
+                
+                let newViewController = segue.destination as! submitPhoneNumberView
+                newViewController.isRequest = false
+                newViewController.saveKey = self.runRequest[self.selectedRowIndex]?["requestKey"] as? String
+                newViewController.isRun = true
+                
+                
+            }
         }
         
     }
@@ -247,5 +335,9 @@ class viewDetailGeneralShoppingList: UIViewController, UITextViewDelegate, UITex
     }
     func dismissFullScreenImage(sender: UITapGestureRecognizer){
         sender.view?.removeFromSuperview()
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
 }

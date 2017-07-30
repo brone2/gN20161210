@@ -18,6 +18,7 @@ class shoppingListCell: UITableViewCell {
     @IBOutlet var profilePic: UIImageView!
     @IBOutlet var willingToPayLabel: UILabel!
     
+    @IBOutlet var chatBubble: UIImageView!
     
     
     

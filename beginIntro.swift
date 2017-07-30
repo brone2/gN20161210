@@ -12,9 +12,12 @@ class beginIntro: UIViewController {
     
     var isIntro = true
 
+    @IBOutlet var realGrayView: UIView!
+    @IBOutlet var grayView: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        self.realGrayView.layer.cornerRadius = 3
+        self.realGrayView.layer.masksToBounds = true
         // Do any additional setup after loading the view.
     }
 
@@ -42,4 +45,7 @@ class beginIntro: UIViewController {
         }*/
     }
 
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
 }

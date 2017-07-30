@@ -41,6 +41,9 @@ class deliveryCompletePopUp: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.animateView.layer.cornerRadius = 3
+        self.animateView.layer.masksToBounds = true
+        
         self.goToAppButton.isHidden = true
         
     if !isIntro {
@@ -54,12 +57,12 @@ class deliveryCompletePopUp: UIViewController {
         if tokensOffered == 1 {
             
             self.textLabel.text = "\(deliverToName) has marked their request of \(itemName) as complete! One token will now be transferred to your account "
-            self.tokenImage.image = UIImage(named: "1FullToken.png")
+            self.tokenImage.image = UIImage(named: "1handshakeIcon.png")
             
         } else {
             
             self.textLabel.text = "\(deliverToName) has marked their request of \(itemName) as complete! Two tokens will now be transferred to your account "
-            self.tokenImage.image = UIImage(named: "2FullToken.png")
+            self.tokenImage.image = UIImage(named: "2handshakeIcon.png")
             
             
      
@@ -181,7 +184,7 @@ class deliveryCompletePopUp: UIViewController {
 
     @IBAction func didTapOk(_ sender: Any) {
         
-        self.dismiss(animated: true, completion: nil)
+        self.performSegue(withIdentifier: "introToRequest", sender: nil)
     }
   
 

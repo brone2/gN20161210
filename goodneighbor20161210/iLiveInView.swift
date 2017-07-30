@@ -1,37 +1,29 @@
 //
-//  promoViewController.swift
+//  iLiveInView.swift
 //  goodneighbor20161210
 //
-//  Created by Neil Bronfin on 2/9/17.
+//  Created by Neil Bronfin on 7/15/17.
 //  Copyright © 2017 Neil Bronfin. All rights reserved.
 //
 
 import UIKit
 
-class promoViewController: UIViewController {
+class iLiveInView: UIViewController {
+    @IBOutlet var grayView: UIView!
 
-    @IBOutlet var tView: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        self.tView.layer.cornerRadius = 5
-        self.tView.layer.masksToBounds = true
-        
+        self.grayView.layer.cornerRadius = 3
+        self.grayView.layer.masksToBounds = true
+        // Do any additional setup after loading the view.
     }
 
-    @IBAction func didTapReferAFriend(_ sender: UIButton) {
-        
-        
-        
-    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
+
     /*
     // MARK: - Navigation
 
@@ -41,5 +33,7 @@ class promoViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
-
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
 }

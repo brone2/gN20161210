@@ -17,6 +17,7 @@ class meChangeRadius: UIViewController {
     @IBOutlet var slider: UISlider!
     @IBOutlet var distanceLabel: UILabel!
     
+    @IBOutlet var grayView: UIView!
     @IBOutlet var feetLabel: UILabel!
     var loggedInUserId:String!
     var loggedInUserData: AnyObject?
@@ -53,6 +54,9 @@ class meChangeRadius: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.grayView.layer.cornerRadius = 3
+        self.grayView.layer.masksToBounds = true
+
         slider.minimumValue = 0.010000
         slider.maximumValue = 1.0000
         

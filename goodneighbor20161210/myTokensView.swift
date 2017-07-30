@@ -76,7 +76,32 @@ class myTokensView: UIViewController {
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
-    } 
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        
+        self.databaseRef.child("users").observe(.childAdded) { (snapshot3: FIRDataSnapshot) in
+            
+            let key = snapshot3.key
+            let snapshot3 = snapshot3.value as! NSDictionary
+                if let userState = snapshot3["city"] as? String {
+                    if userState == "Santa Clara " {
+                        print(snapshot3["fullName"] as! String)
+                        print(key)
+                    }
+                }
+                
+                //For user count check of ambassadors
+                /* if let userBuilding = snapshot3["buildingName"] as? String{
+                 if userBuilding == "Wohlford" {
+                 print(snapshot3["fullName"] as? String)
+                 }
+                 }*/
+                
+            }
+        }
+
+    }
     
 
-}
+

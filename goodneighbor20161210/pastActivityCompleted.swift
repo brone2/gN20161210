@@ -34,6 +34,13 @@ class pastActivityCompleted: UIViewController, UITableViewDelegate,UITableViewDa
         super.viewDidLoad()
         
         navBar.topItem!.title = self.navBarTitle
+        let attrs = [
+            NSForegroundColorAttributeName: colorBlue,
+            NSFontAttributeName: UIFont(name: "Georgia-Bold", size: 20)!
+        ]
+        
+        UINavigationBar.appearance().titleTextAttributes = attrs
+        
         
     }
     
@@ -58,12 +65,13 @@ class pastActivityCompleted: UIViewController, UITableViewDelegate,UITableViewDa
         let tokenCountHelp:Int = (self.relevantPastInfo[indexPath.row]?["tokensOffered"] as? Int)!
         
         if tokenCountHelp == 1 {
-            cell.coinImage.image = UIImage(named: "1FullToken.png")
+            cell.coinImage.image = UIImage(named: "1handshakeIcon.png")
         }
         if tokenCountHelp == 2 {
-            cell.coinImage.image = UIImage(named: "2FullToken.png")
+            cell.coinImage.image = UIImage(named: "2handshakeIcon.png")
         }
-        
+        print(self.relevantPastInfo[indexPath.row])
+        print(self.relevantPastInfo)
         //If viewing my deliveries
         if self.navBarTitle == "Completed Deliveries"{
             

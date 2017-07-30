@@ -39,12 +39,19 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
     var paymentType = "Venmo"
     var requestPrice = "$0.00"
     var myBuildingMates = [String]()
+    var alertText:String?
     
     var locationManager = CLLocationManager()
     var userLocation: CLLocation?
     var userLatitude: CLLocationDegrees = 0.10000
     var userLongitude: CLLocationDegrees = 0.10000
     
+    var isRun = false
+    var selectedRun:NSDictionary?
+    var descriptionText: String?
+    var runkey: String?
+    
+    @IBOutlet var itemRequestLabel: UILabel!
     
     @IBOutlet var questionButton: customButton!
     //@IBOutlet var questionToTap: UIImageView!
@@ -56,6 +63,8 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
     @IBOutlet var doneToolBarButton: UIBarButtonItem!
     @IBOutlet var toolbarBottomConstraint: NSLayoutConstraint!
     var toolbarBottomConstraintInitialValue:CGFloat?
+    
+    var runnerNotifID: String?
  
     @IBOutlet weak var twoTokenImage: UIImageView!
     @IBOutlet weak var oneTokenImage: UIImageView!
@@ -73,6 +82,9 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
     @IBOutlet var deliverToLabel: UILabel!
     @IBOutlet var maxPayLabel: UILabel!
     @IBOutlet var itemNameLabel: UILabel!
+    @IBOutlet var runTextLabel: UILabel!
+    
+    var requestRun = "request"
     
     @IBOutlet var addPictureButton: UIButton!
     
@@ -83,12 +95,21 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         
         let randomNum:UInt32 = arc4random_uniform(100000)
         let someString:String = String(randomNum)
-        print(someString)
         
         self.image.isHidden = true
         
-        /*let segueTap: UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.goToExplanation(_:)))
-        questionToTap.addGestureRecognizer(segueTap)*/
+        //Run Request
+        
+        if self.isRun {
+            itemNameLabel.text = "Item from \(self.selectedRun?["runTo"] as! String)"
+            self.descriptionText = "Provide \(self.selectedRun?["runnerName"] as! String) detailed information about your request for their run to  \(self.selectedRun?["runTo"] as! String)"
+            self.runkey = self.selectedRun?["runKey"] as! String
+            self.runnerNotifID = self.selectedRun?["runnerNotif"] as! String
+            self.runTextLabel.text = "Request will only be visible to \(self.selectedRun?["runnerName"] as! String)"
+        } else {
+            self.descriptionText = "Ex: Please pick up a six pack of diet coke, but regular coke is fine if there's no diet. I live in Lisner Dorm. Call me with any questions."
+            self.runTextLabel.isHidden = true
+        }
         
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
@@ -108,10 +129,11 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
             
             self.oneTokenImage.isHidden = true
             self.twoTokenImage.isHidden = true
-            self.oneTokenLabel.isHidden = true
-            self.twoTokenLabel.isHidden = true
+            //self.oneTokenLabel.isHidden = true
+            //self.twoTokenLabel.isHidden = true
             self.tokensOfferedLabel.isHidden = true
             self.addPictureButton.isHidden = true
+            self.runTextLabel.isHidden = true
             
         } else if isSmallScreen || isVerySmallScreen {
             
@@ -122,12 +144,13 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
             self.deliverToLabel.font = UIFont.systemFont(ofSize: smallFont)
             self.maxPayLabel.font = UIFont.systemFont(ofSize: smallFont)
             self.itemNameLabel.font = UIFont.systemFont(ofSize: smallFont)
-            self.oneTokenLabel.font = UIFont.systemFont(ofSize: smallFont)
-            self.twoTokenLabel.font = UIFont.systemFont(ofSize: smallFont)
+           // self.oneTokenLabel.font = UIFont.systemFont(ofSize: smallFont)
+          //  self.twoTokenLabel.font = UIFont.systemFont(ofSize: smallFont)
             
-            self.requestButton.frame = CGRect(x: view.frame.width/2 - self.requestButton.frame.width/2, y: 465, width: 132, height: 30)
+            self.requestButton.frame = CGRect(x: view.frame.width/2 - self.requestButton.frame.width/2, y: 490, width: 132, height: 30)
             self.image.isHidden = true
             self.addPictureButton.isHidden = true
+            self.runTextLabel.isHidden = true
             
             
         } else if isLargeScreen {
@@ -138,12 +161,15 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
             self.requestButton.frame = CGRect(x: view.frame.width/2 - self.requestButton.frame.width/2, y: 625, width: 132, height: 30)
             self.image.frame = CGRect(x: view.frame.width/2 - 60, y: 485, width: 120, height: 120)
             self.addPictureButton.frame = CGRect(x: view.frame.width/2 - self.addPictureButton.frame.width/2, y: 525, width: 195, height: 30)
+            self.runTextLabel.frame = CGRect(x: 0, y: 645 + 20, width: view.frame.width, height: 30)
             
         } else {
             
-            self.requestButton.frame = CGRect(x: view.frame.width/2 - self.requestButton.frame.width/2, y: 552, width: 132, height: 30)
-            self.image.frame = CGRect(x: view.frame.width/2 - self.image.frame.width/2, y: 465, width: 72, height: 72)
-            self.addPictureButton.frame = CGRect(x: view.frame.width/2 - self.addPictureButton.frame.width/2, y: 484, width: 195, height: 30)
+            let delta:CGFloat = 10.0
+            self.requestButton.frame = CGRect(x: view.frame.width/2 - self.requestButton.frame.width/2, y: 552 + delta, width: 132, height: 30)
+            self.image.frame = CGRect(x: view.frame.width/2 - self.image.frame.width/2, y: 465 + delta/2, width: 72, height: 72)
+            self.addPictureButton.frame = CGRect(x: view.frame.width/2 - self.addPictureButton.frame.width/2, y: 484 + delta/2, width: 195, height: 30)
+              self.runTextLabel.frame = CGRect(x:0 , y: 582 + 30, width: view.frame.width, height: 30)
             
         }
         
@@ -152,7 +178,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         
         self.loggedInUser = FIRAuth.auth()?.currentUser?.uid
 
-        descriptionTextView.text = "Ex: Please pick up a six pack of diet coke, but regular coke is fine if there's no diet. I live in Lisner Dorm. Call me with any questions."
+        descriptionTextView.text = self.descriptionText
         descriptionTextView.textColor = UIColor.lightGray
         descriptionTextView.layer.borderWidth = 1
         descriptionTextView.layer.borderColor = UIColor.black.cgColor
@@ -229,6 +255,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
     func textFieldDidEndEditing(_ textField: UITextField) {
         
         // Workaround for the jumping text bug.
+        //NEED TO MAKE TEXTFIELDS DELEGATES
         textField.resignFirstResponder()
         textField.layoutIfNeeded()
         
@@ -291,13 +318,13 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         
         if myLocation?.coordinate.latitude == 0.000000 {
             
-            self.makeAlert(title: "Missing Delivery Location", message: "Please go to settings and allow for Location while using. Once you have done this, you may set your delivery location in the Me tab")
+            self.makeAlert(title: "Missing Delivery Location", message: "Please go to settings and allow Location services. Once you have done this, you may set your delivery location in the Me tab")
             
         } else if self.userLatitude == 0.10000 {
             self.cashPopUp()
-        } else if distanceInMetersFloat > 250 {
+        } else if distanceInMetersFloat > 750 {
             
-            let alertPurchaseLocation = UIAlertController(title: "Reset Delivery Location?", message: "You are requesting this item from a location that is different from your currently registered delivery address. Would you like to reset your delivery locatin to your current Location?", preferredStyle: UIAlertControllerStyle.alert)
+            let alertPurchaseLocation = UIAlertController(title: "Reset Delivery Location?", message: "You appear to be requesting this item from a new location. Would you like to reset your delivery location to your current Location?", preferredStyle: UIAlertControllerStyle.alert)
             
             alertPurchaseLocation.addAction(UIAlertAction(title: "No", style: .default, handler: { (action) in
                 self.cashPopUp()
@@ -407,7 +434,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
     func didTapOneToken(_ sender: UITapGestureRecognizer) {
         
         if self.tokensOffered == 2 {
-            self.oneTokenImage.image = UIImage(named: "1FullToken.png")
+            self.oneTokenImage.image = UIImage(named: "1handshakeIcon.png")
             self.twoTokenImage.image = UIImage(named: "blackWhite2Coin.png")
             self.tokensOffered = 1
         }
@@ -416,8 +443,8 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
     func didTapTwoToken(_ sender: UITapGestureRecognizer) {
         
         if self.tokensOffered == 1 {
-            self.twoTokenImage.image = UIImage(named: "2FullToken.png")
-            self.oneTokenImage.image = UIImage(named: "blackWhite1Coin.png")
+            self.twoTokenImage.image = UIImage(named: "2handshakeIcon.png")
+            self.oneTokenImage.image = UIImage(named: "1grayhandshake.png")
             self.tokensOffered = 2
         }
 }
@@ -542,6 +569,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         //Begin request upload
         //Save Request to firebase
         //Save Picture
+        
         let key = self.databaseRef.child("request").childByAutoId().key
         
         _ = self.storageRef.child("request/\(self.loggedInUser)/media/\(key)")
@@ -566,7 +594,11 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
             }
         })
         } else {
-            self.finalizeUploadRequest(key: key)
+            if !isRun {
+                    self.finalizeUploadRequest(key: key)
+            } else {
+                    self.finalizeUploadRequest(key: key)
+            }
         }
     }
     
@@ -575,7 +607,8 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
     
         //Save text
         
-        let paymentTypePath = "/request/\(key)/paymentType"
+
+        let paymentTypePath = "/\(key)/paymentType"
         //Will need to change this
         let paymentTypeValue = self.paymentType as String
         
@@ -599,75 +632,105 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
          
          }
         
-        
-        let pricePath = "/request/\(key)/price"
+        //"/\(self.requestRun)"+
+        let pricePath = "/\(key)/price"
         let priceLabelValue = self.requestPrice
         //let priceLabelValue = self.priceLabel.text! as String
         
-        let tokenPath = "/request/\(key)/tokensOffered"
+        let tokenPath = "/\(key)/tokensOffered"
         let tokensLabelValue = self.tokensOffered
         
-        let purchaePricePath = "/request/\(key)/purchasePrice"
+        let purchaePricePath = "/\(key)/purchasePrice"
         let purchaePriceValue = "NA"
         
-        let descriptionPath = "/request/\(key)/description"
+        let requesterNotifPath = "/\(key)/requesterNotifID"
+        let requesterNotif = myNotif
+        
+        let descriptionPath = "/\(key)/description"
         let descriptionLabelValue = self.descriptionTextView.text! as String
         
-        let requesterNamePath = "/request/\(key)/requesterName"
+        let requesterNamePath = "/\(key)/requesterName"
         let requesterNameValue = self.requesterName! as String
         
-        let itemNamePath = "/request/\(key)/itemName"
+        let itemNamePath = "/\(key)/itemName"
         let itemNameValue = self.nameLabel.text! as String
         
-        let requestedTimePath = "/request/\(key)/requestedTime"
+        let requestedTimePath = "/\(key)/requestedTime"
         let requestedTimeValue = self.date
         
-        let longitudePath = "/request/\(key)/longitude"
+        let longitudePath = "/\(key)/longitude"
         //let longitudeValue = self.requesterLongitude! as CLLocationDegrees
         let longitudeValue = (myLocation?.coordinate.longitude)! as CLLocationDegrees
         
-        let buildingNamePath = "/request/\(key)/buildingName"
+        let buildingNamePath = "/\(key)/buildingName"
         let buildingNamePathValue = self.requesterBuildingName! as String
         //let buildingNamePathValue = "hello"
         
-        let latitudePath = "/request/\(key)/latitude"
+        let latitudePath = "/\(key)/latitude"
         //let latitudeValue = self.requesterLatitude! as CLLocationDegrees
         let latitudeValue = (myLocation?.coordinate.latitude)! as CLLocationDegrees
         
-        let requesterUIDPath = "/request/\(key)/requesterUID"
+        let requesterUIDPath = "/\(key)/requesterUID"
         let requesterUIDValue = self.loggedInUser as String
         
-        let requesterCellPath = "/request/\(key)/requesterCell"
+        let requesterCellPath = "/\(key)/requesterCell"
         let requesterCellValue = myCellNumber as String
         
-        let profilePicReferencePath = "/request/\(key)/profilePicReference"
+        let profilePicReferencePath = "/\(key)/profilePicReference"
         let profilePicReferenceValue = self.profilePicReference
         
-        let isAcceptedPath = "/request/\(key)/isAccepted"
+        let accepterNotifIdPath = "/\(key)/accepterNotifId"
+        let accepterNotifIdValue = "NA"
+        
+        let accepterNamePath = "/\(key)/accepterName"
+        let accepterUIDPath = "/\(key)/accepterUID"
+        let accepterProfilePicRefPath = "/\(key)/accepterProfilePicRef"
+        let runKeyPath = "/\(key)/runKey"
+        let runToPath = "/\(key)/runTo"
+        let accepterCellPath = "/\(key)/accepterCell"
+        
+    
+        
+        let isAcceptedPath = "/\(key)/isAccepted"
         let isAcceptedValue = self.isAccepted as Bool
         
-        let deliverToPath = "/request/\(key)/deliverTo"
+        let deliverToPath = "/\(key)/deliverTo"
         let deliverToValue = self.locationButton.currentTitle! as String
         
-        let isCompletePath = "/request/\(key)/isComplete"
+        let isCompletePath = "/\(key)/isComplete"
         let isCompleteValue = false
         
-        let requestedTimeStamp = "/request/\(key)/requestedTimeStamp"
+        let isNewMessageRequesterPath = "/\(key)/isNewMessageRequester"
+        let isNewMessageReqesterValue = false
+        
+        let isNewMessageAccepterPath = "/\(key)/isNewMessageAccepter"
+        let isNewMessageAccepterValue = false
+        
+        let isRunPath = "/\(key)/isRun"
+        let isRunValue = true
+        
+        let requestedTimeStamp = "/\(key)/requestedTimeStamp"
         
         //Set key value for later reference
-        let requestKeyPath = "/request/\(key)/requestKey"
+        let requestKeyPath = "/\(key)/requestKey"
         let keyValue = key as String
         
-        let completedPopUpUsedPath = "/request/\(key)/completedPopUpUsed"
+        let completedPopUpUsedPath = "/\(key)/completedPopUpUsed"
         let completedPopUpUsedValue = false
         
         self.saveKeyPath = requestKeyPath
         self.saveKey = keyValue
+        
     
     //Send out push notifications
       //  DispatchQueue.main.async {
       DispatchQueue.global().async {
         
+        if self.isRun {
+            
+            OneSignal.postNotification(["contents": ["en": "\(requesterNameValue) has posted a request to your run!"], "include_player_ids": [self.runnerNotifID!],"ios_sound": "nil"])
+            
+        } else {
             for mateID in 0..<self.myBuildingMates.count {
             print(mateID)
             print("EEEEEE")
@@ -676,25 +739,50 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
             /*let deadlineTime = DispatchTime.now() + .seconds(1)
                 
             DispatchQueue.main.asyncAfter(deadline: deadlineTime) {*/
-                
-              OneSignal.postNotification(["contents": ["en": "\(requesterNameValue) has requested \(itemNameValue)!"], "include_player_ids": [self.myBuildingMates[mateID]],"ios_sound": "nil"])
+            
+                print("\(self.myBuildingMates[mateID])!")
+                OneSignal.postNotification(["contents": ["en": "\(requesterNameValue) has requested \(itemNameValue)!"], "include_player_ids": [self.myBuildingMates[mateID]],"ios_sound": "nil"])
+            
                 
             }
+        }
        }
      //   }
         
+        
+        if self.isRun {
+            print(self.requestRun)
+            
+            let childUpdates:Dictionary<String, Any> = ["/\(self.requestRun)\(requestedTimeStamp)": [".sv": "timestamp"],"/\(self.requestRun)\(profilePicReferencePath)": profilePicReferenceValue!, "/\(self.requestRun)\(requesterCellPath)": requesterCellValue,"/\(self.requestRun)\(pricePath)": priceLabelValue, "/\(self.requestRun)\(buildingNamePath)": buildingNamePathValue, "/\(self.requestRun)\(itemNamePath)": itemNameValue,"/\(self.requestRun)\(tokenPath)": tokensLabelValue,"/\(self.requestRun)\(descriptionPath)":descriptionLabelValue,"/\(self.requestRun)\(requesterNamePath)":requesterNameValue,"/\(self.requestRun)\(deliverToPath)":deliverToValue,"/\(self.requestRun)\(longitudePath)":longitudeValue,"/\(self.requestRun)\(latitudePath)":latitudeValue,"/\(self.requestRun)\(requestedTimePath)":requestedTimeValue!,"/\(self.requestRun)\(requesterUIDPath)":requesterUIDValue,"/\(self.requestRun)\(isAcceptedPath)":isAcceptedValue,"/\(self.requestRun)\(isCompletePath)":isCompleteValue,"/\(self.requestRun)\(requestKeyPath)":keyValue, "/\(self.requestRun)\(paymentTypePath)":paymentTypeValue, "/\(self.requestRun)\(purchaePricePath)":purchaePriceValue, "/\(self.requestRun)\(completedPopUpUsedPath)":completedPopUpUsedValue, "/\(self.requestRun)\(requesterNotifPath)": requesterNotif, "/\(self.requestRun)\(accepterNotifIdPath)":self.selectedRun!["runnerNotif"] as! String, "/\(self.requestRun)\(isNewMessageRequesterPath)": isNewMessageReqesterValue, "/\(self.requestRun)\(isNewMessageAccepterPath)": isNewMessageAccepterValue, "/\(self.requestRun)\(accepterNamePath)":self.selectedRun!["runnerName"] as! String, "/\(self.requestRun)\(accepterUIDPath)": self.selectedRun!["runnerUID"] as! String, "/\(self.requestRun)\(accepterProfilePicRefPath)": self.selectedRun!["profilePicReference"] as! String, "/\(self.requestRun)\(runKeyPath)": self.selectedRun!["runKey"] as! String,"/\(self.requestRun)\(runToPath)":self.selectedRun!["runTo"] as! String,"/\(self.requestRun)\(isRunPath)":isRunValue, "/\(self.requestRun)\(accepterCellPath)": self.selectedRun!["runnerCell"] as! String]
+            
+            self.databaseRef.updateChildValues(childUpdates)
+            
+            let requestCount = self.selectedRun!["requestCount"] as! Int
+            let newRequestCount = requestCount + 1
+            let newRequestCountPath = "runs/\(self.selectedRun!["runKey"] as! String)/requestCount"
+            
+            let childUpdates2:Dictionary<String, Any> = [newRequestCountPath:newRequestCount]
+            
+            self.databaseRef.updateChildValues(childUpdates2)
+            
+            self.requestReset()
+            
+        } else {
+            
+        
         if self.imageData != nil{
             
-            let downloadUrlAbsoluteStringPath = "/request/\(key)/productImage"
+            let downloadUrlAbsoluteStringPath = "/request/\(runKeyPath)/productImage"
             let downloadUrlAbsoluteStringValue = self.downloadUrlAbsoluteString
             
-            let childUpdates:Dictionary<String, Any> = [requestedTimeStamp: [".sv": "timestamp"],profilePicReferencePath: profilePicReferenceValue!,downloadUrlAbsoluteStringPath:downloadUrlAbsoluteStringValue!, requesterCellPath: requesterCellValue,pricePath: priceLabelValue, buildingNamePath: buildingNamePathValue, itemNamePath: itemNameValue,tokenPath: tokensLabelValue,descriptionPath:descriptionLabelValue,requesterNamePath:requesterNameValue,deliverToPath:deliverToValue,longitudePath:longitudeValue,latitudePath:latitudeValue,requestedTimePath:requestedTimeValue!,requesterUIDPath:requesterUIDValue,isAcceptedPath:isAcceptedValue,isCompletePath:isCompleteValue,requestKeyPath:keyValue, paymentTypePath:paymentTypeValue, purchaePricePath:purchaePriceValue, completedPopUpUsedPath:completedPopUpUsedValue]
+            let childUpdates:Dictionary<String, Any> = ["/\(self.requestRun)\(requestedTimeStamp)": [".sv": "timestamp"],"/\(self.requestRun)\(profilePicReferencePath)": profilePicReferenceValue!,downloadUrlAbsoluteStringPath:downloadUrlAbsoluteStringValue!, "/\(self.requestRun)\(requesterCellPath)": requesterCellValue,"/\(self.requestRun)\(pricePath)": priceLabelValue, "/\(self.requestRun)\(buildingNamePath)": buildingNamePathValue, "/\(self.requestRun)\(itemNamePath)": itemNameValue,"/\(self.requestRun)\(tokenPath)": tokensLabelValue,"/\(self.requestRun)\(descriptionPath)":descriptionLabelValue,"/\(self.requestRun)\(requesterNamePath)":requesterNameValue,"/\(self.requestRun)\(deliverToPath)":deliverToValue,"/\(self.requestRun)\(longitudePath)":longitudeValue,"/\(self.requestRun)\(latitudePath)":latitudeValue,"/\(self.requestRun)\(requestedTimePath)":requestedTimeValue!,"/\(self.requestRun)\(requesterUIDPath)":requesterUIDValue,"/\(self.requestRun)\(isAcceptedPath)":isAcceptedValue,"/\(self.requestRun)\(isCompletePath)":isCompleteValue,"/\(self.requestRun)\(requestKeyPath)":keyValue, "/\(self.requestRun)\(paymentTypePath)":paymentTypeValue, "/\(self.requestRun)\(purchaePricePath)":purchaePriceValue, "/\(self.requestRun)\(completedPopUpUsedPath)":completedPopUpUsedValue, "/\(self.requestRun)\(requesterNotifPath)": requesterNotif, "/\(self.requestRun)\(accepterNotifIdPath)":accepterNotifIdValue, "/\(self.requestRun)\(isNewMessageRequesterPath)": isNewMessageReqesterValue, "/\(self.requestRun)\(isNewMessageAccepterPath)": isNewMessageAccepterValue]
             
         self.databaseRef.updateChildValues(childUpdates)
             
         if myCellNumber == "0"{
             
-                self.performSegue(withIdentifier: "goToPhone", sender: nil)
+                //self.performSegue(withIdentifier: "goToPhone", sender: nil)
+                 self.requestReset()
             
             } else {
             
@@ -706,18 +794,20 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         else
             
         {
-            let childUpdates:Dictionary<String, Any> = [requestedTimeStamp: [".sv": "timestamp"],profilePicReferencePath: profilePicReferenceValue!, requesterCellPath: requesterCellValue,pricePath: priceLabelValue, buildingNamePath: buildingNamePathValue, itemNamePath: itemNameValue,tokenPath: tokensLabelValue,descriptionPath:descriptionLabelValue,requesterNamePath:requesterNameValue,deliverToPath:deliverToValue,longitudePath:longitudeValue,latitudePath:latitudeValue,requestedTimePath:requestedTimeValue!,requesterUIDPath:requesterUIDValue,isAcceptedPath:isAcceptedValue,isCompletePath:isCompleteValue,requestKeyPath:keyValue, paymentTypePath:paymentTypeValue, purchaePricePath:purchaePriceValue, completedPopUpUsedPath:completedPopUpUsedValue]
+           let childUpdates:Dictionary<String, Any> = ["/\(self.requestRun)\(requestedTimeStamp)": [".sv": "timestamp"],"/\(self.requestRun)\(profilePicReferencePath)": profilePicReferenceValue!, "/\(self.requestRun)\(requesterCellPath)": requesterCellValue,"/\(self.requestRun)\(pricePath)": priceLabelValue, "/\(self.requestRun)\(buildingNamePath)": buildingNamePathValue, "/\(self.requestRun)\(itemNamePath)": itemNameValue,"/\(self.requestRun)\(tokenPath)": tokensLabelValue,"/\(self.requestRun)\(descriptionPath)":descriptionLabelValue,"/\(self.requestRun)\(requesterNamePath)":requesterNameValue,"/\(self.requestRun)\(deliverToPath)":deliverToValue,"/\(self.requestRun)\(longitudePath)":longitudeValue,"/\(self.requestRun)\(latitudePath)":latitudeValue,"/\(self.requestRun)\(requestedTimePath)":requestedTimeValue!,"/\(self.requestRun)\(requesterUIDPath)":requesterUIDValue,"/\(self.requestRun)\(isAcceptedPath)":isAcceptedValue,"/\(self.requestRun)\(isCompletePath)":isCompleteValue,"/\(self.requestRun)\(requestKeyPath)":keyValue, "/\(self.requestRun)\(paymentTypePath)":paymentTypeValue, "/\(self.requestRun)\(purchaePricePath)":purchaePriceValue, "/\(self.requestRun)\(completedPopUpUsedPath)":completedPopUpUsedValue, "/\(self.requestRun)\(requesterNotifPath)": requesterNotif, "/\(self.requestRun)\(accepterNotifIdPath)":accepterNotifIdValue, "/\(self.requestRun)\(isNewMessageRequesterPath)": isNewMessageReqesterValue, "/\(self.requestRun)\(isNewMessageAccepterPath)": isNewMessageAccepterValue]
+
             
             self.databaseRef.updateChildValues(childUpdates)
             
             if myCellNumber == "0"{
-                self.performSegue(withIdentifier: "goToPhone", sender: nil)
+                //self.performSegue(withIdentifier: "goToPhone", sender: nil)
+                 self.requestReset()
             } else {
                 self.requestReset()
             }
             
         }
-        
+    }
         
     }
     
@@ -730,7 +820,12 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         self.image.image = UIImage(named: "saveImage2.png")
         
         
-        let alertDeliveryComplete = UIAlertController(title: "Request posted!", message: "Your delivery request has been posted to the neighberhood shopping List! Please be alert for a neighbor reaching out to deliver this item", preferredStyle: UIAlertControllerStyle.alert)
+        if isRun {
+            self.alertText = "Your request has been made to this run! You will recieve a notification when it is accepted."
+        } else {
+            self.alertText = "Your request has been posted! Please be alert for a neighbor reaching out to deliver this item"
+        }
+        let alertDeliveryComplete = UIAlertController(title: "Request posted!", message: self.alertText!, preferredStyle: UIAlertControllerStyle.alert)
         
         alertDeliveryComplete.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
             
@@ -820,6 +915,20 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
             
             let snapshot = snapshot.value as! NSDictionary
             
+            if let userBuilding = snapshot["buildingName"] as? String {
+                
+                if userBuilding == myBuilding &&  userID != self.loggedInUser &&  myBuilding != "N/A" {
+                    
+                    if snapshot["notifID"] != nil {
+                        
+                        let userNotifID = snapshot["notifID"] as? String
+                        self.myBuildingMates.append(userNotifID!)
+                        print(self.myBuildingMates)
+                        
+                    }
+                }
+            }
+            /*
             let userLatitude = snapshot["latitude"] as? CLLocationDegrees
             let userLongitude = snapshot["longitude"] as? CLLocationDegrees
             
@@ -838,21 +947,9 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
                     
                 }
                 
-            }
+            }*/
             
-          /*  if let userBuilding = snapshot["buildingName"] as? String {
-            
-            if userBuilding == myBuilding &&  userID != self.loggedInUser &&  myBuilding != "N/A" {
-                
-            if snapshot["notifID"] != nil {
-                
-                let userNotifID = snapshot["notifID"] as? String
-                self.myBuildingMates.append(userNotifID!)
-                print(self.myBuildingMates)
-                
-              }
-            }
-        }*/
+ 
         }
     }
 
@@ -912,6 +1009,25 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         self.present(alert, animated: true, completion: nil)
         
     }
+    
+    @IBAction func didTapLargeBack(_ sender: UIButton) {
+        if isRun{
+            self.performSegue(withIdentifier: "requestToRuns", sender: nil)
+        } else {
+            self.performSegue(withIdentifier: "requestToShoppingList", sender: nil)
+        }
+
+        
+    }
+    @IBAction func didTapBack(_ sender: UIButton) {
+        
+        if isRun{
+            self.performSegue(withIdentifier: "requestToRuns", sender: nil)
+        } else {
+            self.performSegue(withIdentifier: "requestToShoppingList", sender: nil)
+        }
+    }
+    
     
 }
 

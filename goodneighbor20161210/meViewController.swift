@@ -76,7 +76,6 @@ class meViewController: UIViewController {
             if let image = myProfilePicRef {
                 
                 let data = try? Data(contentsOf: URL(string: image)!)
-                
                 self.profilePicImage.image = UIImage(data: data!)
                 
             }
@@ -162,7 +161,6 @@ class meViewController: UIViewController {
                 }
                 if let userState = snapshot3["state"] as? String {
                     if userState == "GA " {
-                    print(snapshot3["fullName"])
                     }
                 }
                 
