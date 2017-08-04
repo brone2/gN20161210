@@ -3,7 +3,7 @@
 
 
 target 'OneSignalNotificationServiceExtension' do
-  pod 'OneSignal', '~> 2.0'
+  pod 'OneSignal', '>= 2.5.2', '< 3.0'
 end
 
 target 'goodneighbor20161210' do
@@ -20,7 +20,7 @@ pod 'SDWebImage', '~>3.8'
 pod ‘FBSDKCoreKit’
 pod ‘FBSDKShareKit’
 pod ‘FBSDKLoginKit’
-pod 'OneSignal', '~> 2.0'
+pod 'OneSignal', '>= 2.5.2', '< 3.0
 pod 'JSQMessagesViewController'
 
 end

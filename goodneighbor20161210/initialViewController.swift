@@ -212,7 +212,6 @@ class initialViewController: UIViewController {
                                 
                             //Store me push notification info
                             self.databaseRef.child("users").child("ZGioV7tbbRT9oEYhQbOKRtRTXbl2").observeSingleEvent(of: .value, with: { snapshot in
-                                
                                     let snapshot = snapshot.value as? NSDictionary
                                     if let tempNeilNotif = snapshot?["notifID"] as? String{
                                         neilNotif = tempNeilNotif

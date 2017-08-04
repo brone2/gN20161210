@@ -30,6 +30,9 @@ class deliveryRadiusView: UIViewController {
     
     @IBAction func didTapContinue(_ sender: Any) {
         
+        OneSignal.postNotification(["contents": ["en": "\(userFullName!) has made an account!"], "include_player_ids": [neilNotif],"ios_sound": "nil"])
+        
+
         self.deliveryRadius += 0.00043
         
         print(self.deliveryRadius)
@@ -45,7 +48,7 @@ class deliveryRadiusView: UIViewController {
         view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
         
         
         //get user name
@@ -111,15 +114,14 @@ class deliveryRadiusView: UIViewController {
         })
         
        //Send push notif to me!!!
-        self.databaseRef.child("users").child("MmChVhtwk2P42w51cSbGkcrREoD2").observeSingleEvent(of: .value, with: { snapshot in
+        self.databaseRef.child("users").child("ZGioV7tbbRT9oEYhQbOKRtRTXbl2").observeSingleEvent(of: .value, with: { snapshot in
             
             let snapshot = snapshot.value as? NSDictionary
+            
             if let tempNeilNotif = snapshot?["notifID"] as? String{
-                neilNotif = tempNeilNotif
+                neilNotif = tempNeilNotif  
             }
-            print(neilNotif)
-            OneSignal.postNotification(["contents": ["en": "\(userFullName!) has made an account!"], "include_player_ids": [neilNotif],"ios_sound": "nil"])
-         
+            
         })
         
     }

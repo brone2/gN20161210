@@ -44,7 +44,7 @@ class runViewViewController: UIViewController,UITableViewDelegate,UITableViewDat
     var databaseRef = FIRDatabase.database().reference()
     var storageRef = FIRStorage.storage().reference()
     
-     var rowHeight:CGFloat = 100
+    var rowHeight:CGFloat = 100
     
     var tableHeaderArray = ["l","MY CURRENT RUNS","ACCEPTED REQUESTS","PENDING REQUESTS","COMMUNITY RUNS"]
     
@@ -108,9 +108,11 @@ class runViewViewController: UIViewController,UITableViewDelegate,UITableViewDat
                         }
                         
                         //distance must be manually solved because not stored in firebase
-                        let userLatitude = snapshot["latitude"] as? CLLocationDegrees
+                        if let userLatitude = snapshot["latitude"] as? CLLocationDegrees {
                         let userLongitude = snapshot["longitude"] as? CLLocationDegrees
-                        let userLocation = CLLocation(latitude: userLatitude!, longitude: userLongitude!)
+                        
+                        
+                        let userLocation = CLLocation(latitude: userLatitude, longitude: userLongitude!)
                         let distanceInMeters = myLocation!.distance(from: userLocation)
                         let distanceMiles = distanceInMeters/1609.344897
                         let distanceMilesFloat = Float(distanceMiles)
@@ -134,6 +136,7 @@ class runViewViewController: UIViewController,UITableViewDelegate,UITableViewDat
                         }
                         self.table.reloadData()
                         
+                    }
                     }
                 }
             }
@@ -192,7 +195,8 @@ class runViewViewController: UIViewController,UITableViewDelegate,UITableViewDat
             self.sectionData = [1:self.myRuns,2:self.myAcceptedRequest, 3: self.myPendingRequest, 4: self.communityRuns]
             self.table.reloadData()
             }
-            
+        
+    //Pull request data
         self.databaseRef.child("request").observe(.childAdded) { (snapshot2: FIRDataSnapshot) in
             
             
@@ -202,10 +206,11 @@ class runViewViewController: UIViewController,UITableViewDelegate,UITableViewDat
             let snapCompleted = snapshot2["isComplete"] as? Bool
             let accepterID = snapshot2["accepterUID"] as? String
             let isRun = snapshot2["isRun"] as? Bool
-            let requesterLongitude = snapshot2["longitude"] as? CLLocationDegrees
+            
+            if let requesterLongitude = snapshot2["longitude"] as? CLLocationDegrees {
             let requesterLatitude = snapshot2["latitude"] as? CLLocationDegrees
             
-            let userLocation = CLLocation(latitude: requesterLatitude!, longitude: requesterLongitude!)
+            let userLocation = CLLocation(latitude: requesterLatitude!, longitude: requesterLongitude)
             let distanceInMeters = myLocation!.distance(from: userLocation)
             let distanceMiles = distanceInMeters/1609.344897
             let distanceMilesFloat = Float(distanceMiles)
@@ -237,6 +242,7 @@ class runViewViewController: UIViewController,UITableViewDelegate,UITableViewDat
             self.sectionData = [1:self.myRuns,2:self.myAcceptedRequest, 3: self.myPendingRequest, 4: self.communityRuns]
             self.table.reloadData()
             }
+        }
          
         self.childBeChanged()
         self.childBeDeleted()
@@ -751,7 +757,7 @@ class runViewViewController: UIViewController,UITableViewDelegate,UITableViewDat
         OneSignal.postNotification(["headings" : ["en": messageHeader],
                                     "contents" : ["en": textMessage],
                                     "include_player_ids": [notifID],
-                                    "ios_sound": "nil"])
+                                    "ios_sound": "nil", "data": ["type": "request"]])
         
     }
 

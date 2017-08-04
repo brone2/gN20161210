@@ -26,7 +26,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         OneSignal.initWithLaunchOptions(launchOptions, appId: "58f6f6ff-c741-436b-9cc9-6894f0f747e0", handleNotificationReceived: nil, handleNotificationAction: {
             (result) in
-            // Do Something with Notification Result
+           
+            
+        // Do Something with Notification Result
+            
+            let state: UIApplicationState = UIApplication.shared.applicationState
+            
+            if state == .background || state == .active {
+            
+            let payload = result?.notification.payload
+         
+            if let additionalData = payload?.additionalData {
+                
+               let notifType = additionalData["type"] as! String
+                print(notifType)
+                if notifType == "request" {
+                    let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                    let homeViewController: UIViewController = mainStoryboard.instantiateViewController(withIdentifier: "shoppingList")
+                    self.window?.rootViewController = homeViewController
+                    self.window?.makeKeyAndVisible()
+                } else if notifType == "run" {
+                    let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                    let homeViewController: UIViewController = mainStoryboard.instantiateViewController(withIdentifier: "runView")
+                    self.window?.rootViewController = homeViewController
+                    self.window?.makeKeyAndVisible()
+                }
+            }
+            }
+            
         }, settings: [kOSSettingsKeyInFocusDisplayOption : OSNotificationDisplayType.notification.rawValue])
         
         return true

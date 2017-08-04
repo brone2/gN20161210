@@ -147,7 +147,7 @@ class postRunView: UIViewController, UITextViewDelegate, UITextFieldDelegate {
         
         self.databaseRef.updateChildValues(childUpdatesRun)
             
-        OneSignal.postNotification(["contents": ["en": "\(userFullName!) posted a run!"], "include_player_ids": [neilNotif],"ios_sound": "nil"])
+        OneSignal.postNotification(["contents": ["en": "\(userFullName!) posted a run!"], "include_player_ids": [neilNotif],"ios_sound": "nil", "data": ["type": "run"]])
             
             for mateID in 0..<self.myBuildingMates.count {
                 print(mateID)
@@ -159,7 +159,7 @@ class postRunView: UIViewController, UITextViewDelegate, UITextFieldDelegate {
                  DispatchQueue.main.asyncAfter(deadline: deadlineTime) {*/
                 
                 print("\(self.myBuildingMates[mateID])!")
-                OneSignal.postNotification(["contents": ["en": "\(myName!) is going on a run to \(self.runLocationTextField.text!)!"], "include_player_ids": [self.myBuildingMates[mateID]],"ios_sound": "nil"])
+                OneSignal.postNotification(["contents": ["en": "\(myName!) is going on a run to \(self.runLocationTextField.text!)!"], "include_player_ids": [self.myBuildingMates[mateID]],"ios_sound": "nil", "data": ["type": "run"]])
                 
                 
             }
@@ -297,7 +297,7 @@ class postRunView: UIViewController, UITextViewDelegate, UITextFieldDelegate {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
         
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
-            self.dismiss(animated: true, completion: nil)
+          
         }))
         
         self.present(alert, animated: true, completion: nil)

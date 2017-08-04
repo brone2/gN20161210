@@ -35,7 +35,7 @@ class chatView: JSQMessagesViewController {
     var generalRequestChat = false
     var requestKey: String?
     var isRequesterViewing = false
-    
+    var isRun = false
     
     private var messages = [JSQMessage]()
 
@@ -112,7 +112,11 @@ class chatView: JSQMessagesViewController {
         }
         
         //Send Push Notif to requester
-        OneSignal.postNotification(["contents" : ["en": "\(loggedInUserName!): \(text!)"],"include_player_ids": [self.otherUserNotifId],"ios_sound": "nil"])
+        if self.isRun && isRequesterViewing {
+        OneSignal.postNotification(["contents" : ["en": "\(loggedInUserName!): \(text!)"],"include_player_ids": [self.otherUserNotifId],"ios_sound": "nil", "data": ["type": "run"]])
+        } else {
+            OneSignal.postNotification(["contents" : ["en": "\(loggedInUserName!): \(text!)"],"include_player_ids": [self.otherUserNotifId],"ios_sound": "nil", "data": ["type": "request"]])
+        }
         
         
         

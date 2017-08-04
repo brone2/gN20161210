@@ -70,8 +70,7 @@ class pastActivityCompleted: UIViewController, UITableViewDelegate,UITableViewDa
         if tokenCountHelp == 2 {
             cell.coinImage.image = UIImage(named: "2handshakeIcon.png")
         }
-        print(self.relevantPastInfo[indexPath.row])
-        print(self.relevantPastInfo)
+        
         //If viewing my deliveries
         if self.navBarTitle == "Completed Deliveries"{
             

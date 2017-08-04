@@ -38,6 +38,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
     var loggedInUserData: AnyObject?
     var acceptorUserData: AnyObject?
     
+    var isRunRequest = false
     
     var otherUserId: String?
     var otherUserNotifId: String?
@@ -200,10 +201,11 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             let accepterID = snapshot["accepterUID"] as? String
         
         
-            let userLatitude = snapshot["latitude"] as? CLLocationDegrees
+            if let userLatitude = snapshot["latitude"] as? CLLocationDegrees {
+                print(userLatitude)
             let userLongitude = snapshot["longitude"] as? CLLocationDegrees
         
-            let userLocation = CLLocation(latitude: userLatitude!, longitude: userLongitude!)
+            let userLocation = CLLocation(latitude: userLatitude, longitude: userLongitude!)
             let distanceInMeters = myLocation!.distance(from: userLocation)
             let distanceMiles = distanceInMeters/1609.344897
             let distanceMilesFloat = Float(distanceMiles)
@@ -244,7 +246,8 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         
                 self.sectionData = [0:self.myCurrentDeliveries,1:self.myCurrentRequests,2:self.shoppingListCurrentRequests]
                 self.table.reloadData()
-            
+        }
+        
         }
         
     }
@@ -350,11 +353,14 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
           /*let secondViewController = segue.destination as! chatView
             secondViewController.otherUserId = self.otherUserId!*/
            let navVc = segue.destination as! UINavigationController // 1
-          let channelVc = navVc.viewControllers.first as! chatView //
+           let channelVc = navVc.viewControllers.first as! chatView //
     
             
         channelVc.otherUserId = self.otherUserId!
         channelVc.otherUserName = self.otherUserName!
+        channelVc.isRun = self.isRunRequest
+            
+        
     if self.otherUserNotifId != nil {
         channelVc.otherUserNotifId = self.otherUserNotifId!
     } else {
@@ -795,12 +801,12 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                 return cell
             }
             
-            print(sectionData)
+           
             cell.coinImage.isHidden = false
             cell.chatBubble.isHidden = false
             
            
-            print(indexPath.section)
+            
             let payType:String = (self.sectionData[indexPath.section - 1]![indexPath.row]?["paymentType"] as? String)!
             
     //Determine Chat bubble image
@@ -969,13 +975,13 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         // return header
     }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        print(section)
+        
         if section != 0 {
-            print(section)
+            
         }
         
         if section != 0 {
-            print(section)
+            
             let emptyCheck = self.sectionData[section - 1]! as! [NSDictionary]
             
             if emptyCheck == [] {
@@ -1028,6 +1034,10 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         self.requestKey = self.sectionData[0]![imageTag]?["requestKey"] as? String
         self.databaseRef.child("request").child(self.requestKey!).child("isNewMessageAccepter").setValue(false)
         self.performSegue(withIdentifier: "goToChat", sender: nil)
+        
+        if let _ = self.sectionData[0]![imageTag]?["isRun"] as? Bool {
+            self.isRunRequest = self.sectionData[0]![imageTag]?["isRun"] as! Bool
+        }
         
         
         /*let requesterCell = self.sectionData[0]![imageTag]?["requesterCell"] as? String
@@ -1089,8 +1099,13 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         self.requestKey = self.sectionData[1]![imageTag]?["requestKey"] as? String
         self.databaseRef.child("request").child(self.requestKey!).child("isNewMessageRequester").setValue(false)
         self.isMyRequestChat = true
+        
+        if let _ = self.sectionData[1]![imageTag]?["isRun"] as? Bool {
+            self.isRunRequest = self.sectionData[1]![imageTag]?["isRun"] as! Bool
+        }
+        
         self.performSegue(withIdentifier: "goToChat", sender: nil)
-        print(self.requestKey!)
+        
         
        /*
         let requesterCell = self.sectionData[1]![imageTag]?["accepterCell"] as? String
@@ -1116,6 +1131,10 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         self.otherUserNotifId = self.sectionData[2]![imageTag]?["requesterNotifID"] as? String
         self.isGeneralChat = true
         self.requestKey = self.sectionData[2]![imageTag]?["requestKey"] as? String
+        
+        if let _ = self.sectionData[2]![imageTag]?["isRun"] as? Bool {
+            self.isRunRequest = self.sectionData[2]![imageTag]?["isRun"] as! Bool
+        }
         
         self.databaseRef.child("request").child(self.requestKey!).child("isNewMessageAccepter").setValue(false)
         
@@ -1481,7 +1500,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         
       UIPasteboard.general.string = accepterCell
         
-        let cellCopiedAlert = UIAlertController(title: "Deliverer cell # copied", message: "\(accepterName)'s cell number is copied to your clipboard. Please paste this into venmo to pay them for the delivery ", preferredStyle: UIAlertControllerStyle.alert)
+        let cellCopiedAlert = UIAlertController(title: "Deliverer cell # copied", message: "\(accepterName)'s cell number has been copied. Please paste this into venmo to pay them for the delivery ", preferredStyle: UIAlertControllerStyle.alert)
         
         cellCopiedAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
             
@@ -1495,7 +1514,6 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         let index = sender.tag
         
         let purchasePriceString: String = (self.sectionData[0]![index]?["purchasePrice"] as? String)!
-        print(index)
         
         let isComplete: Bool = self.sectionData[0]![index]?["isComplete"] as! Bool
         

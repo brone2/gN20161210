@@ -29,6 +29,8 @@ class couponMaintenanceView: UIViewController {
     var isAlreadyUsed:Bool = false
     var myTokens:Int?
     var referralUid:String?
+    var buildingUsersCount = 0
+    var referralNotif:String?
     
     var myBuildingMates = [String]()
     
@@ -80,7 +82,7 @@ class couponMaintenanceView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.grayView.layer.cornerRadius = 2
+        self.grayView.layer.cornerRadius = 3
         self.grayView.layer.masksToBounds = true
 
     }
@@ -94,7 +96,32 @@ class couponMaintenanceView: UIViewController {
         
         self.couponText = codeTextField.text
         
-        if self.couponText == "justCompleted" {
+        if ((self.couponText)?.contains("#"))! {
+            
+            let textArray = (self.couponText)?.components(separatedBy: "#")
+            let buildingName: String = String(textArray![1])!
+           
+            print(buildingName)
+            self.databaseRef.child("users").observe(.childAdded) { (snapshot3: FIRDataSnapshot) in
+                
+                let snapshot3 = snapshot3.value as! NSDictionary
+                
+                if let userBuilding = snapshot3["buildingName"] as? String {
+                    print(userBuilding)
+                    if userBuilding == buildingName {
+                        
+                        self.buildingUsersCount += 1
+                        self.uidLabel.text = String(self.buildingUsersCount)
+                        
+                    }
+                    
+                }
+            }
+            
+            
+        }
+        
+        else if self.couponText == "justCompleted" {
            
             self.databaseRef.child("request").observe(.childAdded) { (snapshot:FIRDataSnapshot) in
                 
@@ -262,6 +289,18 @@ class couponMaintenanceView: UIViewController {
                             
                             let plusOneToken = tempToken + 1
                             self.databaseRef.child("users").child(self.referralUid!).child("tokenCount").setValue(plusOneToken)
+                            
+                            if let _ = snapshot?["notifID"] as? String {
+                                
+                                self.referralNotif = snapshot?["notifID"] as? String
+                                
+                                OneSignal.postNotification(["headings" : ["en": "Thank you for your referral!"],
+                                                            "contents" : ["en": "One token has been added to your account"],
+                                                            "include_player_ids": [self.referralNotif!],
+                                                            "ios_sound": "nil"])
+                                
+                                
+                            }
                             
                         }
                      })

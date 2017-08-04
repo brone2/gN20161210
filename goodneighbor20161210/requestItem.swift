@@ -138,9 +138,10 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         } else if isSmallScreen || isVerySmallScreen {
             
             self.image.isHidden = true
-            let smallFont:CGFloat = 12.0
+            let smallFont:CGFloat = 16.0
             self.detailInfoLabel.font = UIFont.systemFont(ofSize: smallFont)
             self.tokensOfferedLabel.font = UIFont.systemFont(ofSize: smallFont)
+            self.tokensOfferedLabel.text = "Tokens Offered"
             self.deliverToLabel.font = UIFont.systemFont(ofSize: smallFont)
             self.maxPayLabel.font = UIFont.systemFont(ofSize: smallFont)
             self.itemNameLabel.font = UIFont.systemFont(ofSize: smallFont)
@@ -265,7 +266,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         
         print(neilNotif)
         
-    OneSignal.postNotification(["contents": ["en": "\(userFullName!) posted a request!"], "include_player_ids": [neilNotif],"ios_sound": "nil"])
+    OneSignal.postNotification(["contents": ["en": "\(userFullName!) posted a request!"], "include_player_ids": [neilNotif],"ios_sound": "nil", "data": ["type": "request"]])
 
         
     self.databaseRef.child("users").child(self.loggedInUser!).observeSingleEvent(of: .value) { (snapshot:FIRDataSnapshot) in
@@ -435,7 +436,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         
         if self.tokensOffered == 2 {
             self.oneTokenImage.image = UIImage(named: "1handshakeIcon.png")
-            self.twoTokenImage.image = UIImage(named: "blackWhite2Coin.png")
+            self.twoTokenImage.image = UIImage(named: "2grayHandshake.png")
             self.tokensOffered = 1
         }
 }
@@ -444,7 +445,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         
         if self.tokensOffered == 1 {
             self.twoTokenImage.image = UIImage(named: "2handshakeIcon.png")
-            self.oneTokenImage.image = UIImage(named: "1grayhandshake.png")
+            self.oneTokenImage.image = UIImage(named: "1grayHandshake_icon.png")
             self.tokensOffered = 2
         }
 }
@@ -728,7 +729,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         
         if self.isRun {
             
-            OneSignal.postNotification(["contents": ["en": "\(requesterNameValue) has posted a request to your run!"], "include_player_ids": [self.runnerNotifID!],"ios_sound": "nil"])
+            OneSignal.postNotification(["contents": ["en": "\(requesterNameValue) has posted a request to your run!"], "include_player_ids": [self.runnerNotifID!],"ios_sound": "nil", "data": ["type": "run"]])
             
         } else {
             for mateID in 0..<self.myBuildingMates.count {
@@ -741,7 +742,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
             DispatchQueue.main.asyncAfter(deadline: deadlineTime) {*/
             
                 print("\(self.myBuildingMates[mateID])!")
-                OneSignal.postNotification(["contents": ["en": "\(requesterNameValue) has requested \(itemNameValue)!"], "include_player_ids": [self.myBuildingMates[mateID]],"ios_sound": "nil"])
+                OneSignal.postNotification(["contents": ["en": "\(requesterNameValue) has requested \(itemNameValue)!"], "include_player_ids": [self.myBuildingMates[mateID]],"ios_sound": "nil", "data": ["type": "request"]])
             
                 
             }

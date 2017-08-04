@@ -31,9 +31,9 @@ class shoppingListIntro: UIViewController {
     
         
         if isLargeScreen {
-            self.leadingConstraintValue = -200.0
+            self.leadingConstraintValue = -255.0
         } else {
-            self.leadingConstraintValue = -180.0
+            self.leadingConstraintValue = -235.0
         }
         
         self.leadingConstraint = self.backgroundImage.topAnchor.constraint(equalTo: self.greyBackground.topAnchor, constant: self.leadingConstraintValue!)
@@ -55,9 +55,9 @@ class shoppingListIntro: UIViewController {
         if self.nextCount ==  1{
             
             if isLargeScreen {
-                self.leadingConstraintValue = -210.0
+                self.leadingConstraintValue = -260.0
             } else {
-                self.leadingConstraintValue = -190.0
+                self.leadingConstraintValue = -240.0
             }
             
             self.leadingConstraint?.isActive = false
@@ -67,20 +67,20 @@ class shoppingListIntro: UIViewController {
             
             self.textLabel.text = "Once Justin purchases the snickers, he taps \"Purchase Complete\" and enters $1.25. Neil is notified he must repay Justin $1.25 upon delivery."
             
-            self.backgroundImage.image = UIImage(named: "purchaseCompleteIntro.png")
+            self.backgroundImage.image = UIImage(named: "purchaseCompleteIntro4.png")
             
         } else if self.nextCount == 2 {
             
             self.textLabel.text = "Justin arrives at Neil's apartment and delivers the Snickers. Neil venmos Justin $1.25 and selects \"Mark as Complete\" to close the request."
             
-            self.backgroundImage.image = UIImage(named: "justinComplete.png")
+            self.backgroundImage.image = UIImage(named: "justinComplete2.png")
 
             
         } else if self.nextCount == 3 {
             
             self.textLabel.text = "One Token is transferred from Neil's account to Justin's for the delivery. Neil can only earn more tokens by making deliveries himself."
             
-            self.backgroundImage.image = UIImage(named: "justinIsClosed.png")
+            self.backgroundImage.image = UIImage(named: "justinIsClosed3.png")
             
         }   else    {
             

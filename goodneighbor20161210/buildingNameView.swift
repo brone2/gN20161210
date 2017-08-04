@@ -138,7 +138,7 @@ class buildingNameView: UIViewController, UITableViewDelegate,UITableViewDataSou
          
          let alertController = UIAlertController(
          title: "Add Building name",
-         message: "Please add building name if it does not already exist (do not add building if it already exist under a different spelling",
+         message: "Please add building name if it does not already exist and you are currently in the building",
          preferredStyle: UIAlertControllerStyle.alert)
          
          let cancelAction = UIAlertAction(
