@@ -1,4 +1,4 @@
-//
+ //
 //  requestItem.swift
 //  goodneighbor20161210
 //
@@ -40,6 +40,9 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
     var requestPrice = "$0.00"
     var myBuildingMates = [String]()
     var alertText:String?
+    var whoSeesText: String?
+    
+    var visibleTo = "NA"
     
     var locationManager = CLLocationManager()
     var userLocation: CLLocation?
@@ -84,6 +87,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
     @IBOutlet var itemNameLabel: UILabel!
     @IBOutlet var runTextLabel: UILabel!
     
+    @IBOutlet var titleLabel: UILabel!
     var requestRun = "request"
     
     @IBOutlet var addPictureButton: UIButton!
@@ -92,6 +96,13 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        if isX {
+            let pinTop = NSLayoutConstraint(item: self.titleLabel, attribute: .top, relatedBy: .equal,
+                                            toItem: view, attribute: .top, multiplier: 4.0, constant: 38)
+
+            NSLayoutConstraint.activate([pinTop])
+        }
         
         let randomNum:UInt32 = arc4random_uniform(100000)
         let someString:String = String(randomNum)
@@ -105,11 +116,17 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
             self.descriptionText = "Provide \(self.selectedRun?["runnerName"] as! String) detailed information about your request for their run to  \(self.selectedRun?["runTo"] as! String)"
             self.runkey = self.selectedRun?["runKey"] as! String
             self.runnerNotifID = self.selectedRun?["runnerNotif"] as! String
-            self.runTextLabel.text = "Request will only be visible to \(self.selectedRun?["runnerName"] as! String)"
+            self.whoSeesText = "Request will only be visible to \(self.selectedRun?["runnerName"] as! String)"
         } else {
             self.descriptionText = "Ex: Please pick up a six pack of diet coke, but regular coke is fine if there's no diet. I live in Lisner Dorm. Call me with any questions."
-            self.runTextLabel.isHidden = true
+            self.whoSeesText = "Visible to neighbors in \(myBuilding!)"
+            
         }
+        
+        self.runTextLabel.text = (self.whoSeesText as! String)
+        
+        let selectWhoSees:UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.selectWhoSees(_:)))
+        self.runTextLabel.addGestureRecognizer(selectWhoSees)
         
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
@@ -266,7 +283,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         
         print(neilNotif)
         
-    OneSignal.postNotification(["contents": ["en": "\(userFullName!) posted a request!"], "include_player_ids": [neilNotif],"ios_sound": "nil", "data": ["type": "request"]])
+    OneSignal.postNotification(["contents": ["en": "\(loggedInUserName!) posted a request!"], "include_player_ids": [neilNotif],"ios_sound": "nil", "data": ["type": "request"]])
 
         
     self.databaseRef.child("users").child(self.loggedInUser!).observeSingleEvent(of: .value) { (snapshot:FIRDataSnapshot) in
@@ -665,6 +682,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         
         let buildingNamePath = "/\(key)/buildingName"
         let buildingNamePathValue = self.requesterBuildingName! as String
+        print(buildingNamePathValue)
         //let buildingNamePathValue = "hello"
         
         let latitudePath = "/\(key)/latitude"
@@ -690,7 +708,8 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         let runToPath = "/\(key)/runTo"
         let accepterCellPath = "/\(key)/accepterCell"
         
-    
+        let visibleToPath = "/\(key)/visibleTo"
+        let visibleToValue = self.visibleTo as String
         
         let isAcceptedPath = "/\(key)/isAccepted"
         let isAcceptedValue = self.isAccepted as Bool
@@ -776,7 +795,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
             let downloadUrlAbsoluteStringPath = "/request/\(runKeyPath)/productImage"
             let downloadUrlAbsoluteStringValue = self.downloadUrlAbsoluteString
             
-            let childUpdates:Dictionary<String, Any> = ["/\(self.requestRun)\(requestedTimeStamp)": [".sv": "timestamp"],"/\(self.requestRun)\(profilePicReferencePath)": profilePicReferenceValue!,downloadUrlAbsoluteStringPath:downloadUrlAbsoluteStringValue!, "/\(self.requestRun)\(requesterCellPath)": requesterCellValue,"/\(self.requestRun)\(pricePath)": priceLabelValue, "/\(self.requestRun)\(buildingNamePath)": buildingNamePathValue, "/\(self.requestRun)\(itemNamePath)": itemNameValue,"/\(self.requestRun)\(tokenPath)": tokensLabelValue,"/\(self.requestRun)\(descriptionPath)":descriptionLabelValue,"/\(self.requestRun)\(requesterNamePath)":requesterNameValue,"/\(self.requestRun)\(deliverToPath)":deliverToValue,"/\(self.requestRun)\(longitudePath)":longitudeValue,"/\(self.requestRun)\(latitudePath)":latitudeValue,"/\(self.requestRun)\(requestedTimePath)":requestedTimeValue!,"/\(self.requestRun)\(requesterUIDPath)":requesterUIDValue,"/\(self.requestRun)\(isAcceptedPath)":isAcceptedValue,"/\(self.requestRun)\(isCompletePath)":isCompleteValue,"/\(self.requestRun)\(requestKeyPath)":keyValue, "/\(self.requestRun)\(paymentTypePath)":paymentTypeValue, "/\(self.requestRun)\(purchaePricePath)":purchaePriceValue, "/\(self.requestRun)\(completedPopUpUsedPath)":completedPopUpUsedValue, "/\(self.requestRun)\(requesterNotifPath)": requesterNotif, "/\(self.requestRun)\(accepterNotifIdPath)":accepterNotifIdValue, "/\(self.requestRun)\(isNewMessageRequesterPath)": isNewMessageReqesterValue, "/\(self.requestRun)\(isNewMessageAccepterPath)": isNewMessageAccepterValue]
+            let childUpdates:Dictionary<String, Any> = ["/\(self.requestRun)\(requestedTimeStamp)": [".sv": "timestamp"],"/\(self.requestRun)\(profilePicReferencePath)": profilePicReferenceValue!,downloadUrlAbsoluteStringPath:downloadUrlAbsoluteStringValue!, "/\(self.requestRun)\(requesterCellPath)": requesterCellValue,"/\(self.requestRun)\(pricePath)": priceLabelValue, "/\(self.requestRun)\(buildingNamePath)": buildingNamePathValue, "/\(self.requestRun)\(itemNamePath)": itemNameValue,"/\(self.requestRun)\(tokenPath)": tokensLabelValue,"/\(self.requestRun)\(descriptionPath)":descriptionLabelValue,"/\(self.requestRun)\(requesterNamePath)":requesterNameValue,"/\(self.requestRun)\(deliverToPath)":deliverToValue,"/\(self.requestRun)\(longitudePath)":longitudeValue,"/\(self.requestRun)\(latitudePath)":latitudeValue,"/\(self.requestRun)\(requestedTimePath)":requestedTimeValue!,"/\(self.requestRun)\(requesterUIDPath)":requesterUIDValue,"/\(self.requestRun)\(isAcceptedPath)":isAcceptedValue,"/\(self.requestRun)\(isCompletePath)":isCompleteValue,"/\(self.requestRun)\(requestKeyPath)":keyValue, "/\(self.requestRun)\(paymentTypePath)":paymentTypeValue, "/\(self.requestRun)\(purchaePricePath)":purchaePriceValue, "/\(self.requestRun)\(completedPopUpUsedPath)":completedPopUpUsedValue, "/\(self.requestRun)\(requesterNotifPath)": requesterNotif, "/\(self.requestRun)\(accepterNotifIdPath)":accepterNotifIdValue, "/\(self.requestRun)\(isNewMessageRequesterPath)": isNewMessageReqesterValue, "/\(self.requestRun)\(isNewMessageAccepterPath)": isNewMessageAccepterValue, "/\(self.requestRun)\(visibleToPath)": visibleToValue]
             
         self.databaseRef.updateChildValues(childUpdates)
             
@@ -795,7 +814,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         else
             
         {
-           let childUpdates:Dictionary<String, Any> = ["/\(self.requestRun)\(requestedTimeStamp)": [".sv": "timestamp"],"/\(self.requestRun)\(profilePicReferencePath)": profilePicReferenceValue!, "/\(self.requestRun)\(requesterCellPath)": requesterCellValue,"/\(self.requestRun)\(pricePath)": priceLabelValue, "/\(self.requestRun)\(buildingNamePath)": buildingNamePathValue, "/\(self.requestRun)\(itemNamePath)": itemNameValue,"/\(self.requestRun)\(tokenPath)": tokensLabelValue,"/\(self.requestRun)\(descriptionPath)":descriptionLabelValue,"/\(self.requestRun)\(requesterNamePath)":requesterNameValue,"/\(self.requestRun)\(deliverToPath)":deliverToValue,"/\(self.requestRun)\(longitudePath)":longitudeValue,"/\(self.requestRun)\(latitudePath)":latitudeValue,"/\(self.requestRun)\(requestedTimePath)":requestedTimeValue!,"/\(self.requestRun)\(requesterUIDPath)":requesterUIDValue,"/\(self.requestRun)\(isAcceptedPath)":isAcceptedValue,"/\(self.requestRun)\(isCompletePath)":isCompleteValue,"/\(self.requestRun)\(requestKeyPath)":keyValue, "/\(self.requestRun)\(paymentTypePath)":paymentTypeValue, "/\(self.requestRun)\(purchaePricePath)":purchaePriceValue, "/\(self.requestRun)\(completedPopUpUsedPath)":completedPopUpUsedValue, "/\(self.requestRun)\(requesterNotifPath)": requesterNotif, "/\(self.requestRun)\(accepterNotifIdPath)":accepterNotifIdValue, "/\(self.requestRun)\(isNewMessageRequesterPath)": isNewMessageReqesterValue, "/\(self.requestRun)\(isNewMessageAccepterPath)": isNewMessageAccepterValue]
+           let childUpdates:Dictionary<String, Any> = ["/\(self.requestRun)\(requestedTimeStamp)": [".sv": "timestamp"],"/\(self.requestRun)\(profilePicReferencePath)": profilePicReferenceValue!, "/\(self.requestRun)\(requesterCellPath)": requesterCellValue,"/\(self.requestRun)\(pricePath)": priceLabelValue, "/\(self.requestRun)\(buildingNamePath)": buildingNamePathValue, "/\(self.requestRun)\(itemNamePath)": itemNameValue,"/\(self.requestRun)\(tokenPath)": tokensLabelValue,"/\(self.requestRun)\(descriptionPath)":descriptionLabelValue,"/\(self.requestRun)\(requesterNamePath)":requesterNameValue,"/\(self.requestRun)\(deliverToPath)":deliverToValue,"/\(self.requestRun)\(longitudePath)":longitudeValue,"/\(self.requestRun)\(latitudePath)":latitudeValue,"/\(self.requestRun)\(requestedTimePath)":requestedTimeValue!,"/\(self.requestRun)\(requesterUIDPath)":requesterUIDValue,"/\(self.requestRun)\(isAcceptedPath)":isAcceptedValue,"/\(self.requestRun)\(isCompletePath)":isCompleteValue,"/\(self.requestRun)\(requestKeyPath)":keyValue, "/\(self.requestRun)\(paymentTypePath)":paymentTypeValue, "/\(self.requestRun)\(purchaePricePath)":purchaePriceValue, "/\(self.requestRun)\(completedPopUpUsedPath)":completedPopUpUsedValue, "/\(self.requestRun)\(requesterNotifPath)": requesterNotif, "/\(self.requestRun)\(accepterNotifIdPath)":accepterNotifIdValue, "/\(self.requestRun)\(isNewMessageRequesterPath)": isNewMessageReqesterValue, "/\(self.requestRun)\(isNewMessageAccepterPath)": isNewMessageAccepterValue, "/\(self.requestRun)\(visibleToPath)": visibleToValue]
 
             
             self.databaseRef.updateChildValues(childUpdates)
@@ -928,6 +947,18 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
                         
                     }
                 }
+                
+                let deadlineTime = DispatchTime.now() + .seconds(1)
+                 
+                 DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
+                
+                if !(self.isRun) && ((self.myBuildingMates.count < 5) || myBuilding == "N/A") {
+                    
+                    self.runTextLabel.text = "Visible to neighbors within \(String(format: "%.2f", myRadius!)) mi"
+                    self.visibleTo = "NA"
+                
+                }
+                }
             }
             /*
             let userLatitude = snapshot["latitude"] as? CLLocationDegrees
@@ -1011,6 +1042,17 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         
     }
     
+    @IBAction func didTapCoverBack(_ sender: UIButton) {
+        
+        if isRun{
+            self.performSegue(withIdentifier: "requestToRuns", sender: nil)
+        } else {
+            self.performSegue(withIdentifier: "requestToShoppingList", sender: nil)
+        }
+        
+    }
+    
+    /*
     @IBAction func didTapLargeBack(_ sender: UIButton) {
         if isRun{
             self.performSegue(withIdentifier: "requestToRuns", sender: nil)
@@ -1019,7 +1061,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         }
 
         
-    }
+    }*/
     @IBAction func didTapBack(_ sender: UIButton) {
         
         if isRun{
@@ -1029,6 +1071,32 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         }
     }
     
+    func selectWhoSees(_ gesture: UITapGestureRecognizer) {
+      
+        if !isRun {
+        if myBuilding != "N/A" {
+        
+        let myActionSheet = UIAlertController(title:"Request Visibility",message:"Select who you would like to see your request",preferredStyle: UIAlertControllerStyle.actionSheet)
+        
+        let deliveryRadiusView = UIAlertAction(title: "Neighbors within \(String(format: "%.2f", myRadius!)) mi", style: UIAlertActionStyle.default) { (action) in
+           //save choice to request
+            self.runTextLabel.text = "Visible to neighbors within \(String(format: "%.2f", myRadius!)) mi"
+            self.visibleTo = "NA"
+        }
+        
+        let myAptView = UIAlertAction(title: "Only neighbors in \(myBuilding!)", style: UIAlertActionStyle.default) { (action) in
+           //save choice to request
+            self.runTextLabel.text = "Visible to neighbors in \(myBuilding!)"
+            self.visibleTo = myBuilding!
+        }
+
+        myActionSheet.addAction(deliveryRadiusView)
+        myActionSheet.addAction(myAptView)
+        
+        self.present(myActionSheet, animated: true, completion: nil)
+        }
+        }
+    }
     
 }
 

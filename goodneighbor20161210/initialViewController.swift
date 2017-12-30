@@ -30,6 +30,11 @@ var referralRedeemed:Bool = false
 var neilNotif: String = "hello"
 var myNotif: String = "yo"
 var myName: String?
+var isX = false
+
+var referralCount: Int = 0
+
+var myState: String?
 
 var myBuilding:String?
 
@@ -45,6 +50,7 @@ class initialViewController: UIViewController {
     var loggedInUserId: String?
     var isPromotion = false
     
+    
     override var prefersStatusBarHidden: Bool {
         return true
     } 
@@ -59,6 +65,10 @@ class initialViewController: UIViewController {
         let screenSize: CGRect = UIScreen.main.bounds
         
         let screenHeight = screenSize.height
+        
+        if UIDevice().userInterfaceIdiom == .phone && UIScreen.main.nativeBounds.height == 2436 {
+            isX = true
+        }
         
         if screenHeight < 490.0     {
             
@@ -157,6 +167,18 @@ class initialViewController: UIViewController {
                                     
                                 }
                             })
+                              
+                            //Add referral count node if not existing, or just store the count -- referralCount
+                                if self.loggedInUserData?["referralCount"] as? Int != nil  {
+                                    print(self.loggedInUserData?["referralCount"] as! Int)
+                                    referralCount = self.loggedInUserData?["referralCount"] as! Int
+                                } else { //create referral node
+                                    
+                                    self.databaseRef.child("users").child(self.loggedInUserId!).child("referralCount").setValue(0)
+                                    referralCount = 0
+                                    
+                                }
+                                
                             
                             if self.loggedInUserData?["referralCode"] as?  String != nil {
                                let referOptional = self.loggedInUserData?["referralCode"] as! String
@@ -176,6 +198,12 @@ class initialViewController: UIViewController {
                                 
                                 referralRedeemed = true
                                 
+                            }
+                                
+                            if let _ = self.loggedInUserData?["state"] as? String {
+                                    
+                                    myState = self.loggedInUserData?["state"] as? String
+                                    
                             }
                             
                             myProfilePicRef = self.loggedInUserData?["profilePicReference"] as! String
@@ -235,7 +263,7 @@ class initialViewController: UIViewController {
                                 } else {
                                 
                                 //For now set default page to request page
-                                let homeViewController: UIViewController = mainStoryboard.instantiateViewController(withIdentifier: "shoppingList")
+                                let homeViewController: UIViewController = mainStoryboard.instantiateViewController(withIdentifier: "runView")
                                     
                                 //let homeViewController: UIViewController = mainStoryboard.instantiateViewController(withIdentifier: "requestItem")
                                 

@@ -20,7 +20,17 @@ import CoreLocation
 var autoLoginTryCount = 0
 
 class loginViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate  {
+    
+     @IBOutlet var titleConstraint: NSLayoutConstraint!
+     
+    @IBOutlet var titleLabel: UILabel!
+    @IBOutlet var topBackConstraint: NSLayoutConstraint!
+    
+    @IBOutlet var topBg: UIImageView!
     /**
+     let leadingConstraint = cell.payTypeImage.trailingAnchor.constraint(equalTo: cell.willingToPayLabel.trailingAnchor, constant: 22)
+     NSLayoutConstraint.activate([leadingConstraint])
+     
      Sent to the delegate when the button was used to logout.
      - Parameter loginButton: The button that was clicked.
  */
@@ -115,9 +125,10 @@ class loginViewController: UIViewController, UIImagePickerControllerDelegate, UI
                         let referralCode = self.nameLabel.text! + someString
                         userReferralCode = referralCode
                         
-                        let childUpdates = ["/users/\(user!.uid)/name":self.nameLabel.text!,"/users/\(user!.uid)/cellPhoneNumber":"0","/users/\(user!.uid)/buildingName":"N/A","/users/\(user!.uid)/deliveryCount":0, "/users/\(user!.uid)/recieveCount":0, "/users/\(user!.uid)/tokenCount":2,"/users/\(user!.uid)/email":self.emailLabel.text!,"/users/\(user!.uid)/fullName":self.nameLabel.text!, "/users/\(user!.uid)/longitude":0.0000000000,"/users/\(user!.uid)/gender":"N/A", "/users/\(user!.uid)/latitude":0.0000000000,"/users/\(user!.uid)/deliveryRadius": 1.0000987, "/users/\(user!.uid)/referralCode":userReferralCode!] as [String : Any]
+                        let childUpdates = ["/users/\(user!.uid)/name":self.nameLabel.text!,"/users/\(user!.uid)/cellPhoneNumber":"0","/users/\(user!.uid)/buildingName":"N/A","/users/\(user!.uid)/deliveryCount":0, "/users/\(user!.uid)/recieveCount":0, "/users/\(user!.uid)/referralCount":0, "/users/\(user!.uid)/tokenCount":2,"/users/\(user!.uid)/email":self.emailLabel.text!,"/users/\(user!.uid)/fullName":self.nameLabel.text!, "/users/\(user!.uid)/longitude":0.0000000000,"/users/\(user!.uid)/gender":"N/A", "/users/\(user!.uid)/latitude":0.0000000000,"/users/\(user!.uid)/deliveryRadius": 1.0000987, "/users/\(user!.uid)/referralCode":userReferralCode!] as [String : Any]
                         
                         userFullName = self.nameLabel.text!
+                        myBuilding = "N/A"
                         
                         //Update
                         self.databaseRef.updateChildValues(childUpdates)
@@ -201,7 +212,20 @@ class loginViewController: UIViewController, UIImagePickerControllerDelegate, UI
     override func viewDidLoad() {
         super.viewDidLoad()
         
-  
+// Try to get constraints for stupid new phone....
+// THIS WORKS NOT REALLY SURE WHY BUT ITS THE PINTOP THAT DOES IT
+        if isX {
+      let pinTop = NSLayoutConstraint(item: self.titleLabel, attribute: .top, relatedBy: .equal,
+                                        toItem: view, attribute: .top, multiplier: 4.0, constant: 38)
+        
+        let heightContraints = NSLayoutConstraint(item: topBg, attribute:
+            .height, relatedBy: .equal, toItem: nil,
+                     attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1.0,
+                     constant: 40)
+        
+        NSLayoutConstraint.activate([pinTop,heightContraints])
+           //  NSLayoutConstraint.activate([heightContraints])
+        }
    //try! FIRAuth.auth()?.signOut()
         
         let imageTap:UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapImageIcon(_:)))

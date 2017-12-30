@@ -31,6 +31,7 @@ class couponMaintenanceView: UIViewController {
     var referralUid:String?
     var buildingUsersCount = 0
     var referralNotif:String?
+    var plusOneReferral:Int?
     
     var myBuildingMates = [String]()
     
@@ -94,8 +95,10 @@ class couponMaintenanceView: UIViewController {
     
     @IBAction func didTapEnter(_ sender: UIButton) {
         
-        self.couponText = codeTextField.text
+        self.buildingUsersCount = 0
         
+        self.couponText = codeTextField.text
+        // Count number of users in building
         if ((self.couponText)?.contains("#"))! {
             
             let textArray = (self.couponText)?.components(separatedBy: "#")
@@ -120,7 +123,49 @@ class couponMaintenanceView: UIViewController {
             
             
         }
+            
+        if ((self.couponText)?.contains("#"))! {
+            
+            let textArray = (self.couponText)?.components(separatedBy: "#")
+            let buildingName: String = String(textArray![1])!
+            
+            print(buildingName)
+            self.databaseRef.child("users").observe(.childAdded) { (snapshot3: FIRDataSnapshot) in
+                
+                let snapshot3 = snapshot3.value as! NSDictionary
+                
+                if let userBuilding = snapshot3["buildingName"] as? String {
+                    print(userBuilding)
+                    if userBuilding == buildingName {
+                        
+                        self.buildingUsersCount += 1
+                        self.uidLabel.text = String(self.buildingUsersCount)
+                        
+                    }
+                    
+                }
+            }
+            
+            
+        }
+            
+            //Get referral count
         
+        else if self.couponText == "referral" {
+            
+            
+            self.databaseRef.child("users").child((FIRAuth.auth()?.currentUser?.uid)!).observeSingleEvent(of: .value, with: { snapshot7 in
+                
+                let snapshot = snapshot7.value as? NSDictionary
+                let tempRef = snapshot?["referralCount"] as! Int
+                self.uidLabel.text = String(tempRef)
+            })
+            
+        }
+            
+            
+            
+
         else if self.couponText == "justCompleted" {
            
             self.databaseRef.child("request").observe(.childAdded) { (snapshot:FIRDataSnapshot) in
@@ -280,9 +325,13 @@ class couponMaintenanceView: UIViewController {
         if self.isVerified == true && self.isAlreadyUsed == false { //Successful entry
             
                 referralRedeemed = true
-                //Give token to the user who referred
+            
+            
+            //HERE UPDATE THAT PERSONS REFERRAL COUNT
+      
                     
-                     self.databaseRef.child("users").child(self.referralUid!).observeSingleEvent(of: .value, with: { snapshot in
+            //Give token to the user who referred
+            self.databaseRef.child("users").child(self.referralUid!).observeSingleEvent(of: .value, with: { snapshot in
                         
                         let snapshot = snapshot.value as? NSDictionary
                         if let tempToken = snapshot?["tokenCount"] as? Int {
@@ -294,15 +343,27 @@ class couponMaintenanceView: UIViewController {
                                 
                                 self.referralNotif = snapshot?["notifID"] as? String
                                 
-                                OneSignal.postNotification(["headings" : ["en": "Thank you for your referral!"],
-                                                            "contents" : ["en": "One token has been added to your account"],
+                              /*  OneSignal.postNotification(["headings" : ["en": "Thank you for your referral!"],
+                                                            "contents" : ["en": "1 token has been added to your account.You have made \(referralCount) referrals."],
                                                             "include_player_ids": [self.referralNotif!],
-                                                            "ios_sound": "nil"])
-                                
+                                                            "ios_sound": "nil"])*/
                                 
                             }
-                            
                         }
+                
+                if let tempReferralCount = snapshot?["referralCount"] as? Int {
+                    
+                    self.plusOneReferral = tempReferralCount + 1
+                    self.databaseRef.child("users").child(self.referralUid!).child("referralCount").setValue(self.plusOneReferral!)
+                    FIRAnalytics.logEvent(withName: "didMakeReferral", parameters: nil)
+                    OneSignal.postNotification(["headings" : ["en": "Thank you for your referral!"],
+                                                "contents" : ["en": "1 token has been added to your account.You have made \(self.plusOneReferral!) referrals."],
+                                                "include_player_ids": [self.referralNotif!],
+                                                "ios_sound": "nil"])
+                }
+                
+                
+                
                      })
                     
                 //Update current user token count

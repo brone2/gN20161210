@@ -24,6 +24,7 @@ class meViewController: UIViewController {
     var recieveCount = 0
     var usersInMyRadius = 0
     
+    @IBOutlet var titleLabel: UILabel!
     @IBOutlet var userInMyRadiusLabel: UILabel!
     
     @IBOutlet var topImag: UIImageView!
@@ -56,6 +57,15 @@ class meViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if isX {
+            let pinTop = NSLayoutConstraint(item: self.titleLabel, attribute: .top, relatedBy: .equal,
+                                            toItem: view, attribute: .top, multiplier: 4.0, constant: 38)
+            
+            
+            
+            NSLayoutConstraint.activate([pinTop])
+        }
         
         self.profilePicImage.layer.cornerRadius = 40
         self.profilePicImage.layer.masksToBounds = true
@@ -96,6 +106,7 @@ class meViewController: UIViewController {
             self.couponRedemptionBackground.isHidden = true
             
         }
+        
         
        self.loggedInUserId = FIRAuth.auth()?.currentUser?.uid
        globalLoggedInUserId = self.loggedInUserId

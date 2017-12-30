@@ -90,7 +90,22 @@ class viewDetailDeliveryView: UIViewController, UITextViewDelegate, UITextFieldD
         if !isRun {
             
         self.requestByLabel.text = String("Requested by \(self.myCurrentDeliveries[self.selectedRowIndex]?["requesterName"] as! String)")
-        self.deliveryLocation.text = String("Please deliver to \(self.myCurrentDeliveries[self.selectedRowIndex]?["deliverTo"] as! String)")
+        
+        let deliverySpot = self.myCurrentDeliveries[self.selectedRowIndex]?["deliverTo"] as! String
+            
+            if deliverySpot == "My door" {
+                
+                self.deliveryLocation.text = String("Please deliver to \(self.myCurrentDeliveries[self.selectedRowIndex]?["deliverTo"] as! String)")
+                
+            } else {
+                
+                self.deliveryLocation.text = String("\(self.myCurrentDeliveries[self.selectedRowIndex]?["deliverTo"] as! String)") 
+                
+            }
+            
+        
+            
+            
         self.productNameLabel.text = String("\(self.myCurrentDeliveries[self.selectedRowIndex]?["itemName"] as! String)")
                
         let buildingCheck = self.self.myCurrentDeliveries[self.selectedRowIndex]?["buildingName"] as? String

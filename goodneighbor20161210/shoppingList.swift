@@ -31,6 +31,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
     @IBOutlet var coverUpBlueView: UIView!
     
     
+    @IBOutlet var titleLabel: UILabel!
     let storageRef = FIRStorage.storage().reference()
     let databaseRef = FIRDatabase.database().reference()
     var loggedInUserId:String!
@@ -162,6 +163,17 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if isX {
+          
+            for constraint in self.view.constraints {
+                if constraint.identifier == "titleTopConstraint" {
+                    constraint.constant = 35
+                }
+                
+            }
+            
+        }
+        
         if isSmallScreen || isVerySmallScreen {
             self.coverUpBlueView.frame = CGRect(x:99.7, y: 24.5, width: 11.1, height: 22)
             self.oCoverUpText.image = UIImage(named: "smallO2.png")
@@ -223,11 +235,28 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                 //General shopping list requests, those that are not already accepted and not sent by you
         
                 if distanceMilesFloat < myRadius! {
-                if(snapID != self.loggedInUserId && snapAccepted != true && isRun == nil){
+                    
+                if(snapID != self.loggedInUserId && snapAccepted != true && isRun == nil) {
+                    
+                    //For visible only to dorm
+                    
+                    if snapshot["visibleTo"] as? String != nil && snapshot["visibleTo"] as? String != "NA"  {
+                     
+                        let visibleDorm = snapshot["visibleTo"] as! String
+                        print(visibleDorm)
+                        if visibleDorm == myBuilding {
+                            self.shoppingListCurrentRequests.append(requestDict)
+                            self.shoppingListCurrentRequests.sort{ Double($0?["distanceFromUser"] as! String)! < Double($1?["distanceFromUser"] as! String)! }
+                        }
+                        
+                    } else { // regular delivery radius filter
              
-                    self.shoppingListCurrentRequests.append(requestDict)
-                    self.shoppingListCurrentRequests.sort{ Double($0?["distanceFromUser"] as! String)! < Double($1?["distanceFromUser"] as! String)! }
-                  
+                        self.shoppingListCurrentRequests.append(requestDict)
+                        self.shoppingListCurrentRequests.sort{ Double($0?["distanceFromUser"] as! String)! < Double($1?["distanceFromUser"] as! String)! }
+                    
+                    }
+                    
+                    
                 }
                 }
         
@@ -441,7 +470,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                 if let isNewMessage:Bool = (self.sectionData[indexPath.section - 1]![indexPath.row]?["isNewMessageAccepter"] as? Bool)! {
                     
                     if isNewMessage {
-                        cell.chatImage.image = UIImage(named: "fillBlueChat1.png")
+                        cell.chatImage.image = UIImage(named: "fillChat1.png")
                     } else {
                         cell.chatImage.image = UIImage(named: "fillBlueChat.png")
                     }
@@ -452,7 +481,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
 
             let buildingCheck = self.sectionData[indexPath.section  - 1]![indexPath.row]?["buildingName"] as? String
             
-            if buildingCheck != "N/A" {
+            if buildingCheck != "N/A" && buildingCheck != "NA" {
                 
                 cell.distanceLabel.text = String("\(self.sectionData[indexPath.section - 1]![indexPath.row]?["requesterName"] as! String) - \(buildingCheck!) (\(self.sectionData[indexPath.section - 1]![indexPath.row]?["distanceFromUser"] as! String) mi)")
                 
@@ -648,7 +677,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                 print(chatName)
                 if chatName == "NA" {
                     
-                    cell.chatImage.image = UIImage(named: "emptyGrayChat.png")
+                    cell.chatImage.image = UIImage(named: "grayChat.png")
                     
                     let chatImageTap4:UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.didTapChatNotAccepted(_:)))
                     cell.chatImage.addGestureRecognizer(chatImageTap4)
@@ -663,7 +692,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                             cell.chatImage.addGestureRecognizer(chatImageTap2)
                             
                             if isNewMessage {
-                                cell.chatImage.image = UIImage(named: "fillBlueChat1.png")
+                                cell.chatImage.image = UIImage(named: "fillChat1.png")
                             } else {
                                 cell.chatImage.image = UIImage(named: "fillBlueChat.png")
                             }
@@ -705,7 +734,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                             if let isNewMessage:Bool = (self.sectionData[indexPath.section - 1]![indexPath.row]?["isNewMessageRequester"] as? Bool)! {
                                 
                                 if isNewMessage {
-                                    cell.chatImage.image = UIImage(named: "fillBlueChat1.png")
+                                    cell.chatImage.image = UIImage(named: "fillChat1.png")
                                 } else {
                                     cell.chatImage.image = UIImage(named: "fillBlueChat.png")
                                 }
@@ -813,13 +842,13 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             if let accepterUIDNotif = (self.sectionData[indexPath.section - 1]![indexPath.row]?["accepterNotifId"] as? String) {
                 
                 if accepterUIDNotif != myNotif {
-                    cell.chatBubble.image = UIImage(named: "emptyBlueChat.png")
+                    cell.chatBubble.image = UIImage(named: "emptyBlue.png")
                 } else {
                     
                  let isNewMessage:Bool = (self.sectionData[indexPath.section - 1]![indexPath.row]?["isNewMessageAccepter"] as? Bool)!
                     
                     if isNewMessage {
-                        cell.chatBubble.image = UIImage(named: "fillBlueChat1.png")
+                        cell.chatBubble.image = UIImage(named: "fillChat1.png")
                     } else {
                         cell.chatBubble.image = UIImage(named: "fillBlueChat.png")
                     }
@@ -866,7 +895,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             
             let buildingCheck = self.sectionData[indexPath.section - 1]![indexPath.row]?["buildingName"] as? String
             
-            if buildingCheck != "N/A" {
+            if buildingCheck != "N/A" && buildingCheck != "NA" {
                 
                 cell.distanceLabel.text = String("\(self.sectionData[indexPath.section - 1]![indexPath.row]?["requesterName"] as! String) - \(buildingCheck!) (\(self.sectionData[indexPath.section - 1]![indexPath.row]?["distanceFromUser"] as! String) mi)")
                 
@@ -1198,7 +1227,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         let purchasePrice = self.sectionData[1]![index]?["purchasePrice"] as? String
         let accepterName = self.sectionData[1]![index]?["accepterName"] as? String
         
-        let alertPrice = UIAlertController(title: "Payment Verification", message: "Have you paid \(accepterName!) the price of the item up or equal to \(purchasePrice!)?", preferredStyle: UIAlertControllerStyle.alert)
+        let alertPrice = UIAlertController(title: "Payment Verification", message: "Have you paid \(accepterName!) the price of the item up or equal to \(purchasePrice!) (there is no automatic venmo payment through the app)?.", preferredStyle: UIAlertControllerStyle.alert)
         
         alertPrice.addAction(UIAlertAction(title: "No", style: .default, handler: { (action) in
             //nothing happens
@@ -1520,13 +1549,13 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         if !isComplete {
             if purchasePriceString == "NA" {
                 
-                self.questionMarkMessageDelivery = "Once you have purchased \(self.sectionData[0]![index]?["itemName"] as! String), please tap \"Purchase Complete\" and then enter the price you paid for it"
+                self.questionMarkMessageDelivery = "Once you have purchased \(self.sectionData[0]![index]?["itemName"] as! String), please tap \"Purchase Complete\" and then enter the price you paid for it."
                 
                 self.questionMarkMessageDeliveryTitle = "Item not purchased"
                 
             } else {
                 
-                self.questionMarkMessageDelivery = "The final step is to deliver \(self.sectionData[0]![index]?["itemName"] as! String) to \(self.sectionData[0]![index]?["requesterName"] as! String) and receive payment of \(self.sectionData[0]![index]?["purchasePrice"] as! String). Once the delivery is complete \(self.sectionData[0]![index]?["requesterName"] as! String) will select \"Mark as Complete\" and you will receive \(self.sectionData[0]![index]?["tokensOffered"] as! Int) token"
+                self.questionMarkMessageDelivery = "The final step is to deliver \(self.sectionData[0]![index]?["itemName"] as! String) to \(self.sectionData[0]![index]?["requesterName"] as! String) and receive payment of \(self.sectionData[0]![index]?["purchasePrice"] as! String). Once the delivery is complete \(self.sectionData[0]![index]?["requesterName"] as! String) will select \"Mark as Complete\" and you will receive \(self.sectionData[0]![index]?["tokensOffered"] as! Int) token."
                 
                 self.questionMarkMessageDeliveryTitle = "Delivery in Progress"
             }
@@ -1552,7 +1581,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         if !isComplete {
             if isAccepted == false {
                 
-                self.questionMarkMessageRequest = "Your request of \( self.sectionData[1]![index]?["itemName"] as! String) is not yet accepted. When it is accepted, the Goodneighbor who accepted it will send you a text. If you no longer want \(self.sectionData[1]![index]?["itemName"] as! String), select \"Cancel Request\"."
+                self.questionMarkMessageRequest = "Your request of \( self.sectionData[1]![index]?["itemName"] as! String) is not yet accepted. When it is accepted you will recieve a notification. If you no longer want \(self.sectionData[1]![index]?["itemName"] as! String), select \"Cancel Request\"."
                 self.questionMarkMessageRequestTitle = "Awaiting a Goodneighbor"
                 
             } else {
@@ -1595,7 +1624,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         if !isComplete {
         if isAccepted == false {
          
-            self.questionMarkMessageRequest = "Your request of \( self.sectionData[1]![index]?["itemName"] as! String) is not yet accepted. When it is accepted, the Goodneighbor who accepted it will send you a text. If you no longer want \(self.sectionData[1]![index]?["itemName"] as! String) select \"Cancel Request\"."
+            self.questionMarkMessageRequest = "Your request of \( self.sectionData[1]![index]?["itemName"] as! String) is not yet accepted. When it is accepted you will recieve a notification. If you no longer want \(self.sectionData[1]![index]?["itemName"] as! String) select \"Cancel Request\"."
             self.questionMarkMessageRequestTitle = "Awaiting a Goodneighbor"
 
         } else {
@@ -1700,7 +1729,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             
             let itemRef = databaseRef.child("messages").childByAutoId()
             
-            let text = "I have purchased \(itemName) for \(purchasePrice), please be ready to venmo me \(purchasePrice) when I arrive."
+            let text = "I have purchased \(itemName) for \(purchasePrice), please be ready to venmo me \(purchasePrice) when I arrive. You will need to pay directly from the Venmo app as Goodneighbor does not yet support payments"
             
             let messageItem = [
                 "senderId": self.loggedInUserId,

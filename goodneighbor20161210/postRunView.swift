@@ -31,6 +31,8 @@ class postRunView: UIViewController, UITextViewDelegate, UITextFieldDelegate {
     var storageRef = FIRStorage.storage().reference()
     var timeRun: String?
     var myBuildingMates = [String]()
+    var buildingNamePath:String?
+    var buildingNamePathValue:String?
 
     @IBOutlet var grayView: UIView!
     var descriptionText: String?
@@ -57,6 +59,7 @@ class postRunView: UIViewController, UITextViewDelegate, UITextFieldDelegate {
         }
     }
 }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -85,11 +88,12 @@ class postRunView: UIViewController, UITextViewDelegate, UITextFieldDelegate {
         if self.hourTextfield.text! == "" || self.runLocationTextField.text! == "" || self.notesField.text! == "I will be going to Trader Joe's around 12:30 and should be back by 2. Will meet you in the lobby of dardick dorm for pickup." {
             
             if self.runLocationTextField.text! == "I will be going to Trader Joe's around 12:30 and should be back by 2. Will meet you in the lobby of dardick dorm for pickup." {
-                self.makeAlert(title: "Missing information", message: "Please provide a value for \"Detailed Information\"")
+                self.makeAlertNoDismiss(title: "Missing information", message: "Please provide a value for \"Detailed Information\"")
+                self.dismiss(animated: true, completion: nil)
             } else if self.hourTextfield.text! == "" {
-                self.makeAlert(title: "Missing information", message: "Please enter what time you are making the run")
+                self.makeAlertNoDismiss(title: "Missing information", message: "Please enter what time you are making the run")
             } else if self.hourTextfield.text! == "" {
-                self.makeAlert(title: "Missing information", message: "Please enter where you are going to make a run")
+                self.makeAlertNoDismiss(title: "Missing information", message: "Please enter where you are going to make a run")
             }
             
         } else {
@@ -110,9 +114,18 @@ class postRunView: UIViewController, UITextViewDelegate, UITextFieldDelegate {
         //let longitudeValue = self.requesterLongitude! as CLLocationDegrees
         let longitudeValue = (myLocation?.coordinate.longitude)! as CLLocationDegrees
         
-        let buildingNamePath = "/runs/\(key)/buildingName"
-        let buildingNamePathValue = myBuilding!
-        //let buildingNamePathValue = "hello"
+        //hacky way to get post run users with less than 5 ppl in building to have request seen by everyone
+        print((self.myBuildingMates.count))
+            if (self.myBuildingMates.count) < 5 {
+                     self.buildingNamePath = "/runs/\(key)/buildingName"
+                     self.buildingNamePathValue = "NA"
+            } else {
+                
+                self.buildingNamePath = "/runs/\(key)/buildingName"
+                self.buildingNamePathValue = myBuilding!
+                
+            }
+        
         
         let latitudePath = "/runs/\(key)/runnerLatitude"
         //let latitudeValue = self.requesterLatitude! as CLLocationDegrees
@@ -142,12 +155,18 @@ class postRunView: UIViewController, UITextViewDelegate, UITextFieldDelegate {
         let profilePicReferencePath = "/runs/\(key)/profilePicReference"
         let profilePicReferenceValue = myProfilePicRef
         
-        let childUpdatesRun:Dictionary<String, Any> = [timeRunPath: timeRunValue, runToPath: runToValue,descriptionPath: descriptionLabelValue, buildingNamePath: buildingNamePathValue,latitudePath: latitudeValue, longitudePath: longitudeValue,runnerNamePath: runnerNameValue,isCompletePath: isCompleteValue, runKeyPath: keyValue, runnerUIDPath: runnerUIDValue,runnerCellPath: runnerCellValue, profilePicReferencePath: profilePicReferenceValue, runnerNotifPath: runnerNotifValue,requestCountPath: requestCountValue]
+        let childUpdatesRun:Dictionary<String, Any> = [timeRunPath: timeRunValue, runToPath: runToValue,descriptionPath: descriptionLabelValue, self.buildingNamePath!: self.buildingNamePathValue!,latitudePath: latitudeValue, longitudePath: longitudeValue,runnerNamePath: runnerNameValue,isCompletePath: isCompleteValue, runKeyPath: keyValue, runnerUIDPath: runnerUIDValue,runnerCellPath: runnerCellValue, profilePicReferencePath: profilePicReferenceValue, runnerNotifPath: runnerNotifValue,requestCountPath: requestCountValue]
         
         
         self.databaseRef.updateChildValues(childUpdatesRun)
             
-        OneSignal.postNotification(["contents": ["en": "\(userFullName!) posted a run!"], "include_player_ids": [neilNotif],"ios_sound": "nil", "data": ["type": "run"]])
+        
+            if let nameToSend = userFullName {
+            
+        OneSignal.postNotification(["contents": ["en": "\(nameToSend) posted a run!"], "include_player_ids": [neilNotif],"ios_sound": "nil", "data": ["type": "run"]])
+                
+            }
+            
             
             for mateID in 0..<self.myBuildingMates.count {
                 print(mateID)
@@ -298,6 +317,20 @@ class postRunView: UIViewController, UITextViewDelegate, UITextFieldDelegate {
         
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
           
+            self.dismiss(animated: true, completion: nil)
+        }))
+        
+        self.present(alert, animated: true, completion: nil)
+        
+    }
+    
+    func makeAlertNoDismiss(title: String, message: String)  {
+        
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
+            
+            
         }))
         
         self.present(alert, animated: true, completion: nil)

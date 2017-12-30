@@ -24,6 +24,7 @@ class facebookLoginController: UIViewController, FBSDKLoginButtonDelegate {
     var loggedInUserId: String?
     var pushNotifID: String?
     
+    @IBOutlet var titleLabel: UILabel!
     @IBOutlet var signUpButtonOutlet: customButton!
     
     
@@ -34,6 +35,16 @@ class facebookLoginController: UIViewController, FBSDKLoginButtonDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if isX {
+            let pinTop = NSLayoutConstraint(item: self.titleLabel, attribute: .top, relatedBy: .equal,
+                                            toItem: view, attribute: .top, multiplier: 4.0, constant: 38)
+            
+           
+            
+            NSLayoutConstraint.activate([pinTop])
+            //  NSLayoutConstraint.activate([heightContraints])
+        }
 
         let loginButton = FBSDKLoginButton()
         view.addSubview(loginButton)
@@ -75,6 +86,7 @@ class facebookLoginController: UIViewController, FBSDKLoginButtonDelegate {
                         let gender = dict["gender"] as! String
                         
                         userFullName = fullName
+                        myBuilding = "N/A"
                         
                         let randomNum:UInt32 = arc4random_uniform(1000)
                         let someString:String = String(randomNum)
@@ -89,7 +101,7 @@ class facebookLoginController: UIViewController, FBSDKLoginButtonDelegate {
                         
                         let userUId = (FIRAuth.auth()?.currentUser?.uid)!
                         
-                        let childUpdatesFbook = ["/users/\(userUId)/name":dict["first_name"]!,"/users/\(userUId)/fullName":dict["name"]!,"/users/\(userUId)/gender":dict["gender"]!,"/users/\(userUId)/buildingName":"N/A","/users/\(userUId)/cellPhoneNumber":"0","/users/\(userUId)/deliveryCount":0, "/users/\(userUId)/recieveCount":0, "/users/\(userUId)/tokenCount":2,"/users/\(userUId)/profilePicReference":self.url!, "/users/\(userUId)/longitude":longitude, "/users/\(userUId)/latitude":latitude, "/users/\(userUId)/deliveryRadius":deliveryRadius, "/users/\(userUId)/referralCode":userReferralCode!] as [String : Any]
+                        let childUpdatesFbook = ["/users/\(userUId)/name":dict["first_name"]!,"/users/\(userUId)/fullName":dict["name"]!,"/users/\(userUId)/gender":dict["gender"]!,"/users/\(userUId)/buildingName":"N/A","/users/\(userUId)/cellPhoneNumber":"0","/users/\(userUId)/deliveryCount":0, "/users/\(userUId)/recieveCount":0,"/users/\(userUId)/referralCount":0, "/users/\(userUId)/tokenCount":2,"/users/\(userUId)/profilePicReference":self.url!, "/users/\(userUId)/longitude":longitude, "/users/\(userUId)/latitude":latitude, "/users/\(userUId)/deliveryRadius":deliveryRadius, "/users/\(userUId)/referralCode":userReferralCode!] as [String : Any]
                         
                         //Update
                         self.databaseRef.updateChildValues(childUpdatesFbook)

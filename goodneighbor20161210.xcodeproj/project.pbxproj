@@ -18,6 +18,10 @@
 		E5119E4A1F1266F900202A09 /* fbookProPic.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5119E491F1266F900202A09 /* fbookProPic.swift */; };
 		E5119E4D1F1A76FC00202A09 /* iLiveInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5119E4C1F1A76FC00202A09 /* iLiveInView.swift */; };
 		E5119E4F1F1A774500202A09 /* termView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5119E4E1F1A774500202A09 /* termView.swift */; };
+		E51DC13A1F4B25E600D31B93 /* fillChat1.png in Resources */ = {isa = PBXBuildFile; fileRef = E51DC1361F4B25E600D31B93 /* fillChat1.png */; };
+		E51DC13B1F4B25E600D31B93 /* grayChat.png in Resources */ = {isa = PBXBuildFile; fileRef = E51DC1371F4B25E600D31B93 /* grayChat.png */; };
+		E51DC13C1F4B25E600D31B93 /* emptyBlue.png in Resources */ = {isa = PBXBuildFile; fileRef = E51DC1381F4B25E600D31B93 /* emptyBlue.png */; };
+		E51DC13D1F4B25E600D31B93 /* fillChat.png in Resources */ = {isa = PBXBuildFile; fileRef = E51DC1391F4B25E600D31B93 /* fillChat.png */; };
 		E51DE9131EF6C83B00D5A1D1 /* shoppingHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51DE9121EF6C83B00D5A1D1 /* shoppingHeader.swift */; };
 		E52BC55D1E81D53F00169976 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52BC55C1E81D53F00169976 /* NotificationService.swift */; };
 		E52BC5611E81D53F00169976 /* OneSignalNotificationServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = E52BC55A1E81D53F00169976 /* OneSignalNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -55,7 +59,6 @@
 		E55A91871F0C6E2200236CF8 /* referralImage2.png in Resources */ = {isa = PBXBuildFile; fileRef = E55A91861F0C6E2200236CF8 /* referralImage2.png */; };
 		E570843E1EF4F8D3001A3CD0 /* headerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E570843D1EF4F8D3001A3CD0 /* headerCell.swift */; };
 		E57084401EF4FE39001A3CD0 /* lightGrayLine.png in Resources */ = {isa = PBXBuildFile; fileRef = E570843F1EF4FE39001A3CD0 /* lightGrayLine.png */; };
-		E572BD3F1F2AD6BB00106414 /* allBlue.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = E572BD3E1F2AD6BB00106414 /* allBlue.jpeg */; };
 		E572BD411F2AEDFE00106414 /* 1grayhandshake.png in Resources */ = {isa = PBXBuildFile; fileRef = E572BD401F2AEDFE00106414 /* 1grayhandshake.png */; };
 		E572BD431F2B971C00106414 /* 1Handshake_icon_gray_200.png in Resources */ = {isa = PBXBuildFile; fileRef = E572BD421F2B971C00106414 /* 1Handshake_icon_gray_200.png */; };
 		E572BD471F2BF1D500106414 /* allBlue.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = E572BD461F2BF1D500106414 /* allBlue.jpeg */; };
@@ -73,10 +76,8 @@
 		E57A6B241E50A70D00C8BAFA /* shoppingListExplained2.png in Resources */ = {isa = PBXBuildFile; fileRef = E57A6B231E50A70D00C8BAFA /* shoppingListExplained2.png */; };
 		E57A6B261E50ACAF00C8BAFA /* questionRed.png in Resources */ = {isa = PBXBuildFile; fileRef = E57A6B251E50ACAF00C8BAFA /* questionRed.png */; };
 		E57A6B281E50ADDB00C8BAFA /* explanationShoppingList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57A6B271E50ADDB00C8BAFA /* explanationShoppingList.swift */; };
-		E57BBD2D1E53CA040091538C /* smallO2.png in Resources */ = {isa = PBXBuildFile; fileRef = E57BBD2C1E53CA040091538C /* smallO2.png */; };
 		E57BBD371E53E3F90091538C /* Screen Shot 2017-02-14 at 8.18.16 PM.png in Resources */ = {isa = PBXBuildFile; fileRef = E57BBD361E53E3F90091538C /* Screen Shot 2017-02-14 at 8.18.16 PM.png */; };
 		E57BBD391E53F0AA0091538C /* blueQuestionMark.png in Resources */ = {isa = PBXBuildFile; fileRef = E57BBD381E53F0AA0091538C /* blueQuestionMark.png */; };
-		E57BBD3B1E6487730091538C /* smallOLarge1.png in Resources */ = {isa = PBXBuildFile; fileRef = E57BBD3A1E6487730091538C /* smallOLarge1.png */; };
 		E57BBD3D1E6E30A80091538C /* Coins-100.png in Resources */ = {isa = PBXBuildFile; fileRef = E57BBD3C1E6E30A80091538C /* Coins-100.png */; };
 		E57BBD3F1E6E96960091538C /* Sheet of Paper-100.png in Resources */ = {isa = PBXBuildFile; fileRef = E57BBD3E1E6E96960091538C /* Sheet of Paper-100.png */; };
 		E57BBD411E706E660091538C /* deliveryCompletePopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57BBD401E706E660091538C /* deliveryCompletePopUp.swift */; };
@@ -174,6 +175,10 @@
 		E5119E491F1266F900202A09 /* fbookProPic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = fbookProPic.swift; sourceTree = "<group>"; };
 		E5119E4C1F1A76FC00202A09 /* iLiveInView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iLiveInView.swift; sourceTree = "<group>"; };
 		E5119E4E1F1A774500202A09 /* termView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = termView.swift; sourceTree = "<group>"; };
+		E51DC1361F4B25E600D31B93 /* fillChat1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = fillChat1.png; path = ../../../../Downloads/fillChat1.png; sourceTree = "<group>"; };
+		E51DC1371F4B25E600D31B93 /* grayChat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = grayChat.png; path = ../../../../Downloads/grayChat.png; sourceTree = "<group>"; };
+		E51DC1381F4B25E600D31B93 /* emptyBlue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = emptyBlue.png; path = ../../../../Downloads/emptyBlue.png; sourceTree = "<group>"; };
+		E51DC1391F4B25E600D31B93 /* fillChat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = fillChat.png; path = ../../../../Downloads/fillChat.png; sourceTree = "<group>"; };
 		E51DE9121EF6C83B00D5A1D1 /* shoppingHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = shoppingHeader.swift; sourceTree = "<group>"; };
 		E52BC55A1E81D53F00169976 /* OneSignalNotificationServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OneSignalNotificationServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		E52BC55C1E81D53F00169976 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
@@ -230,10 +235,8 @@
 		E57A6B231E50A70D00C8BAFA /* shoppingListExplained2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = shoppingListExplained2.png; path = ../../../../Desktop/shoppingListExplained2.png; sourceTree = "<group>"; };
 		E57A6B251E50ACAF00C8BAFA /* questionRed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = questionRed.png; path = ../../../../Downloads/questionRed.png; sourceTree = "<group>"; };
 		E57A6B271E50ADDB00C8BAFA /* explanationShoppingList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = explanationShoppingList.swift; path = goodneighbor20161210/explanationShoppingList.swift; sourceTree = "<group>"; };
-		E57BBD2C1E53CA040091538C /* smallO2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = smallO2.png; path = ../../../../Desktop/smallO2.png; sourceTree = "<group>"; };
 		E57BBD361E53E3F90091538C /* Screen Shot 2017-02-14 at 8.18.16 PM.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Screen Shot 2017-02-14 at 8.18.16 PM.png"; path = "../../../../Desktop/Screen Shot 2017-02-14 at 8.18.16 PM.png"; sourceTree = "<group>"; };
 		E57BBD381E53F0AA0091538C /* blueQuestionMark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = blueQuestionMark.png; path = ../../../../Downloads/blueQuestionMark.png; sourceTree = "<group>"; };
-		E57BBD3A1E6487730091538C /* smallOLarge1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = smallOLarge1.png; path = ../../../../Desktop/smallOLarge1.png; sourceTree = "<group>"; };
 		E57BBD3C1E6E30A80091538C /* Coins-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Coins-100.png"; path = "../../../../Downloads/Coins-100.png"; sourceTree = "<group>"; };
 		E57BBD3E1E6E96960091538C /* Sheet of Paper-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Sheet of Paper-100.png"; path = "../../../../Downloads/Sheet of Paper-100.png"; sourceTree = "<group>"; };
 		E57BBD401E706E660091538C /* deliveryCompletePopUp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = deliveryCompletePopUp.swift; sourceTree = "<group>"; };
@@ -472,6 +475,10 @@
 			children = (
 				E572BD421F2B971C00106414 /* 1Handshake_icon_gray_200.png */,
 				E55A91841F091E5D00236CF8 /* 2handshakeIcon.png */,
+				E51DC1361F4B25E600D31B93 /* fillChat1.png */,
+				E51DC1371F4B25E600D31B93 /* grayChat.png */,
+				E51DC1381F4B25E600D31B93 /* emptyBlue.png */,
+				E51DC1391F4B25E600D31B93 /* fillChat.png */,
 				E55A91821F08BFEE00236CF8 /* 1handshakeIcon.png */,
 				E572BD401F2AEDFE00106414 /* 1grayhandshake.png */,
 				E570843F1EF4FE39001A3CD0 /* lightGrayLine.png */,
@@ -486,13 +493,11 @@
 				E54A77141EEA194E00BF9EE2 /* emptyBlueChat.png */,
 				E54577B11EE415A80047148F /* coin01.png */,
 				E504E1AB1EBE5BB400424F96 /* letter.png */,
-				E57BBD3A1E6487730091538C /* smallOLarge1.png */,
 				E57BBD3E1E6E96960091538C /* Sheet of Paper-100.png */,
 				E504E1B11EBF4CA500424F96 /* Paper-30.png */,
 				E57BBD3C1E6E30A80091538C /* Coins-100.png */,
 				E57BBD381E53F0AA0091538C /* blueQuestionMark.png */,
 				E57BBD361E53E3F90091538C /* Screen Shot 2017-02-14 at 8.18.16 PM.png */,
-				E57BBD2C1E53CA040091538C /* smallO2.png */,
 			);
 			name = Other;
 			sourceTree = "<group>";
@@ -725,7 +730,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0820;
-				LastUpgradeCheck = 0820;
+				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = "Neil Bronfin";
 				TargetAttributes = {
 					E52BC5591E81D53F00169976 = {
@@ -785,6 +790,7 @@
 				E5E19FB11DF99BAE00994E5F /* avatar.png in Resources */,
 				E53649711DFAFA4B00920EA2 /* grayTextBubble.png in Resources */,
 				E57A07C61F337B20004369DD /* firstList3.png in Resources */,
+				E51DC13A1F4B25E600D31B93 /* fillChat1.png in Resources */,
 				E54A771B1EEA1A9E00BF9EE2 /* filledGrayChat.png in Resources */,
 				E5E19F941DF97AB500994E5F /* goodneighberIntroLine.png in Resources */,
 				E5E19F911DF97A6800994E5F /* convenienceIntroLine.png in Resources */,
@@ -795,9 +801,11 @@
 				E504E1AC1EBE5BB400424F96 /* letter.png in Resources */,
 				E55A91811F052EC700236CF8 /* 2CoinFilled.png in Resources */,
 				E54A77151EEA194E00BF9EE2 /* emptyBlueChat.png in Resources */,
+				E51DC13D1F4B25E600D31B93 /* fillChat.png in Resources */,
 				E57BBD371E53E3F90091538C /* Screen Shot 2017-02-14 at 8.18.16 PM.png in Resources */,
 				E572BD411F2AEDFE00106414 /* 1grayhandshake.png in Resources */,
 				E53649701DFAFA4B00920EA2 /* grayTelephone.png in Resources */,
+				E51DC13C1F4B25E600D31B93 /* emptyBlue.png in Resources */,
 				E5DA9A251EF9CBD5000FCA7F /* bArrow1.png in Resources */,
 				E510DDC91E75C8BD00A97A53 /* jBiebImage.png in Resources */,
 				E572BD4B1F2F48A000106414 /* 1grayHandshake_icon.png in Resources */,
@@ -813,6 +821,7 @@
 				E57BBD481E739A360091538C /* firstViewList.png in Resources */,
 				E57A07C41F3378FE004369DD /* requestView3.png in Resources */,
 				E5B461C81DFF411100DCEC51 /* Cancel-250.png in Resources */,
+				E51DC13B1F4B25E600D31B93 /* grayChat.png in Resources */,
 				E57A6B261E50ACAF00C8BAFA /* questionRed.png in Resources */,
 				E5E19FB31DF99BAE00994E5F /* Editv3.png in Resources */,
 				E54577A61EDC88910047148F /* coins-5er.png in Resources */,
@@ -820,9 +829,7 @@
 				E53649731DFAFA4B00920EA2 /* greenTextBubble.png in Resources */,
 				E57A07CE1F338189004369DD /* justinComplete2.png in Resources */,
 				E55A91801F052EC700236CF8 /* 1CoinFilled.png in Resources */,
-				E57BBD3B1E6487730091538C /* smallOLarge1.png in Resources */,
 				E599B6991E40D2A500EBE6A0 /* venmo-icon_grey.png in Resources */,
-				E57BBD2D1E53CA040091538C /* smallO2.png in Resources */,
 				E55A91831F08BFEE00236CF8 /* 1handshakeIcon.png in Resources */,
 				E5B461C61DFF2A1600DCEC51 /* appIcon2.png in Resources */,
 				E5E19F621DF96C0100994E5F /* Main.storyboard in Resources */,
@@ -838,7 +845,6 @@
 				E572BD4A1F2F48A000106414 /* 2grayHandshake_icon.png in Resources */,
 				E57A6B241E50A70D00C8BAFA /* shoppingListExplained2.png in Resources */,
 				E599B6931E3EB30A00EBE6A0 /* venmo-icon.png in Resources */,
-				E572BD3F1F2AD6BB00106414 /* allBlue.jpeg in Resources */,
 				E5DA9A1F1EF9952B000FCA7F /* personWithBag1.png in Resources */,
 				E57084401EF4FE39001A3CD0 /* lightGrayLine.png in Resources */,
 				E57BBD4C1E73A0330091538C /* myImage.jpg in Resources */,

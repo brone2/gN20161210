@@ -146,6 +146,17 @@ class runViewViewController: UIViewController,UITableViewDelegate,UITableViewDat
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if isX {
+            
+            for constraint in self.view.constraints {
+                if constraint.identifier == "titleTopConstraint" {
+                    constraint.constant = 35
+                }
+                
+            }
+            
+        }
+        
         self.table.layer.cornerRadius = 10
         
         self.table.layer.masksToBounds = true
@@ -158,6 +169,7 @@ class runViewViewController: UIViewController,UITableViewDelegate,UITableViewDat
             
             let runnerUID = snapshot["runnerUID"] as? String
             let runCompleted = snapshot["isComplete"] as? Bool
+            let runnerBuilding = snapshot["buildingName"] as? String
             
             let runnerLongitude = snapshot["runnerLongitude"] as? CLLocationDegrees
             let runnerLatitude = snapshot["runnerLatitude"] as? CLLocationDegrees
@@ -183,8 +195,9 @@ class runViewViewController: UIViewController,UITableViewDelegate,UITableViewDat
             }
             
             //General runs, those that are not already complete and not sent by you
+            // HERE ADDED cHANGE so ONLY CAN SEE building nAMES
             if distanceMilesFloat < myRadius! {
-                if(runnerUID != globalLoggedInUserId && runCompleted != true){
+                if(runnerUID != globalLoggedInUserId && runCompleted != true) && (runnerBuilding == "NA" || (runnerBuilding != "NA" && runnerBuilding == myBuilding)){
                     
                     self.communityRuns.append(runDict)
                     //print(self.communityRuns)
@@ -324,7 +337,7 @@ class runViewViewController: UIViewController,UITableViewDelegate,UITableViewDat
             
             let buildingCheck = self.sectionData[indexPath.section]![indexPath.row]?["buildingName"] as? String
             
-            if buildingCheck != "N/A" {
+            if buildingCheck != "N/A" && buildingCheck != "NA" {
                 
                 cell.distanceLabel.text = String("\(self.sectionData[indexPath.section]![indexPath.row]?["requesterName"] as! String) - \(buildingCheck!) (\(self.sectionData[indexPath.section]![indexPath.row]?["distanceFromUser"] as! String) mi)")
                 
@@ -444,7 +457,7 @@ class runViewViewController: UIViewController,UITableViewDelegate,UITableViewDat
             
             let buildingCheck = self.sectionData[indexPath.section]![indexPath.row]?["buildingName"] as? String
             
-            if buildingCheck != "N/A" {
+            if buildingCheck != "N/A" && buildingCheck != "NA" {
                 
                 cell.distanceLabel.text = String("\(self.sectionData[indexPath.section]![indexPath.row]?["requesterName"] as! String) - \(buildingCheck!) (\(self.sectionData[indexPath.section]![indexPath.row]?["distanceFromUser"] as! String) mi)")
                 
@@ -529,7 +542,7 @@ class runViewViewController: UIViewController,UITableViewDelegate,UITableViewDat
             
             let requestCount = self.sectionData[indexPath.section]![indexPath.row]?["requestCount"] as? Int
             
-            if buildingCheck != "N/A" {
+            if buildingCheck != "N/A" && buildingCheck != "NA" {
                 
                 cell.runnerNameLabel.text = String("\(self.sectionData[indexPath.section]![indexPath.row]?["runnerName"] as! String) - \(buildingCheck!) (\(self.sectionData[indexPath.section]![indexPath.row]?["distanceFromUser"] as! String) mi)")
                 

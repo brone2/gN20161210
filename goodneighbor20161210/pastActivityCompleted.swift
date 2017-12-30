@@ -204,8 +204,9 @@ class pastActivityCompleted: UIViewController, UITableViewDelegate,UITableViewDa
         
     }
     
+    // Go to the message conversation
 
-    
+  
     
 
     override func didReceiveMemoryWarning() {
