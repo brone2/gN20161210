@@ -144,6 +144,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
     //For ipad small hide token info
         if isVerySmallScreen {
             
+            let smallFont:CGFloat = 16.0
             self.oneTokenImage.isHidden = true
             self.twoTokenImage.isHidden = true
             //self.oneTokenLabel.isHidden = true
@@ -151,8 +152,17 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
             self.tokensOfferedLabel.isHidden = true
             self.addPictureButton.isHidden = true
             self.runTextLabel.isHidden = true
+            self.detailInfoLabel.font = UIFont.systemFont(ofSize: smallFont)
+            self.tokensOfferedLabel.font = UIFont.systemFont(ofSize: smallFont)
+            self.tokensOfferedLabel.text = "Tokens Offered"
+            self.deliverToLabel.font = UIFont.systemFont(ofSize: smallFont)
+            self.maxPayLabel.font = UIFont.systemFont(ofSize: smallFont)
+            self.itemNameLabel.font = UIFont.systemFont(ofSize: smallFont)
             
-        } else if isSmallScreen || isVerySmallScreen {
+            self.requestButton.frame = CGRect(x: view.frame.width/2 - self.requestButton.frame.width/2, y: 400, width: 132, height: 30)
+           
+            
+        } else if isSmallScreen {
             
             self.image.isHidden = true
             let smallFont:CGFloat = 16.0
@@ -171,7 +181,18 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
             self.runTextLabel.isHidden = true
             
             
-        } else if isLargeScreen {
+        } else if isX {
+            
+            self.requestButton.frame = CGRect(x: view.frame.width/2 - self.requestButton.frame.width/2, y: 625+44, width: 132, height: 30)
+            self.image.frame = CGRect(x: view.frame.width/2 - 60, y: 485+25, width: 120, height: 120)
+            self.addPictureButton.frame = CGRect(x: view.frame.width/2 - self.addPictureButton.frame.width/2, y: 525+35, width: 195, height: 30)
+            self.runTextLabel.frame = CGRect(x: 0, y: 645 + 70, width: view.frame.width, height: 30)
+            
+            
+        }
+        
+        
+        else if isLargeScreen {
             
             /*let bottomConstraint = self.image.bottomAnchor.constraint(equalTo: self.requestButton.topAnchor, constant: -55)
             NSLayoutConstraint.activate([bottomConstraint])*/
@@ -181,7 +202,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
             self.addPictureButton.frame = CGRect(x: view.frame.width/2 - self.addPictureButton.frame.width/2, y: 525, width: 195, height: 30)
             self.runTextLabel.frame = CGRect(x: 0, y: 645 + 20, width: view.frame.width, height: 30)
             
-        } else {
+        }  else {
             
             let delta:CGFloat = 10.0
             self.requestButton.frame = CGRect(x: view.frame.width/2 - self.requestButton.frame.width/2, y: 552 + delta, width: 132, height: 30)
@@ -281,7 +302,13 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
     
     @IBAction func didTapRequest(_ sender: Any) {
         
-        print(neilNotif)
+        let notificationType = UIApplication.shared.currentUserNotificationSettings!.types
+        if notificationType.rawValue == 0 {
+            
+            
+            self.notifAlert(title: "Please turn on notifications", message: "Please turn on notifications in order to redeem a coupon code")
+            
+        } else {
         
     OneSignal.postNotification(["contents": ["en": "\(loggedInUserName!) posted a request!"], "include_player_ids": [neilNotif],"ios_sound": "nil", "data": ["type": "request"]])
 
@@ -290,7 +317,11 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         
         currentTokenCount = self.loggedInUserData?["tokenCount"] as? Int
         
-        if self.itemNameLabel.text == "" || self.priceLabel.text == "" || self.priceLabel.text == "" || self.priceLabel.text == "$" || self.descriptionTextView.text! == "Ex: Please pick up a six pack of diet coke, but regular coke is fine if there's no diet. I live in Lisner Dorm. Call me with any questions." {
+        if self.itemNameLabel.text == "" || self.priceLabel.text == "" || self.priceLabel.text == "" || self.priceLabel.text == "$"
+            /*
+            || self.descriptionTextView.text! == "Ex: Please pick up a six pack of diet coke, but regular coke is fine if there's no diet. I live in Lisner Dorm. Call me with any questions."*/
+        
+        {
             let alertNotEnough = UIAlertController(title: "Missing Information", message: "Please fill out all fields", preferredStyle: UIAlertControllerStyle.alert)
             
             alertNotEnough.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
@@ -325,7 +356,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         }
     }
     }
-    
+    }
     
     func locationCheck() {
         
@@ -333,6 +364,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         let distanceInMeters = myLocation?.distance(from: requestLocation)
         let distanceInMetersFloat = Float(distanceInMeters!)
         print(distanceInMetersFloat)
+        print(requestLocation)
         
         if myLocation?.coordinate.latitude == 0.000000 {
             
@@ -452,8 +484,8 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
     func didTapOneToken(_ sender: UITapGestureRecognizer) {
         
         if self.tokensOffered == 2 {
-            self.oneTokenImage.image = UIImage(named: "1handshakeIcon.png")
-            self.twoTokenImage.image = UIImage(named: "2grayHandshake.png")
+            self.oneTokenImage.image = UIImage(named: "1DollBlue.png")
+            self.twoTokenImage.image = UIImage(named: "2DollGray.png")
             self.tokensOffered = 1
         }
 }
@@ -461,8 +493,8 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
     func didTapTwoToken(_ sender: UITapGestureRecognizer) {
         
         if self.tokensOffered == 1 {
-            self.twoTokenImage.image = UIImage(named: "2handshakeIcon.png")
-            self.oneTokenImage.image = UIImage(named: "1grayHandshake_icon.png")
+            self.twoTokenImage.image = UIImage(named: "2DollBlue.png")
+            self.oneTokenImage.image = UIImage(named: "1DollGray.png")
             self.tokensOffered = 2
         }
 }
@@ -801,7 +833,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
             
         if myCellNumber == "0"{
             
-                //self.performSegue(withIdentifier: "goToPhone", sender: nil)
+                 //self.performSegue(withIdentifier: "goToPhone", sender: nil)
                  self.requestReset()
             
             } else {
@@ -820,7 +852,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
             self.databaseRef.updateChildValues(childUpdates)
             
             if myCellNumber == "0"{
-                //self.performSegue(withIdentifier: "goToPhone", sender: nil)
+              //  self.performSegue(withIdentifier: "goToPhone", sender: nil)
                  self.requestReset()
             } else {
                 self.requestReset()
@@ -923,7 +955,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
      override func viewDidAppear(_ animated: Bool) {
         enableKeyboardHideOnTap()
         self.toolbarBottomConstraintInitialValue = toolbarBottomConstraint.constant
-        
+        globalLoggedInUserId = FIRAuth.auth()?.currentUser?.uid
         self.myBuildingMates = []
         
         //myBuildingMates - Store people to send to that are in your building and have an ID and are not you
@@ -934,10 +966,11 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
             let userID = snapshot.key
             
             let snapshot = snapshot.value as! NSDictionary
-            
+          
+        // This is for building 
             if let userBuilding = snapshot["buildingName"] as? String {
                 
-                if userBuilding == myBuilding &&  userID != self.loggedInUser &&  myBuilding != "N/A" {
+              /*  if userBuilding == myBuilding &&  userID != self.loggedInUser &&  myBuilding != "N/A" {
                     
                     if snapshot["notifID"] != nil {
                         
@@ -946,6 +979,25 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
                         print(self.myBuildingMates)
                         
                     }
+                }*/
+                
+                let userLongitude = snapshot["longitude"] as? CLLocationDegrees
+                let userLatitude = snapshot["latitude"] as? CLLocationDegrees
+                let userLocation = CLLocation(latitude: userLatitude!, longitude: userLongitude!)
+                let distanceInMeters = myLocation!.distance(from: userLocation)
+                let distanceMiles = distanceInMeters/1609.344897
+                let distanceMilesFloat = Float(distanceMiles)
+                
+                if distanceMilesFloat < 1.00 && userID != self.loggedInUser {
+                    
+                    if snapshot["notifID"] != nil {
+                        
+                        let userNotifID = snapshot["notifID"] as? String
+                        self.myBuildingMates.append(userNotifID!)
+                        print(self.myBuildingMates)
+                        
+                    }
+                    
                 }
                 
                 let deadlineTime = DispatchTime.now() + .seconds(1)
@@ -1096,6 +1148,18 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         self.present(myActionSheet, animated: true, completion: nil)
         }
         }
+    }
+    
+    func notifAlert(title: String, message: String)  {
+        
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
+            UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
+        }))
+        
+        self.present(alert, animated: true, completion: nil)
+        
     }
     
 }

@@ -27,6 +27,7 @@ class locationViewController: UIViewController, CLLocationManagerDelegate, MKMap
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        print(globalLoggedInUserId)
         self.databaseRef = FIRDatabase.database().reference()
         
         self.loggedInUser = FIRAuth.auth()?.currentUser?.uid

@@ -25,6 +25,10 @@
 		E51DE9131EF6C83B00D5A1D1 /* shoppingHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51DE9121EF6C83B00D5A1D1 /* shoppingHeader.swift */; };
 		E52BC55D1E81D53F00169976 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52BC55C1E81D53F00169976 /* NotificationService.swift */; };
 		E52BC5611E81D53F00169976 /* OneSignalNotificationServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = E52BC55A1E81D53F00169976 /* OneSignalNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		E52C66F1202785B900DF2865 /* 1DollBlue.png in Resources */ = {isa = PBXBuildFile; fileRef = E52C66F0202785B700DF2865 /* 1DollBlue.png */; };
+		E52C66F52027862600DF2865 /* 2DollBlue.png in Resources */ = {isa = PBXBuildFile; fileRef = E52C66F22027862100DF2865 /* 2DollBlue.png */; };
+		E52C66F62027862600DF2865 /* 1DollGray.png in Resources */ = {isa = PBXBuildFile; fileRef = E52C66F32027862300DF2865 /* 1DollGray.png */; };
+		E52C66F72027862600DF2865 /* 2DollGray.png in Resources */ = {isa = PBXBuildFile; fileRef = E52C66F42027862400DF2865 /* 2DollGray.png */; };
 		E536496A1DFAF8B500920EA2 /* myCurrentDeliveriesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53649691DFAF8B500920EA2 /* myCurrentDeliveriesCell.swift */; };
 		E53649701DFAFA4B00920EA2 /* grayTelephone.png in Resources */ = {isa = PBXBuildFile; fileRef = E536496C1DFAFA4B00920EA2 /* grayTelephone.png */; };
 		E53649711DFAFA4B00920EA2 /* grayTextBubble.png in Resources */ = {isa = PBXBuildFile; fileRef = E536496D1DFAFA4B00920EA2 /* grayTextBubble.png */; };
@@ -183,6 +187,10 @@
 		E52BC55A1E81D53F00169976 /* OneSignalNotificationServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OneSignalNotificationServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		E52BC55C1E81D53F00169976 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		E52BC55E1E81D53F00169976 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E52C66F0202785B700DF2865 /* 1DollBlue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = 1DollBlue.png; path = ../../../../Downloads/1DollBlue.png; sourceTree = "<group>"; };
+		E52C66F22027862100DF2865 /* 2DollBlue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = 2DollBlue.png; path = ../../../../Downloads/2DollBlue.png; sourceTree = "<group>"; };
+		E52C66F32027862300DF2865 /* 1DollGray.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = 1DollGray.png; path = ../../../../Downloads/1DollGray.png; sourceTree = "<group>"; };
+		E52C66F42027862400DF2865 /* 2DollGray.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = 2DollGray.png; path = ../../../../Downloads/2DollGray.png; sourceTree = "<group>"; };
 		E53649691DFAF8B500920EA2 /* myCurrentDeliveriesCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = myCurrentDeliveriesCell.swift; sourceTree = "<group>"; };
 		E536496C1DFAFA4B00920EA2 /* grayTelephone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grayTelephone.png; sourceTree = "<group>"; };
 		E536496D1DFAFA4B00920EA2 /* grayTextBubble.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grayTextBubble.png; sourceTree = "<group>"; };
@@ -359,6 +367,17 @@
 				E52BC55E1E81D53F00169976 /* Info.plist */,
 			);
 			path = OneSignalNotificationServiceExtension;
+			sourceTree = "<group>";
+		};
+		E52C66ED202784B800DF2865 /* Dollars */ = {
+			isa = PBXGroup;
+			children = (
+				E52C66F32027862300DF2865 /* 1DollGray.png */,
+				E52C66F22027862100DF2865 /* 2DollBlue.png */,
+				E52C66F42027862400DF2865 /* 2DollGray.png */,
+				E52C66F0202785B700DF2865 /* 1DollBlue.png */,
+			);
+			name = Dollars;
 			sourceTree = "<group>";
 		};
 		E53649681DFAF88F00920EA2 /* Shopping List */ = {
@@ -595,6 +614,7 @@
 		E5E19F711DF96EB300994E5F /* Graphics */ = {
 			isa = PBXGroup;
 			children = (
+				E52C66ED202784B800DF2865 /* Dollars */,
 				E57BBD441E7387430091538C /* introImages */,
 				E57BBD251E53AF0E0091538C /* Other */,
 				E57A6B201E50A16E00C8BAFA /* Explanation */,
@@ -819,7 +839,9 @@
 				E57BBD4A1E73A02E0091538C /* steveImage.jpeg in Resources */,
 				E53649721DFAFA4B00920EA2 /* greenTelephone.png in Resources */,
 				E57BBD481E739A360091538C /* firstViewList.png in Resources */,
+				E52C66F72027862600DF2865 /* 2DollGray.png in Resources */,
 				E57A07C41F3378FE004369DD /* requestView3.png in Resources */,
+				E52C66F52027862600DF2865 /* 2DollBlue.png in Resources */,
 				E5B461C81DFF411100DCEC51 /* Cancel-250.png in Resources */,
 				E51DC13B1F4B25E600D31B93 /* grayChat.png in Resources */,
 				E57A6B261E50ACAF00C8BAFA /* questionRed.png in Resources */,
@@ -844,6 +866,7 @@
 				E572BD431F2B971C00106414 /* 1Handshake_icon_gray_200.png in Resources */,
 				E572BD4A1F2F48A000106414 /* 2grayHandshake_icon.png in Resources */,
 				E57A6B241E50A70D00C8BAFA /* shoppingListExplained2.png in Resources */,
+				E52C66F1202785B900DF2865 /* 1DollBlue.png in Resources */,
 				E599B6931E3EB30A00EBE6A0 /* venmo-icon.png in Resources */,
 				E5DA9A1F1EF9952B000FCA7F /* personWithBag1.png in Resources */,
 				E57084401EF4FE39001A3CD0 /* lightGrayLine.png in Resources */,
@@ -852,6 +875,7 @@
 				E5E19FA31DF9873600994E5F /* GoogleService-Info.plist in Resources */,
 				E5E19FB41DF99BAE00994E5F /* list.png in Resources */,
 				E5E19FB21DF99BAE00994E5F /* Coins3-50.png in Resources */,
+				E52C66F62027862600DF2865 /* 1DollGray.png in Resources */,
 				E5B978B01EABCC0D0070E9EA /* grey_cash.png in Resources */,
 				E504E1B21EBF4CA500424F96 /* Paper-30.png in Resources */,
 				E54A77171EEA19BE00BF9EE2 /* fillBlueChat.png in Resources */,

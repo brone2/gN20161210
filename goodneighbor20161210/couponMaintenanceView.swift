@@ -34,11 +34,51 @@ class couponMaintenanceView: UIViewController {
     var plusOneReferral:Int?
     
     var myBuildingMates = [String]()
+    var notifMates = [String]()
     
     
     override func viewDidAppear(_ animated: Bool) {
         let nowTime = (UInt64(NSDate().timeIntervalSince1970 * 1000.0))
         print(nowTime)
+        
+        self.databaseRef.child("users").observe(.childAdded) { (snapshot3: FIRDataSnapshot) in
+            
+            let snapshot3 = snapshot3.value as! NSDictionary
+            
+            if let userName = snapshot3["name"] {
+                
+                if let city = snapshot3["city"] as? String {
+                    
+                    if city == "Los Angeles " {
+                        print(userName)
+                        
+                        if let userNotifID = snapshot3["notifID"] as? String  {
+                        
+                        self.notifMates.append(userNotifID)
+                        print(self.notifMates)
+                        print((self.notifMates.count))
+                        }
+                        
+                        /*
+                         if let notifID = snapshot3["notifID"] as? String {
+                         let thisNotif = snapshot3["notifID"] as! String
+                         OneSignal.postNotification(["headings" : ["en": "Get paid for being a Goodneighbor!"],
+                         "contents" : ["en": "Update your app and begin earning $1-$2 per delivery!"],
+                         "include_player_ids": [thisNotif],
+                         "ios_sound": "nil"])*/
+                    }
+                }
+                
+                //For user count check of ambassadors
+                /* if let userBuilding = snapshot3["buildingName"] as? String{
+                 if userBuilding == "Wohlford" {
+                 print(snapshot3["fullName"] as? String)
+                 }
+                 }*/
+                
+            }
+            
+        }
         
         
         
@@ -95,6 +135,16 @@ class couponMaintenanceView: UIViewController {
     
     @IBAction func didTapEnter(_ sender: UIButton) {
         
+        let notificationType = UIApplication.shared.currentUserNotificationSettings!.types
+        if notificationType.rawValue == 0 {
+            
+            
+            self.notifAlert(title: "Please turn on notifications", message: "Please turn on notifications in order to redeem a coupon code")
+            
+        } else {
+        
+        
+        
         self.buildingUsersCount = 0
         
         self.couponText = codeTextField.text
@@ -149,6 +199,31 @@ class couponMaintenanceView: UIViewController {
             
         }
             
+           else  if ((self.couponText)?.contains("&"))! { // find the name from notif id
+                
+                let textArray = (self.couponText)?.components(separatedBy: "&")
+                let buildingName: String = String(textArray![1])!
+                
+                print(buildingName)
+                self.databaseRef.child("users").observe(.childAdded) { (snapshot3: FIRDataSnapshot) in
+                    
+                    let snapshot3 = snapshot3.value as! NSDictionary
+                    
+                    if let userBuilding = snapshot3["notifID"] as? String {
+                       
+                        if userBuilding == buildingName {
+                            
+                            print(snapshot3["name"] as? String)
+                            self.uidLabel.text = snapshot3["name"] as? String
+                            
+                        }
+                        
+                    }
+                }
+                
+                
+            }
+            
             //Get referral count
         
         else if self.couponText == "referral" {
@@ -190,44 +265,24 @@ class couponMaintenanceView: UIViewController {
             
         }
         else if self.couponText == "sendNotif" {
-         
-            //OneSignal.postNotification(["contents": ["en": "Best of luck studying for finals! Remember to use Goodneighbor to request deliveries from friends :)"]: ["23c8722c-2211-43a2-98a1-01c9c0c8def8"]])
-           
-             //OneSignal.postNotification(["contents": ["en": "It appears you have not registered your dorm! Register your dorm to see what your friends are requesting :)"], "include_player_ids": ["538471d8-733e-4a4a-bbb0-43be97d265ca"]])
             
-            /*for mateID in 0..<self.myBuildingMates.count {
+            for mateID in 0..<self.notifMates.count {
+                
+                print(self.notifMates.count)
                 print(mateID)
-                print("EEEEEE")
-                print(self.myBuildingMates[mateID])
+                print("\(self.notifMates[mateID])!")
+                var ThisNotif = "\(self.notifMates[mateID])"
+                print(ThisNotif)
+                OneSignal.postNotification(["headings" : ["en": "Start getting paid to be a Goodneighbor!"],
+                                            "contents" : ["en": "Update your app and get $1-$2 per delivery!"],
+                                            "include_player_ids": [ThisNotif],
+                                            "ios_sound": "nil"])
                 
-                /*let deadlineTime = DispatchTime.now() + .seconds(1)
-                 
-                 DispatchQueue.main.asyncAfter(deadline: deadlineTime) {*/
-                
-                 OneSignal.postNotification(["contents": ["en": "Best of luck studying for finals! Remember to use Goodneighbor to request deliveries from friends :)"], "include_player_ids": [self.myBuildingMates[mateID]],"ios_sound": "nil"])
-                
-            }*/
+            }
             
-           
-            
-            //"538471d8-733e-4a4a-bbb0-43be97d265ca" Toli
-            
-            
-            //Victor
-             //  OneSignal.postNotification(["contents": ["en": "A girl to cancel dinner plans and then give no suggestion on rescheduling!!! "], "include_player_ids": ["a757c9f4-14db-45e9-886a-e0d26dd38f68"]])
-        //Cherner
-             //OneSignal.postNotification(["contents": ["en": "Victor has requested a hairy nutsack to be dipped into his mouth"], "include_player_ids": ["a4789cf0-a0aa-4aa8-a7fc-76a756da177e"]])
-        //The king neil"58ffaf31-7506-4cf5-b874-ebce01981ba4"
-            
-        //OneSignal.postNotification(["contents": ["en": "Harry has requested a Bottle of Butterbeer"], "include_player_ids": ["58ffaf31-7506-4cf5-b874-ebce01981ba4"]])
         
-        //Morning Mom "6ec6cb06-0501-4509-974a-fc6a940dc8a3"
-            //OneSignal.postNotification(["contents": ["en": "I hope you have a great week mom! I Love you!"], "include_player_ids": ["6ec6cb06-0501-4509-974a-fc6a940dc8a3"]])
         
         }
-            
-        
-         
         
         else if self.couponText == "dailyMaintenance" {
             
@@ -346,7 +401,9 @@ class couponMaintenanceView: UIViewController {
                               /*  OneSignal.postNotification(["headings" : ["en": "Thank you for your referral!"],
                                                             "contents" : ["en": "1 token has been added to your account.You have made \(referralCount) referrals."],
                                                             "include_player_ids": [self.referralNotif!],
-                                                            "ios_sound": "nil"])*/
+                                                            "ios_sound": "nil"])
+                                 
+                                 */
                                 
                             }
                         }
@@ -402,7 +459,7 @@ class couponMaintenanceView: UIViewController {
 
         }
         
-        
+        }
     }
 
     /*
@@ -421,6 +478,18 @@ class couponMaintenanceView: UIViewController {
         
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
             //do nothing
+        }))
+        
+        self.present(alert, animated: true, completion: nil)
+        
+    }
+    
+    func notifAlert(title: String, message: String)  {
+        
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
+            UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
         }))
         
         self.present(alert, animated: true, completion: nil)

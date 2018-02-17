@@ -49,6 +49,11 @@ class loginViewController: UIViewController, UIImagePickerControllerDelegate, UI
     @IBOutlet weak var emailLabel: UITextField!
     @IBOutlet weak var nameLabel: UITextField!
     
+    //Hide for that damn ipad
+    @IBOutlet var alreadyHaveLabel: UILabel!
+    @IBOutlet var logInLabel: customButton!
+    
+    
     @IBOutlet var image: UIImageView!
     var loggedInUserData: AnyObject?
     var databaseRef = FIRDatabase.database().reference()
@@ -163,6 +168,7 @@ class loginViewController: UIViewController, UIImagePickerControllerDelegate, UI
                 let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
                 
                 self.loggedInUserId = FIRAuth.auth()?.currentUser?.uid
+                globalLoggedInUserId = FIRAuth.auth()?.currentUser?.uid
                 
                 //get user name
                 self.databaseRef.child("users").child(self.loggedInUserId!).observeSingleEvent(of: .value) { (snapshot:FIRDataSnapshot) in
@@ -173,6 +179,9 @@ class loginViewController: UIViewController, UIImagePickerControllerDelegate, UI
                     myProfilePicRef = self.loggedInUserData?["profilePicReference"] as! String
                     myCellNumber = self.loggedInUserData?["cellPhoneNumber"] as! String
                     currentTokenCount = self.loggedInUserData?["tokenCount"] as! Int
+                    myBuilding = self.loggedInUserData?["buildingName"] as! String
+                    
+                    
                     
                     if let myLatitude = self.loggedInUserData?["latitude"] as? CLLocationDegrees{
                         if let myLongitude = self.loggedInUserData?["longitude"] as? CLLocationDegrees{
@@ -211,6 +220,16 @@ class loginViewController: UIViewController, UIImagePickerControllerDelegate, UI
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if isVerySmallScreen {
+            
+            self.alreadyHaveLabel.isHidden = true
+           // self.logInLabel.isHidden = true
+            
+            
+        }
+        
+        
         
 // Try to get constraints for stupid new phone....
 // THIS WORKS NOT REALLY SURE WHY BUT ITS THE PINTOP THAT DOES IT
@@ -342,7 +361,7 @@ class loginViewController: UIViewController, UIImagePickerControllerDelegate, UI
                         let longitude = 0.0000000000
                         let deliveryRadius = 1.0000987
                         
-                        let childUpdates = ["/users/\(user!.uid)/name":self.nameLabel.text!,"/users/\(user!.uid)/buildingName":"N/A","/users/\(user!.uid)/cellPhoneNumber":"0","/users/\(user!.uid)/deliveryCount":0, "/users/\(user!.uid)/recieveCount":0, "/users/\(user!.uid)/tokenCount":2,"/users/\(user!.uid)/email":self.emailLabel.text!, "/users/\(user!.uid)/longitude":longitude, "/users/\(user!.uid)/latitude":latitude, "/users/\(user!.uid)/deliveryRadius":deliveryRadius] as [String : Any]
+                        let childUpdates = ["/users/\(user!.uid)/name":self.nameLabel.text!,"/users/\(user!.uid)/buildingName":"N/A","/users/\(user!.uid)/cellPhoneNumber":"0","/users/\(user!.uid)/deliveryCount":0, "/users/\(user!.uid)/recieveCount":0, "/users/\(user!.uid)/tokenCount":4,"/users/\(user!.uid)/email":self.emailLabel.text!, "/users/\(user!.uid)/longitude":longitude, "/users/\(user!.uid)/latitude":latitude, "/users/\(user!.uid)/deliveryRadius":deliveryRadius] as [String : Any]
                     
                       self.databaseRef.updateChildValues(childUpdates)
                         

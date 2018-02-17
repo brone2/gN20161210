@@ -21,6 +21,7 @@ class submitPhoneNumberView: UIViewController, UITextFieldDelegate, MFMessageCom
     var databaseRef = FIRDatabase.database().reference()
     var isRequest: Bool = true
     var isRun: Bool = false
+    var runPhone:Bool = false
     
     @IBOutlet var greyView: UIView!
     
@@ -63,6 +64,8 @@ class submitPhoneNumberView: UIViewController, UITextFieldDelegate, MFMessageCom
             myCellNumber = myCellNumber.replacingOccurrences(of: "-", with: "")
             myCellNumber = myCellNumber.replacingOccurrences(of: ")", with: "")
             
+    
+         
             //If is a request
             
             if self.isRequest {
@@ -102,8 +105,8 @@ class submitPhoneNumberView: UIViewController, UITextFieldDelegate, MFMessageCom
                 self.present(alertPhoneNumberDelivery, animated: true, completion: nil)
                 
             }
+            }
         
-        }
         
         alertController.addAction(cancelAction)
         alertController.addAction(yesAction)

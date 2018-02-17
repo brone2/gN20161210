@@ -22,6 +22,9 @@ var myProfilePicRef:String!
 var myCellNumber:String!
 var loggedInUserName:String!
 var currentTokenCount: Int!
+var forceNotifCount:Int = 0
+
+
 
 class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource, MFMessageComposeViewControllerDelegate, CLLocationManagerDelegate  {
     
@@ -29,6 +32,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
     
     @IBOutlet var oCoverUpText: UIImageView!
     @IBOutlet var coverUpBlueView: UIView!
+    
     
     
     @IBOutlet var titleLabel: UILabel!
@@ -162,6 +166,8 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
   
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+      
         
         if isX {
           
@@ -516,7 +522,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             if purchasePriceString == "NA" {
                 
                 cell.purchaseCompleteButton.setTitle("Purchase Complete", for: [])
-                cell.deliverToLabel.text = "Will pay \(self.sectionData[indexPath.section - 1]![indexPath.row]?["price"] as! String)"
+                cell.deliverToLabel.text = "Will pay \(self.sectionData[indexPath.section - 1]![indexPath.row]?["price"] as! String) + $\(self.sectionData[indexPath.section - 1]![indexPath.row]?["tokensOffered"] as! Int) fee"
                
             } else {
                 
@@ -525,12 +531,12 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                 if !isComplete { //is not complete
                 
                  cell.purchaseCompleteButton.setTitle("Awaiting Confirmation", for: [])
-                 cell.deliverToLabel.text = "Purchased for \(self.sectionData[indexPath.section - 1]![indexPath.row]?["purchasePrice"] as! String)"
+                 cell.deliverToLabel.text = "Purchased for \(self.sectionData[indexPath.section - 1]![indexPath.row]?["purchasePrice"] as! String)."
                     
                 } else {  //is complete WORKING HERE
                     
                     cell.purchaseCompleteButton.setTitle("Delivery Complete!", for: [])
-                    cell.deliverToLabel.text = "Purchased for \(self.sectionData[indexPath.section - 1]![indexPath.row]?["purchasePrice"] as! String)"
+                    cell.deliverToLabel.text = "Purchased for \(self.sectionData[indexPath.section - 1]![indexPath.row]?["purchasePrice"] as! String)."
                     self.requestPopUp = self.sectionData[indexPath.section - 1]![indexPath.row]
                     
                     if self.requestPopUp?["completedPopUpUsed"] != nil {
@@ -561,11 +567,11 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             cell.coinImage.tag = indexPath.row
             
             if tokenCountHelp == 1 {
-                cell.coinImage.image = UIImage(named: "1handshakeIcon.png")
+                cell.coinImage.image = UIImage(named: "1DollBlue.png")
                 cell.coinImage.addGestureRecognizer(oneTokenTap)
             }
             if tokenCountHelp == 2 {
-                cell.coinImage.image = UIImage(named: "2handshakeIcon.png")
+                cell.coinImage.image = UIImage(named: "2DollBlue.png")
                 cell.coinImage.addGestureRecognizer(twoTokenTap)
             }
             
@@ -625,7 +631,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             if purchasePriceString == "NA" {
             cell.deliverToLabel.text = self.sectionData[indexPath.section - 1]![indexPath.row]?["deliverTo"] as? String
             } else {
-            cell.deliverToLabel.text = "Purchased for \(self.sectionData[indexPath.section - 1]![indexPath.row]?["purchasePrice"] as! String)"
+            cell.deliverToLabel.text = "Purchased for \(self.sectionData[indexPath.section - 1]![indexPath.row]?["purchasePrice"] as! String). Add +$\(self.sectionData[indexPath.section - 1]![indexPath.row]?["tokensOffered"] as! Int) fee"
            // cell.deliverToLabel.textColor = UIColor.red
             }
             
@@ -793,11 +799,11 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                 cell.payTypeImage.tag = indexPath.row
                 
                 if tokenCountHelp == 1 {
-                    cell.coinImage.image = UIImage(named: "1handshakeIcon.png")
+                    cell.coinImage.image = UIImage(named: "1DollBlue.png")
                     cell.coinImage.addGestureRecognizer(oneTokenTap)
                 }
                 if tokenCountHelp == 2 {
-                    cell.coinImage.image = UIImage(named: "2handshakeIcon.png")
+                    cell.coinImage.image = UIImage(named: "2DollBlue.png")
                     cell.coinImage.addGestureRecognizer(twoTokenTap)
                 }
             }
@@ -891,7 +897,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             
             }*/
             
-            cell.willingToPayLabel.text = "Willing to pay \(self.sectionData[indexPath.section - 1]![indexPath.row]?["price"] as! String)"
+            cell.willingToPayLabel.text = "Will pay \(self.sectionData[indexPath.section - 1]![indexPath.row]?["price"] as! String) +$\(self.sectionData[indexPath.section - 1]![indexPath.row]?["tokensOffered"] as! Int) fee"
             
             let buildingCheck = self.sectionData[indexPath.section - 1]![indexPath.row]?["buildingName"] as? String
             
@@ -910,11 +916,11 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
             cell.coinImage.tag = indexPath.row
             
             if tokenCountHelp == 1 {
-                cell.coinImage.image = UIImage(named: "1handshakeIcon.png")
+                cell.coinImage.image = UIImage(named: "1DollBlue.png")
                 cell.coinImage.addGestureRecognizer(oneTokenTap)
             }
             if tokenCountHelp == 2 {
-                cell.coinImage.image = UIImage(named: "2handshakeIcon.png")
+                cell.coinImage.image = UIImage(named: "2DollBlue.png")
                 cell.coinImage.addGestureRecognizer(twoTokenTap)
             }
             DispatchQueue.main.async{
@@ -1035,16 +1041,20 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         //self.databaseRef.child("promoteShare").child("isTrue").setValue(true)
         
         let notificationType = UIApplication.shared.currentUserNotificationSettings!.types
-        if notificationType.rawValue == 0 {
+        if notificationType.rawValue == 0 && (forceNotifCount < 1 || forceNotifCount > 6)
+        
+        
+        {
+          
             self.performSegue(withIdentifier: "enableNotifsSegue", sender: nil)
         }
         
-        if myLocation?.coordinate.latitude == 0.000000 {
+        if myLocation?.coordinate.latitude == 0.000000 && (forceNotifCount < 1 || forceNotifCount > 6) {
             
             self.performSegue(withIdentifier: "enableNotifsSegue", sender: nil)
             
         }
-        
+          forceNotifCount += 1
         self.table.reloadData()
     }
     
@@ -1226,8 +1236,9 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         let index = sender.tag
         let purchasePrice = self.sectionData[1]![index]?["purchasePrice"] as? String
         let accepterName = self.sectionData[1]![index]?["accepterName"] as? String
+        let deliveryFee = self.sectionData[1]![index]?["tokensOffered"] as? Int
         
-        let alertPrice = UIAlertController(title: "Payment Verification", message: "Have you paid \(accepterName!) the price of the item up or equal to \(purchasePrice!) (there is no automatic venmo payment through the app)?.", preferredStyle: UIAlertControllerStyle.alert)
+        let alertPrice = UIAlertController(title: "Payment Verification", message: "Have you paid \(accepterName!) the price of the item \(purchasePrice!), and a \(deliveryFee!) delivery fee? (there is NOT automatic venmo payment through goodneighbor)?.", preferredStyle: UIAlertControllerStyle.alert)
         
         alertPrice.addAction(UIAlertAction(title: "No", style: .default, handler: { (action) in
             //nothing happens
@@ -1235,7 +1246,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         
         alertPrice.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
 
-        let alertComplete = UIAlertController(title: "Request Completed", message: "If you have receive the item, and compensated the deliverer for the price he/she paid in full, this delivery is complete!", preferredStyle: UIAlertControllerStyle.alert)
+        let alertComplete = UIAlertController(title: "Request Completed", message: "If you have receive the item, and compensated the deliverer for the price he/she paid in full,and paid them the delivery fee, this delivery is complete!", preferredStyle: UIAlertControllerStyle.alert)
         
         alertComplete.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (action) in
             //nothing happens
@@ -1417,7 +1428,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                 
                 let alertController = UIAlertController(
                     title: "Enter Price Paid",
-                    message: "Please enter the price you paid for the \(itemName) ",
+                    message: "Please enter the price you paid for the \(itemName). ",
                     preferredStyle: UIAlertControllerStyle.alert)
                 
                 let completeAction = UIAlertAction(
@@ -1529,7 +1540,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         
       UIPasteboard.general.string = accepterCell
         
-        let cellCopiedAlert = UIAlertController(title: "Deliverer cell # copied", message: "\(accepterName)'s cell number has been copied. Please paste this into venmo to pay them for the delivery ", preferredStyle: UIAlertControllerStyle.alert)
+        let cellCopiedAlert = UIAlertController(title: "Deliverer cell # copied", message: "\(accepterName)'s cell number has been copied. Please paste this into venmo to pay them for the delivery. If you see a 0, then this person has not entered their cell # and you will need to ask their venmo username. ", preferredStyle: UIAlertControllerStyle.alert)
         
         cellCopiedAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
             
@@ -1676,25 +1687,25 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
     
     func didTapOneCoin(_ sender: UITapGestureRecognizer) {
         
-        makeAlert(title: "One Token For Delivery", message: "For making this delivery, you will receive one token, as well as being fully compensated for the price of the purchase")
+        makeAlert(title: "One Dollar For Delivery", message: "For making this delivery, you will receive one dollar, as well as being fully compensated for the price of the purchase")
         
     }
     
     func didTapOneCoinMyRequest(_ sender: UITapGestureRecognizer) {
         
-        makeAlert(title: "One Token For Delivery", message: "When this delivery is complete, you will transfer one token to the deliverer, as well as compensating them for the price of the purchase")
+        makeAlert(title: "One Dollar For Delivery", message: "When this delivery is complete, please venmo one dollar to the deliverer as a service fee, as well as compensating them for the price of the purchase")
         
     }
     
     func didTapTwoCoinMyRequest(_ sender: UITapGestureRecognizer) {
         
-        makeAlert(title: "Two Tokens For Delivery", message: "When this delivery is complete, you will transfer two tokens to the deliverer, as well as compensating them for the price of the purchase")
+        makeAlert(title: "Two Dollars For Delivery", message: "When this delivery is complete, please venmo two dollars to the deliverer as a service fee, as well as compensating them for the price of the purchase")
         
     }
     
     func didTapTwoCoin(_ sender: UITapGestureRecognizer) {
         
-        makeAlert(title: "Two Tokens For Delivery", message: "For making this delivery, you will receive two tokens, as well as being fully compensated for the price of the purchase")
+        makeAlert(title: "Two Dollars For Delivery", message: "For making this delivery, you will receive two dollars, as well as being fully compensated for the price of the purchase")
         
     }
     
@@ -1725,7 +1736,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         } else {
             
             let messageHeader = "\(loggedInUserName!) has purchased \(itemName) for \(purchasePrice)"
-            let textMessage = "Please venmo \(loggedInUserName!) \(purchasePrice) when he arrives!"
+            let textMessage = "Please venmo \(loggedInUserName!) \(purchasePrice) when they arrive!"
             
             let itemRef = databaseRef.child("messages").childByAutoId()
             

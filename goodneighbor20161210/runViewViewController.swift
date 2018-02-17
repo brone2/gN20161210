@@ -349,7 +349,7 @@ class runViewViewController: UIViewController,UITableViewDelegate,UITableViewDat
             
             cell.nameLabel.text = self.sectionData[indexPath.section]![indexPath.row]?["itemName"] as? String
             
-            cell.itemLabel.text = "Will pay \(self.sectionData[indexPath.section]![indexPath.row]?["price"] as! String)"
+            cell.itemLabel.text = "Will pay \(self.sectionData[indexPath.section]![indexPath.row]?["price"] as! String) +$\(self.sectionData[indexPath.section]![indexPath.row]?["tokensOffered"] as! Int) fee"
             
             let payType:String = (self.sectionData[indexPath.section]![indexPath.row]?["paymentType"] as? String)!
             
@@ -373,11 +373,11 @@ class runViewViewController: UIViewController,UITableViewDelegate,UITableViewDat
             cell.coinImage.tag = indexPath.row
             
             if tokenCountHelp == 1 {
-                cell.coinImage.image = UIImage(named: "1handshakeIcon.png")
+                cell.coinImage.image = UIImage(named: "1DollBlue.png")
                 cell.coinImage.addGestureRecognizer(oneTokenTap)
             }
             if tokenCountHelp == 2 {
-                cell.coinImage.image = UIImage(named: "2handshakeIcon.png")
+                cell.coinImage.image = UIImage(named: "2DollBlue.png")
                 cell.coinImage.addGestureRecognizer(twoTokenTap)
             }
             
@@ -425,7 +425,7 @@ class runViewViewController: UIViewController,UITableViewDelegate,UITableViewDat
             if purchasePriceString == "NA" {
                 
                 cell.purchaseCompleteButton.setTitle("Purchase Complete", for: [])
-                cell.itemLabel.text = "Will pay \(self.sectionData[indexPath.section]![indexPath.row]?["price"] as! String)"
+                cell.itemLabel.text = "Will pay \(self.sectionData[indexPath.section]![indexPath.row]?["price"] as! String) +$\(self.sectionData[indexPath.section]![indexPath.row]?["tokensOffered"] as! Int) fee"
                 
             } else {
             
@@ -471,7 +471,7 @@ class runViewViewController: UIViewController,UITableViewDelegate,UITableViewDat
             
             cell.itemLabel.text = self.sectionData[indexPath.section]![indexPath.row]?["deliverTo"] as? String
             
-            cell.willPayLabel.text = "Will pay \(self.sectionData[indexPath.section]![indexPath.row]?["price"] as! String)"
+            cell.willPayLabel.text = "Will pay \(self.sectionData[indexPath.section]![indexPath.row]?["price"] as! String) +$\(self.sectionData[indexPath.section]![indexPath.row]?["tokensOffered"] as! Int) fee"
             
             let payType:String = (self.sectionData[indexPath.section]![indexPath.row]?["paymentType"] as? String)!
             
@@ -492,11 +492,11 @@ class runViewViewController: UIViewController,UITableViewDelegate,UITableViewDat
             cell.coinImage.tag = indexPath.row
             
             if tokenCountHelp == 1 {
-                cell.coinImage.image = UIImage(named: "1handshakeIcon.png")
+                cell.coinImage.image = UIImage(named: "1DollBlue.png")
                 cell.coinImage.addGestureRecognizer(oneTokenTap)
             }
             if tokenCountHelp == 2 {
-                cell.coinImage.image = UIImage(named: "2handshakeIcon.png")
+                cell.coinImage.image = UIImage(named: "2DollBlue.png")
                 cell.coinImage.addGestureRecognizer(twoTokenTap)
             }
             
@@ -734,11 +734,11 @@ class runViewViewController: UIViewController,UITableViewDelegate,UITableViewDat
         } else {
             
             let messageHeader = "\(loggedInUserName!) has purchased \(itemName) for \(purchasePrice)"
-            let textMessage = "Please venmo \(requesterName) \(purchasePrice) when he arrives!"
+            let textMessage = "Please venmo \(requesterName) \(purchasePrice) when they arrive!"
             
             let itemRef = databaseRef.child("messages").childByAutoId()
             
-            let text = "I have purchased \(itemName) for \(purchasePrice), please be ready to venmo me \(purchasePrice) when I arrive."
+            let text = "I have purchased \(itemName) for \(purchasePrice), please be ready to venmo me \(purchasePrice) + the delivery fee when I arrive."
             
             let messageItem = [
                 "senderId": globalLoggedInUserId,
@@ -1022,25 +1022,25 @@ class runViewViewController: UIViewController,UITableViewDelegate,UITableViewDat
     
     func didTapOneCoin(_ sender: UITapGestureRecognizer) {
         
-        makeAlert(title: "One Token For Delivery", message: "For making this delivery, you will receive one token, as well as being fully compensated for the price of the purchase")
+        makeAlert(title: "One Dollar For Delivery", message: "For making this delivery, you will receive one dollar, as well as being fully compensated for the price of the purchase")
         
     }
     
     func didTapOneCoinMyRequest(_ sender: UITapGestureRecognizer) {
         
-        makeAlert(title: "One Token For Delivery", message: "When this delivery is complete, you will transfer one token to the deliverer, as well as compensating them for the price of the purchase")
+        makeAlert(title: "One Dollar For Delivery", message:  "When this delivery is complete, please venmo one dollar to the deliverer as a service fee, as well as compensating them for the price of the purchase")
         
     }
     
     func didTapTwoCoinMyRequest(_ sender: UITapGestureRecognizer) {
         
-        makeAlert(title: "Two Tokens For Delivery", message: "When this delivery is complete, you will transfer two tokens to the deliverer, as well as compensating them for the price of the purchase")
+        makeAlert(title: "Two Dollars For Delivery", message: "When this delivery is complete, please venmo two dollars to the deliverer as a service fee, as well as compensating them for the price of the purchase")
         
     }
     
     func didTapTwoCoin(_ sender: UITapGestureRecognizer) {
         
-        makeAlert(title: "Two Tokens For Delivery", message: "For making this delivery, you will receive two tokens, as well as being fully compensated for the price of the purchase")
+        makeAlert(title: "Two Dollars For Delivery", message: "For making this delivery, you will receive two dollars, as well as being fully compensated for the price of the purchase")
         
     }
 
@@ -1112,12 +1112,14 @@ class runViewViewController: UIViewController,UITableViewDelegate,UITableViewDat
             
             sender.setTitle("Run is Complete", for: [])
             
-            self.makeAlert(title: "Thank you!", message: "This run is complete! We hope your will continue to be a goodneighbor and make some more runs.")
+            self.makeAlert(title: "Thank you!", message: "This run is complete! We hope you will continue to be a goodneighbor and make some more runs.")
     }))
     
     self.present(alertPurchaseComplete, animated: true, completion: nil)
 }
     override func viewDidAppear(_ animated: Bool) {
+         globalLoggedInUserId = FIRAuth.auth()?.currentUser?.uid
+       
             //myBuildingMates - Store people to send to that are in your building and have an ID and are not you
                     self.table.reloadData()
     }

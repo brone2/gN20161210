@@ -223,7 +223,7 @@ class viewDetailGeneralShoppingList: UIViewController, UITextViewDelegate, UITex
             
             // 2
             
-            let text = "Hey \(requesterName!), I am happy to deliver \(itemName!). Please message me back confirming you are committed to pay me a price up to \(itemPrice!), as well as a specific location of delivery. Thanks, \(loggedInUserName!) "
+            let text = "Hey \(requesterName!), I am happy to deliver \(itemName!). Please message me back confirming you are committed to pay me a price up to \(itemPrice!) + the delivery fee, as well as a specific location of delivery. Thanks, \(loggedInUserName!) "
             
             let messageItem = [
                 "senderId": self.loggedInUserId,

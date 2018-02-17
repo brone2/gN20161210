@@ -60,6 +60,7 @@ class deliveryRadiusView: UIViewController {
             myProfilePicRef = self.loggedInUserData?["profilePicReference"] as! String
             myCellNumber = self.loggedInUserData?["cellPhoneNumber"] as! String
             currentTokenCount = self.loggedInUserData?["tokenCount"] as! Int
+            globalLoggedInUserId = FIRAuth.auth()?.currentUser?.uid
             
             if let myLatitude = self.loggedInUserData?["latitude"] as? CLLocationDegrees{
                 if let myLongitude = self.loggedInUserData?["longitude"] as? CLLocationDegrees{
@@ -111,6 +112,7 @@ class deliveryRadiusView: UIViewController {
                 print((FIRAuth.auth()?.currentUser?.uid)!)
                 let myNotifID = userId
                 self.databaseRef.child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("notifID").setValue(myNotifID!)
+                myNotif = myNotifID!
         })
         
        //Send push notif to me!!!

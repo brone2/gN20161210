@@ -52,7 +52,7 @@ class meViewController: UIViewController {
     var navBarTitle:String?
     
     @IBAction func didTapLogOut(_ sender: Any) {
-        try! FIRAuth.auth()?.signOut()
+       // try! FIRAuth.auth()?.signOut()
     }
 
     override func viewDidLoad() {

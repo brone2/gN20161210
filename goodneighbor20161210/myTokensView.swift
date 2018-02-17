@@ -222,6 +222,12 @@ class myTokensView: UIViewController {
     
         self.redemptionLabel.isHidden = true
         
+        if isVerySmallScreen {
+            
+            self.referralLabel.isHidden = true
+            
+        }
+        
         
         
         

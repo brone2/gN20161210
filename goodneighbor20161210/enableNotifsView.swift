@@ -19,6 +19,8 @@ class enableNotifsView: UIViewController, CLLocationManagerDelegate {
     var timer = Timer()
     @IBOutlet var enableLabel: UILabel!
     
+    
+    
     var locationManager = CLLocationManager()
     var userLocation: CLLocation?
     var userLatitude: CLLocationDegrees = 0.00000
@@ -36,6 +38,8 @@ class enableNotifsView: UIViewController, CLLocationManagerDelegate {
         
         self.greyView.layer.cornerRadius = 3
         self.greyView.layer.masksToBounds = true
+        
+        forceNotifCount = 2
         
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
@@ -74,7 +78,7 @@ class enableNotifsView: UIViewController, CLLocationManagerDelegate {
         
         if notificationType.rawValue != 0 {
             timer.invalidate()
-            self.dismiss(animated: true, completion: nil)
+           self.dismiss(animated: true, completion: nil)
         }
     }
    
@@ -88,7 +92,7 @@ class enableNotifsView: UIViewController, CLLocationManagerDelegate {
             timer.invalidate()
             let childUpdates = ["/users/\(globalLoggedInUserId!)/longitude":self.userLongitude, "/users/\(globalLoggedInUserId!)/latitude":self.userLatitude] as [String : Any]
             self.databaseRef.updateChildValues(childUpdates)
-            self.dismiss(animated: true, completion: nil)
+         self.dismiss(animated: true, completion: nil)
            
             
         }
@@ -96,6 +100,13 @@ class enableNotifsView: UIViewController, CLLocationManagerDelegate {
         
         
 }
+    
+    
+    @IBAction func didTapNotNow(_ sender: UIButton) {
+        
+        self.dismiss(animated: true, completion: nil)
+        
+    }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         

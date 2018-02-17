@@ -20,6 +20,8 @@ var myLocation: CLLocation?
 var myRadius: Float?
 var autoLoginHelp: Int = 0
 
+
+
 var isSmallScreen = false
 var isVerySmallScreen = false
 var isLargeScreen = false
@@ -65,6 +67,7 @@ class initialViewController: UIViewController {
         let screenSize: CGRect = UIScreen.main.bounds
         
         let screenHeight = screenSize.height
+        print(screenHeight)
         
         if UIDevice().userInterfaceIdiom == .phone && UIScreen.main.nativeBounds.height == 2436 {
             isX = true
@@ -138,7 +141,12 @@ class initialViewController: UIViewController {
                             
                         //If account is registered but for some reason not completed
                         //IF PROBLEM HAPPENS AGAIN UNCOMMENT BELOW
-                            if self.loggedInUserData == nil {
+                            if self.loggedInUserData?["profilePicReference"] as? String == nil  {
+                                try! FIRAuth.auth()?.signOut()
+                                self.performSegue(withIdentifier: "goToFbookLogin", sender: nil)
+                                
+                            }
+                            if self.loggedInUserData == nil  {
                                 try! FIRAuth.auth()?.signOut()
                                 self.performSegue(withIdentifier: "goToFbookLogin", sender: nil)
                             }
