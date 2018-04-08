@@ -80,7 +80,7 @@ class myTokensView: UIViewController {
                 if let tempRef = snapshot?["referralCount"] as? Int {
                     self.referralCount = tempRef
                     let refText = String((self.tokenLimit!) - (self.referralCount!))
-                    self.referralLabel.text = "Refer \(refText) friends to earn $\(self.starbucksAmount!) to Starbucks!"
+                    self.referralLabel.text = "Redeem \(refText) tokens to earn $\(self.starbucksAmount!) to Starbucks!"
                 //hide unless 5 referrals
                 if self.referralCount! >= self.tokenLimit! {
                     self.redemptionLabel.isHidden = false

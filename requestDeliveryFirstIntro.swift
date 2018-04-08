@@ -99,7 +99,7 @@ class requestDeliveryFirstIntro: UIViewController {
         }else if self.continueCount == 2 {
             
             self.venmoGreyLabel.isHidden = true
-            self.priceLabel.text = "Neil selects to pay via Venmo"
+            self.priceLabel.text = "Taylor selects to pay via Venmo"
             
             
             

@@ -38,6 +38,7 @@ class postRunView: UIViewController, UITextViewDelegate, UITextFieldDelegate, CL
     var storageRef = FIRStorage.storage().reference()
     var timeRun: String?
     var myBuildingMates = [String]()
+    var pplNearMe = [String]()
     var buildingNamePath:String?
     var buildingNamePathValue:String?
     
@@ -58,6 +59,9 @@ class postRunView: UIViewController, UITextViewDelegate, UITextFieldDelegate, CL
             
         }
         
+    self.myBuildingMates = []
+    self.pplNearMe = []
+        
     self.databaseRef.child("users").observe(.childAdded) { (snapshot: FIRDataSnapshot) in
     
     let userID = snapshot.key
@@ -66,15 +70,17 @@ class postRunView: UIViewController, UITextViewDelegate, UITextFieldDelegate, CL
     
     if let userBuilding = snapshot["buildingName"] as? String {
     
-   /* if userBuilding == myBuilding &&  userID != globalLoggedInUserId &&  myBuilding != "N/A" {
+   if userBuilding == myBuilding &&  userID != globalLoggedInUserId &&  myBuilding != "N/A" {
     
     if snapshot["notifID"] != nil {
     
     let userNotifID = snapshot["notifID"] as? String
     self.myBuildingMates.append(userNotifID!)
-    print(self.myBuildingMates)
-                }
-            }*/
+    
+    }
+    }
+        
+        
         let userLongitude = snapshot["longitude"] as? CLLocationDegrees
         let userLatitude = snapshot["latitude"] as? CLLocationDegrees
         let userLocation = CLLocation(latitude: userLatitude!, longitude: userLongitude!)
@@ -85,12 +91,9 @@ class postRunView: UIViewController, UITextViewDelegate, UITextFieldDelegate, CL
         if distanceMilesFloat < 1.00 && userID != globalLoggedInUserId {
             
             if snapshot["notifID"] != nil {
-                
-                print(distanceMilesFloat)
-                
+
                 let userNotifID = snapshot["notifID"] as? String
-                self.myBuildingMates.append(userNotifID!)
-                print(self.myBuildingMates)
+                self.pplNearMe.append(userNotifID!)
                 
             }
             
@@ -475,20 +478,22 @@ func locationCheck() {
             
         }
         
-        
-        for mateID in 0..<self.myBuildingMates.count {
-            print(mateID)
-            print("EEEEEE")
-            print(self.myBuildingMates[mateID])
+         if self.myBuildingMates.count > 9 {
             
-            /*let deadlineTime = DispatchTime.now() + .seconds(1)
-             
-             DispatchQueue.main.asyncAfter(deadline: deadlineTime) {*/
+             for mateID in 0..<self.pplNearMe.count {
             
-            print("\(self.myBuildingMates[mateID])!")
             OneSignal.postNotification(["contents": ["en": "\(myName!) is going on a run to \(self.runLocationTextField.text!)!"], "include_player_ids": [self.myBuildingMates[mateID]],"ios_sound": "nil", "data": ["type": "run"]])
             
+            }
+        
+         } else {
+        
+        
+        for mateID in 0..<self.pplNearMe.count {
             
+            OneSignal.postNotification(["contents": ["en": "\(myName!) is going on a run to \(self.runLocationTextField.text!)!"], "include_player_ids": [self.pplNearMe[mateID]],"ios_sound": "nil", "data": ["type": "run"]])
+            
+            }
         }
         
         

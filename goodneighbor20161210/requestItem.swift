@@ -39,6 +39,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
     var paymentType = "Venmo"
     var requestPrice = "$0.00"
     var myBuildingMates = [String]()
+    var pplNearMe = [String]()
     var alertText:String?
     var whoSeesText: String?
     
@@ -118,7 +119,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
             self.runnerNotifID = self.selectedRun?["runnerNotif"] as! String
             self.whoSeesText = "Request will only be visible to \(self.selectedRun?["runnerName"] as! String)"
         } else {
-            self.descriptionText = "Ex: Please pick up a six pack of diet coke, but regular coke is fine if there's no diet. I live in Lisner Dorm. Call me with any questions."
+            self.descriptionText = "Example: Please pick up a six pack of diet coke, but regular coke is fine if there's no diet. I live in Lisner Dorm. Call me with any questions."
             self.whoSeesText = "Visible to neighbors in \(myBuilding!)"
             
         }
@@ -484,8 +485,8 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
     func didTapOneToken(_ sender: UITapGestureRecognizer) {
         
         if self.tokensOffered == 2 {
-            self.oneTokenImage.image = UIImage(named: "1DollBlue.png")
-            self.twoTokenImage.image = UIImage(named: "2DollGray.png")
+            self.oneTokenImage.image = UIImage(named: "2DollBlue.png")
+            self.twoTokenImage.image = UIImage(named: "3DollGray.png")
             self.tokensOffered = 1
         }
 }
@@ -493,8 +494,8 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
     func didTapTwoToken(_ sender: UITapGestureRecognizer) {
         
         if self.tokensOffered == 1 {
-            self.twoTokenImage.image = UIImage(named: "2DollBlue.png")
-            self.oneTokenImage.image = UIImage(named: "1DollGray.png")
+            self.twoTokenImage.image = UIImage(named: "3DollBlue.png")
+            self.oneTokenImage.image = UIImage(named: "2DollGray.png")
             self.tokensOffered = 2
         }
 }
@@ -541,8 +542,8 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         
         let myActionSheet = UIAlertController(title:"Delivery Location",message:"Please select where you would like item delivered",preferredStyle: UIAlertControllerStyle.actionSheet)
         
-        let aptLobby = UIAlertAction(title: "Will meet in my dorm", style: UIAlertActionStyle.default) { (action) in
-            sender.setTitle("Will meet in my dorm", for: [])
+        let aptLobby = UIAlertAction(title: "Will meet in lobby", style: UIAlertActionStyle.default) { (action) in
+            sender.setTitle("Will meet in lobby", for: [])
         }
         
         let myFloor = UIAlertAction(title: "Will pick up", style: UIAlertActionStyle.default) { (action) in
@@ -783,18 +784,23 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
             OneSignal.postNotification(["contents": ["en": "\(requesterNameValue) has posted a request to your run!"], "include_player_ids": [self.runnerNotifID!],"ios_sound": "nil", "data": ["type": "run"]])
             
         } else {
+            
+            if self.myBuildingMates.count > 9 {
+            
             for mateID in 0..<self.myBuildingMates.count {
-            print(mateID)
-            print("EEEEEE")
-            print(self.myBuildingMates[mateID])
-            
-            /*let deadlineTime = DispatchTime.now() + .seconds(1)
-                
-            DispatchQueue.main.asyncAfter(deadline: deadlineTime) {*/
-            
+
                 print("\(self.myBuildingMates[mateID])!")
-                OneSignal.postNotification(["contents": ["en": "\(requesterNameValue) has requested \(itemNameValue)!"], "include_player_ids": [self.myBuildingMates[mateID]],"ios_sound": "nil", "data": ["type": "request"]])
-            
+                
+                OneSignal.postNotification(["contents": ["en": "\(requesterNameValue) has requested \(itemNameValue)!"], "include_player_ids": [self.myBuildingMates[mateID]],"ios_sound": "nil", "data": ["type": "request"]])  }
+              
+            } else {
+                
+                for mateID in 0..<self.pplNearMe.count {
+                    
+                    print("\(self.pplNearMe[mateID])!")
+                    
+                    OneSignal.postNotification(["contents": ["en": "\(requesterNameValue) has requested \(itemNameValue)!"], "include_player_ids": [self.pplNearMe[mateID]],"ios_sound": "nil", "data": ["type": "request"]])  }
+                
                 
             }
         }
@@ -957,6 +963,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         self.toolbarBottomConstraintInitialValue = toolbarBottomConstraint.constant
         globalLoggedInUserId = FIRAuth.auth()?.currentUser?.uid
         self.myBuildingMates = []
+        self.pplNearMe = []
         
         //myBuildingMates - Store people to send to that are in your building and have an ID and are not you
         self.databaseRef.child("users").observe(.childAdded) { (snapshot: FIRDataSnapshot) in
@@ -970,7 +977,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         // This is for building 
             if let userBuilding = snapshot["buildingName"] as? String {
                 
-              /*  if userBuilding == myBuilding &&  userID != self.loggedInUser &&  myBuilding != "N/A" {
+             if userBuilding == myBuilding &&  userID != self.loggedInUser &&  myBuilding != "N/A" {
                     
                     if snapshot["notifID"] != nil {
                         
@@ -979,7 +986,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
                         print(self.myBuildingMates)
                         
                     }
-                }*/
+                }
                 
                 let userLongitude = snapshot["longitude"] as? CLLocationDegrees
                 let userLatitude = snapshot["latitude"] as? CLLocationDegrees
@@ -993,8 +1000,8 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
                     if snapshot["notifID"] != nil {
                         
                         let userNotifID = snapshot["notifID"] as? String
-                        self.myBuildingMates.append(userNotifID!)
-                        print(self.myBuildingMates)
+                        self.pplNearMe.append(userNotifID!)
+                        print(self.pplNearMe)
                         
                     }
                     

@@ -65,20 +65,20 @@ class shoppingListIntro: UIViewController {
             NSLayoutConstraint.activate([self.leadingConstraint!])
             
             
-            self.textLabel.text = "Once Justin purchases the snickers, he taps \"Purchase Complete\" and enters $1.25. Neil is notified he must repay Justin $1.25 upon delivery."
+            self.textLabel.text = "Once Justin purchases the snickers, he taps \"Purchase Complete\" and enters $1.25. Taylor is notified she must repay Justin $1.25 upon delivery."
             
-            self.backgroundImage.image = UIImage(named: "purchaseCompleteIntro4.png")
+            self.backgroundImage.image = UIImage(named: "pComplete.png") //UIImage(named: "purchaseCompleteIntro4.png")
             
         } else if self.nextCount == 2 {
             
-            self.textLabel.text = "Justin arrives at Neil's apartment and delivers the Snickers. Neil venmos Justin $1.25 and selects \"Mark as Complete\" to close the request."
+            self.textLabel.text = "Justin arrives at Taylor's apartment and delivers the Snickers. Taylor venmos Justin $3.25 ($1.25 for the snickers and $2.00 delivery fee) and selects \"Mark as Complete\" to close the request."
             
-            self.backgroundImage.image = UIImage(named: "justinComplete2.png")
+            self.backgroundImage.image = UIImage(named: "purchaseCompleteIntro4.png")
 
             
         } else if self.nextCount == 3 {
             
-            self.textLabel.text = "One Token is transferred from Neil's account to Justin's for the delivery. Neil can only earn more tokens by making deliveries himself."
+            self.textLabel.text = "The delivery is complete thanks to Goodneighbor Justin!"
             
             self.backgroundImage.image = UIImage(named: "justinIsClosed3.png")
             

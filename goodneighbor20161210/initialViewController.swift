@@ -226,6 +226,9 @@ class initialViewController: UIViewController {
                             }
                             
                             myRadius  = self.loggedInUserData?["deliveryRadius"] as? Float
+                            print(self.loggedInUserData)
+                                print(myRadius)
+                                print(self.loggedInUserData?["deliveryRadius"] as? Float)
                             FIRAnalytics.logEvent(withName: "openApp", parameters: nil)
                             
                             //if facebook update facebook profile pic in case necessary

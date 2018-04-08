@@ -101,7 +101,7 @@ class facebookLoginController: UIViewController, FBSDKLoginButtonDelegate {
                         
                         let userUId = (FIRAuth.auth()?.currentUser?.uid)!
                         
-                        let childUpdatesFbook = ["/users/\(userUId)/name":dict["first_name"]!,"/users/\(userUId)/fullName":dict["name"]!,"/users/\(userUId)/gender":dict["gender"]!,"/users/\(userUId)/buildingName":"N/A","/users/\(userUId)/cellPhoneNumber":"0","/users/\(userUId)/deliveryCount":0, "/users/\(userUId)/recieveCount":0,"/users/\(userUId)/referralCount":0, "/users/\(userUId)/tokenCount":4,"/users/\(userUId)/profilePicReference":self.url!, "/users/\(userUId)/longitude":longitude, "/users/\(userUId)/latitude":latitude, "/users/\(userUId)/deliveryRadius":deliveryRadius, "/users/\(userUId)/referralCode":userReferralCode!] as [String : Any]
+                        let childUpdatesFbook = ["/users/\(userUId)/name":dict["first_name"]!,"/users/\(userUId)/fullName":dict["name"]!,"/users/\(userUId)/gender":dict["gender"]!,"/users/\(userUId)/buildingName":"N/A","/users/\(userUId)/cellPhoneNumber":"0","/users/\(userUId)/deliveryCount":0, "/users/\(userUId)/recieveCount":0,"/users/\(userUId)/referralCount":0, "/users/\(userUId)/tokenCount":8,"/users/\(userUId)/profilePicReference":self.url!, "/users/\(userUId)/longitude":longitude, "/users/\(userUId)/latitude":latitude, "/users/\(userUId)/deliveryRadius":deliveryRadius, "/users/\(userUId)/referralCode":userReferralCode!] as [String : Any]
                         
                         //Update
                         self.databaseRef.updateChildValues(childUpdatesFbook)

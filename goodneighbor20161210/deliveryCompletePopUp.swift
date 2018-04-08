@@ -169,7 +169,12 @@ class deliveryCompletePopUp: UIViewController {
     
     @IBAction func didTapGoToApp(_ sender: Any) {
         
-        
+        if isIntro{
+            self.performSegue(withIdentifier: "introToRun", sender: nil)
+        } else {
+            self.performSegue(withIdentifier: "introToRequest", sender: nil)
+            
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -184,7 +189,13 @@ class deliveryCompletePopUp: UIViewController {
 
     @IBAction func didTapOk(_ sender: Any) {
         
+     if isIntro{
+        self.performSegue(withIdentifier: "introToRun", sender: nil)
+     } else {
         self.performSegue(withIdentifier: "introToRequest", sender: nil)
+        
+        }
+        
     }
   
 

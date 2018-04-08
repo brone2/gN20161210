@@ -130,7 +130,7 @@ class loginViewController: UIViewController, UIImagePickerControllerDelegate, UI
                         let referralCode = self.nameLabel.text! + someString
                         userReferralCode = referralCode
                         
-                        let childUpdates = ["/users/\(user!.uid)/name":self.nameLabel.text!,"/users/\(user!.uid)/cellPhoneNumber":"0","/users/\(user!.uid)/buildingName":"N/A","/users/\(user!.uid)/deliveryCount":0, "/users/\(user!.uid)/recieveCount":0, "/users/\(user!.uid)/referralCount":0, "/users/\(user!.uid)/tokenCount":2,"/users/\(user!.uid)/email":self.emailLabel.text!,"/users/\(user!.uid)/fullName":self.nameLabel.text!, "/users/\(user!.uid)/longitude":0.0000000000,"/users/\(user!.uid)/gender":"N/A", "/users/\(user!.uid)/latitude":0.0000000000,"/users/\(user!.uid)/deliveryRadius": 1.0000987, "/users/\(user!.uid)/referralCode":userReferralCode!] as [String : Any]
+                        let childUpdates = ["/users/\(user!.uid)/name":self.nameLabel.text!,"/users/\(user!.uid)/cellPhoneNumber":"0","/users/\(user!.uid)/buildingName":"N/A","/users/\(user!.uid)/deliveryCount":0, "/users/\(user!.uid)/recieveCount":0, "/users/\(user!.uid)/referralCount":0, "/users/\(user!.uid)/tokenCount":8,"/users/\(user!.uid)/email":self.emailLabel.text!,"/users/\(user!.uid)/fullName":self.nameLabel.text!, "/users/\(user!.uid)/longitude":0.0000000000,"/users/\(user!.uid)/gender":"N/A", "/users/\(user!.uid)/latitude":0.0000000000,"/users/\(user!.uid)/deliveryRadius": 1.0000987, "/users/\(user!.uid)/referralCode":userReferralCode!] as [String : Any]
                         
                         userFullName = self.nameLabel.text!
                         myBuilding = "N/A"

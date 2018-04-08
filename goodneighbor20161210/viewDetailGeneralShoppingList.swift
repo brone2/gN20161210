@@ -247,12 +247,14 @@ class viewDetailGeneralShoppingList: UIViewController, UITextViewDelegate, UITex
          
     
         //Send Push Notif to requester
+        //Vibrating push notification!!!
         
             if requesterNotif != nil {
             OneSignal.postNotification(["headings" : ["en": "\(loggedInUserName!) has accepted your request!"],
                                         "contents" : ["en": "Please message \(loggedInUserName!) to let them know any specifics of your request"],
-                                        "include_player_ids": [requesterNotif!],
-                                        "ios_sound": "nil"])
+                                        "include_player_ids": [requesterNotif!]]
+                                     //  , "ios_sound": "nil"])
+                                        )
             }
  
          // print(textMessage)

@@ -10,7 +10,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "goodneighbor20161210/shoppingList.swift"
-            timestampString = "539665449.9191"
+            timestampString = "544753982.316241"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "739"
@@ -58,7 +58,23 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "goodneighbor20161210/runViewViewController.swift"
-            timestampString = "540079401.290596"
+            timestampString = "544819758.351169"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1086"
+            endingLineNumber = "1086"
+            landmarkName = "chatImageTapPending(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "goodneighbor20161210/runViewViewController.swift"
+            timestampString = "544819758.351243"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1080"
@@ -74,11 +90,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "goodneighbor20161210/runViewViewController.swift"
-            timestampString = "540079401.29072"
+            timestampString = "544819758.3513"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1074"
-            endingLineNumber = "1074"
+            startingLineNumber = "1085"
+            endingLineNumber = "1085"
             landmarkName = "chatImageTapPending(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -90,27 +106,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "goodneighbor20161210/runViewViewController.swift"
-            timestampString = "540079401.290782"
+            timestampString = "544819758.351349"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1079"
-            endingLineNumber = "1079"
-            landmarkName = "chatImageTapPending(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "goodneighbor20161210/runViewViewController.swift"
-            timestampString = "540079401.290839"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "879"
-            endingLineNumber = "879"
+            startingLineNumber = "885"
+            endingLineNumber = "885"
             landmarkName = "numberOfSections(in:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -122,11 +122,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "goodneighbor20161210/runViewViewController.swift"
-            timestampString = "540079401.290894"
+            timestampString = "544819758.351396"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "883"
-            endingLineNumber = "883"
+            startingLineNumber = "889"
+            endingLineNumber = "889"
             landmarkName = "numberOfSections(in:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -138,11 +138,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "goodneighbor20161210/shoppingList.swift"
-            timestampString = "539665449.919788"
+            timestampString = "544753982.319483"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1348"
-            endingLineNumber = "1348"
+            startingLineNumber = "1353"
+            endingLineNumber = "1353"
             landmarkName = "didTapCompleteButton(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -154,11 +154,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "goodneighbor20161210/shoppingList.swift"
-            timestampString = "539665449.919878"
+            timestampString = "544753982.319898"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1352"
-            endingLineNumber = "1352"
+            startingLineNumber = "1357"
+            endingLineNumber = "1357"
             landmarkName = "didTapCompleteButton(_:)"
             landmarkType = "7">
             <Locations>
@@ -202,11 +202,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "goodneighbor20161210/shoppingList.swift"
-            timestampString = "539665449.919948"
+            timestampString = "544753982.320217"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1353"
-            endingLineNumber = "1353"
+            startingLineNumber = "1358"
+            endingLineNumber = "1358"
             landmarkName = "didTapCompleteButton(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -218,11 +218,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "goodneighbor20161210/requestItem.swift"
-            timestampString = "540582459.313562"
+            timestampString = "543942426.9757"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "834"
-            endingLineNumber = "834"
+            startingLineNumber = "840"
+            endingLineNumber = "840"
             landmarkName = "finalizeUploadRequest(key:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -240,6 +240,22 @@
             startingLineNumber = "276"
             endingLineNumber = "276"
             landmarkName = "didTapEnter(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "goodneighbor20161210/viewDetailGeneralShoppingList.swift"
+            timestampString = "544819758.35163"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "251"
+            endingLineNumber = "251"
+            landmarkName = "deliverAcceptedCompletion()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

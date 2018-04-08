@@ -196,6 +196,8 @@ class runViewViewController: UIViewController,UITableViewDelegate,UITableViewDat
             
             //General runs, those that are not already complete and not sent by you
             // HERE ADDED cHANGE so ONLY CAN SEE building nAMES
+            
+            print(myRadius)
             if distanceMilesFloat < myRadius! {
                 if(runnerUID != globalLoggedInUserId && runCompleted != true) && (runnerBuilding == "NA" || (runnerBuilding != "NA" && runnerBuilding == myBuilding)){
                     
@@ -217,7 +219,7 @@ class runViewViewController: UIViewController,UITableViewDelegate,UITableViewDat
             let accepterUID = snapshot2["accepterUID"] as? String
             let snapAccepted = snapshot2["isAccepted"] as? Bool
             let snapCompleted = snapshot2["isComplete"] as? Bool
-            let accepterID = snapshot2["accepterUID"] as? String
+            let accepterID = snapshot2["accepterUID"] as? String //idk why this is here but wtvr just left it
             let isRun = snapshot2["isRun"] as? Bool
             
             if let requesterLongitude = snapshot2["longitude"] as? CLLocationDegrees {
@@ -349,7 +351,7 @@ class runViewViewController: UIViewController,UITableViewDelegate,UITableViewDat
             
             cell.nameLabel.text = self.sectionData[indexPath.section]![indexPath.row]?["itemName"] as? String
             
-            cell.itemLabel.text = "Will pay \(self.sectionData[indexPath.section]![indexPath.row]?["price"] as! String) +$\(self.sectionData[indexPath.section]![indexPath.row]?["tokensOffered"] as! Int) fee"
+            cell.itemLabel.text = "Will pay \(self.sectionData[indexPath.section]![indexPath.row]?["price"] as! String) +$\(self.sectionData[indexPath.section]![indexPath.row]?["tokensOffered"] as! Int + 1) fee"
             
             let payType:String = (self.sectionData[indexPath.section]![indexPath.row]?["paymentType"] as? String)!
             
@@ -373,11 +375,11 @@ class runViewViewController: UIViewController,UITableViewDelegate,UITableViewDat
             cell.coinImage.tag = indexPath.row
             
             if tokenCountHelp == 1 {
-                cell.coinImage.image = UIImage(named: "1DollBlue.png")
+                cell.coinImage.image = UIImage(named: "2DollBlue.png")
                 cell.coinImage.addGestureRecognizer(oneTokenTap)
             }
             if tokenCountHelp == 2 {
-                cell.coinImage.image = UIImage(named: "2DollBlue.png")
+                cell.coinImage.image = UIImage(named: "3DollBlue.png")
                 cell.coinImage.addGestureRecognizer(twoTokenTap)
             }
             
@@ -425,7 +427,7 @@ class runViewViewController: UIViewController,UITableViewDelegate,UITableViewDat
             if purchasePriceString == "NA" {
                 
                 cell.purchaseCompleteButton.setTitle("Purchase Complete", for: [])
-                cell.itemLabel.text = "Will pay \(self.sectionData[indexPath.section]![indexPath.row]?["price"] as! String) +$\(self.sectionData[indexPath.section]![indexPath.row]?["tokensOffered"] as! Int) fee"
+                cell.itemLabel.text = "Will pay \(self.sectionData[indexPath.section]![indexPath.row]?["price"] as! String) +$\(self.sectionData[indexPath.section]![indexPath.row]?["tokensOffered"] as! Int + 1) fee"
                 
             } else {
             
@@ -471,7 +473,9 @@ class runViewViewController: UIViewController,UITableViewDelegate,UITableViewDat
             
             cell.itemLabel.text = self.sectionData[indexPath.section]![indexPath.row]?["deliverTo"] as? String
             
-            cell.willPayLabel.text = "Will pay \(self.sectionData[indexPath.section]![indexPath.row]?["price"] as! String) +$\(self.sectionData[indexPath.section]![indexPath.row]?["tokensOffered"] as! Int) fee"
+            //cell.willPayLabel.text = "Will pay \(self.sectionData[indexPath.section]![indexPath.row]?["price"] as! String) +$\(self.sectionData[indexPath.section]![indexPath.row]?["tokensOffered"] as! Int) fee"
+            cell.willPayLabel.text = "Tap to Accept!"
+            cell.willPayLabel.textColor = UIColor(red: 127/255, green: 127/255, blue: 127/255, alpha: 1)
             
             let payType:String = (self.sectionData[indexPath.section]![indexPath.row]?["paymentType"] as? String)!
             
@@ -492,11 +496,11 @@ class runViewViewController: UIViewController,UITableViewDelegate,UITableViewDat
             cell.coinImage.tag = indexPath.row
             
             if tokenCountHelp == 1 {
-                cell.coinImage.image = UIImage(named: "1DollBlue.png")
+                cell.coinImage.image = UIImage(named: "2DollBlue.png")
                 cell.coinImage.addGestureRecognizer(oneTokenTap)
             }
             if tokenCountHelp == 2 {
-                cell.coinImage.image = UIImage(named: "2DollBlue.png")
+                cell.coinImage.image = UIImage(named: "3DollBlue.png")
                 cell.coinImage.addGestureRecognizer(twoTokenTap)
             }
             
@@ -556,7 +560,9 @@ class runViewViewController: UIViewController,UITableViewDelegate,UITableViewDat
             
             cell.runLabel.text = self.sectionData[indexPath.section]![indexPath.row]?["runTo"] as? String
             
-            cell.requestCountLabel.text = "\(requestCount!) requests to this run"
+           //Taking out the number of requests to the run to say tap to make a request
+           // cell.requestCountLabel.text = "\(requestCount!) requests to this run" HERE
+             cell.requestCountLabel.text = "Tap to request an item from \(self.sectionData[indexPath.section]![indexPath.row]?["runTo"] as! String)!"
             
             if let image = self.sectionData[indexPath.section]![indexPath.row]?["profilePicReference"] as? String {
                 
@@ -1022,25 +1028,25 @@ class runViewViewController: UIViewController,UITableViewDelegate,UITableViewDat
     
     func didTapOneCoin(_ sender: UITapGestureRecognizer) {
         
-        makeAlert(title: "One Dollar For Delivery", message: "For making this delivery, you will receive one dollar, as well as being fully compensated for the price of the purchase")
+        makeAlert(title: "Two Dollar For Delivery", message: "For making this delivery, you will receive a two dollar delivery fee, as well as being fully compensated for the price of the purchase")
         
     }
     
     func didTapOneCoinMyRequest(_ sender: UITapGestureRecognizer) {
         
-        makeAlert(title: "One Dollar For Delivery", message:  "When this delivery is complete, please venmo one dollar to the deliverer as a service fee, as well as compensating them for the price of the purchase")
+        makeAlert(title: "Two Dollar For Delivery", message:  "When this delivery is complete, please venmo two dollars to the deliverer as a service fee, as well as compensating them for the price of the purchase")
         
     }
     
     func didTapTwoCoinMyRequest(_ sender: UITapGestureRecognizer) {
         
-        makeAlert(title: "Two Dollars For Delivery", message: "When this delivery is complete, please venmo two dollars to the deliverer as a service fee, as well as compensating them for the price of the purchase")
+        makeAlert(title: "Three Dollars For Delivery", message: "When this delivery is complete, please venmo three dollars to the deliverer as a service fee, as well as compensating them for the price of the purchase")
         
     }
     
     func didTapTwoCoin(_ sender: UITapGestureRecognizer) {
         
-        makeAlert(title: "Two Dollars For Delivery", message: "For making this delivery, you will receive two dollars, as well as being fully compensated for the price of the purchase")
+        makeAlert(title: "Three Dollars For Delivery", message: "For making this delivery, you will receive three dollars, as well as being fully compensated for the price of the purchase")
         
     }
 
