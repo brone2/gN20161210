@@ -21,6 +21,8 @@ class runDetail: UIViewController {
     @IBOutlet var profilePic: UIImageView!
     @IBOutlet var notesTextview: UITextView!
     
+    var tokensOffered = 1
+    
     var databaseRef = FIRDatabase.database().reference()
     var communityRuns = [NSDictionary?]()
     var selectedRowIndex:Int!
@@ -41,6 +43,8 @@ class runDetail: UIViewController {
         self.notesTextview.layer.borderColor = UIColor.black.cgColor
         
         self.notesTextview.text = self.communityRuns[self.selectedRowIndex]?["notesField"] as! String
+        
+        self.tokensOffered = self.communityRuns[self.selectedRowIndex]?["tokensOffered"] as! Int
         
         self.runTo.text = self.communityRuns[self.selectedRowIndex]?["runTo"] as? String
         
@@ -89,6 +93,7 @@ class runDetail: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
 
+// Go to request segue prep
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) { //
         
         if segue.identifier == "goToReqDelForRun" {
@@ -96,6 +101,7 @@ class runDetail: UIViewController {
             let secondViewController = segue.destination as! requestItem
             secondViewController.isRun =  true
             secondViewController.selectedRun =  self.selectedRun
+            secondViewController.tokensOffered =  self.tokensOffered
         }
         
     }

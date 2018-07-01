@@ -16,6 +16,8 @@ import OneSignal
 
 class postRunView: UIViewController, UITextViewDelegate, UITextFieldDelegate, CLLocationManagerDelegate {
     
+//20 people to a dorm to be dorm only
+    
     @IBOutlet var runLocationTextField: UITextField!
     @IBOutlet var hourTextfield: UITextField!
     @IBOutlet var minuteTextfield: UITextField!
@@ -26,6 +28,14 @@ class postRunView: UIViewController, UITextViewDelegate, UITextFieldDelegate, CL
     var userLocation: CLLocation?
     var userLatitude: CLLocationDegrees = 0.10000
     var userLongitude: CLLocationDegrees = 0.10000
+    var tokensOffered = 2
+    
+    var isDormOnly = false
+    
+    var saveKey: String?
+    
+    @IBOutlet var oneTokenImage: UIImageView!
+    @IBOutlet var twoTokenImage: UIImageView!
     
     var enteredPhoneNumber:String?
     
@@ -42,6 +52,8 @@ class postRunView: UIViewController, UITextViewDelegate, UITextFieldDelegate, CL
     var buildingNamePath:String?
     var buildingNamePathValue:String?
     
+
+    
     //Move up cause of damn ipad
     @IBOutlet var backButton: customButton!
     @IBOutlet var postButton: customButton!
@@ -52,7 +64,6 @@ class postRunView: UIViewController, UITextViewDelegate, UITextFieldDelegate, CL
     override func viewDidAppear(_ animated: Bool) {
         
         if isVerySmallScreen {
-            
             
             self.backButton.frame = CGRect(x: 14, y: 354, width: 125, height: 33)
             self.postButton.frame = CGRect(x: 167, y: 354, width: 125, height: 33)
@@ -70,15 +81,23 @@ class postRunView: UIViewController, UITextViewDelegate, UITextFieldDelegate, CL
     
     if let userBuilding = snapshot["buildingName"] as? String {
     
-   if userBuilding == myBuilding &&  userID != globalLoggedInUserId &&  myBuilding != "N/A" {
+        /*
+    if userBuilding == myBuilding &&  userID != globalLoggedInUserId &&  myBuilding != "N/A" {
     
-    if snapshot["notifID"] != nil {
+      if snapshot["notifID"] != nil {
     
-    let userNotifID = snapshot["notifID"] as? String
-    self.myBuildingMates.append(userNotifID!)
+            let userNotifID = snapshot["notifID"] as? String
+            self.myBuildingMates.append(userNotifID!)
+        
+            //  if (self.myBuildingMates.count) > 20 {
+         if (self.myBuildingMates.count) > 20 {
+         
+                self.isDormOnly = true
+        }
     
+        }
     }
-    }
+         */
         
         
         let userLongitude = snapshot["longitude"] as? CLLocationDegrees
@@ -88,19 +107,36 @@ class postRunView: UIViewController, UITextViewDelegate, UITextFieldDelegate, CL
         let distanceMiles = distanceInMeters/1609.344897
         let distanceMilesFloat = Float(distanceMiles)
         
-        if distanceMilesFloat < 1.00 && userID != globalLoggedInUserId {
+        if distanceMilesFloat < 1.00 && userID != globalLoggedInUserId { //
             
             if snapshot["notifID"] != nil {
 
                 let userNotifID = snapshot["notifID"] as? String
                 self.pplNearMe.append(userNotifID!)
                 
+         }
+            
+            // Populate same building name AND within one mile
+            if userBuilding == myBuilding &&  userID != globalLoggedInUserId &&  myBuilding != "N/A" {
+                
+                if snapshot["notifID"] != nil {
+                    
+                    let userNotifID = snapshot["notifID"] as? String
+                    self.myBuildingMates.append(userNotifID!)
+                    
+                    //  if (self.myBuildingMates.count) > 20 {
+                    if (self.myBuildingMates.count) > 20 {
+                        
+                        self.isDormOnly = true
+                        
+                    }
+                    
+                }
             }
             
-        }
-        
-        }
+       } //if distanceMilesFloat < 1.00 && userID != globalLoggedInUserId {
     }
+  }
 }
     
     override func viewDidLoad() {
@@ -123,6 +159,12 @@ class postRunView: UIViewController, UITextViewDelegate, UITextFieldDelegate, CL
     
         self.descriptionText = "I will be going to Trader Joe's around 12:30 and should be back by 2. Will meet you in the lobby of dardick dorm for pickup."
         
+        let oneTokenImageTap:UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.didTapOneToken(_:)))
+        oneTokenImage.addGestureRecognizer(oneTokenImageTap)
+        
+        let twoTokenImageTap:UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.didTapTwoToken(_:)))
+        twoTokenImage.addGestureRecognizer(twoTokenImageTap)
+        
         notesField.text = self.descriptionText
         notesField.textColor = UIColor.lightGray
         notesField.layer.borderWidth = 1
@@ -132,58 +174,27 @@ class postRunView: UIViewController, UITextViewDelegate, UITextFieldDelegate, CL
 
     
     @IBAction func didTapPostRun(_ sender: Any) {
-        if myCellNumber == "0"{
-            
-            var phoneNumberTextField: UITextField?
-            
-            let alertController = UIAlertController(
-                title: "Please Add Phone Number",
-                message: "Phone# are not publicly shown - it is only available when needed to pay through Venmo",
-                preferredStyle: UIAlertControllerStyle.alert)
-            
-            let cancelAction = UIAlertAction(
-            title: "Cancel", style: UIAlertActionStyle.default) {
-                (action) -> Void in
-            }
-            
-            let completeAction = UIAlertAction(
-            title: "Complete", style: UIAlertActionStyle.default) {
-                (action) -> Void in
-                if let phoneNumber = phoneNumberTextField?.text {
-                    
-                    self.enteredPhoneNumber = phoneNumber
-                    if self.enteredPhoneNumber == "" {
-                        self.enteredPhoneNumber = "0"
-                    }
-                }
-                self.databaseRef.child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("cellPhoneNumber").setValue(self.enteredPhoneNumber)
-                
-                myCellNumber = self.enteredPhoneNumber
-            }
-            alertController.addTextField {
-                (txtUsername) -> Void in
-                txtUsername.keyboardType = .decimalPad
-                phoneNumberTextField = txtUsername
-                phoneNumberTextField!.placeholder = "ex: 4135691234"
-            }
-            
-            alertController.addAction(cancelAction)
-            alertController.addAction(completeAction)
-            
-            self.present(alertController, animated: true, completion: nil)
+        if myCellNumber == "zzzz"{
+            // Moved this to a later function to have it post automatically and then update phone# later
         }
         
         else
         {
+            
+            if self.notesField.text! == "I will be going to Trader Joe's around 12:30 and should be back by 2. Will meet you in the lobby of dardick dorm for pickup." {
+                
+                self.notesField.text = "Let me know if you need anything!"
+                
+            }
+            
         if self.hourTextfield.text! == "" || self.runLocationTextField.text! == ""
-         || self.notesField.text! == "I will be going to Trader Joe's around 12:30 and should be back by 2. Will meet you in the lobby of dardick dorm for pickup."
         {
             
             self.makeAlertNoDismiss(title: "Missing information", message: "Please fill in all fields")
            
             /*if self.runLocationTextField.text! == "I will be going to Trader Joe's around 12:30 and should be back by 2. Will meet you in the lobby of dardick dorm for pickup." {
                 self.makeAlertNoDismiss(title: "Missing information", message: "Please provide a value for \"Detailed Information\"")
-//                self.dismiss(animated: true, completion: nil)
+                self.dismiss(animated: true, completion: nil)
             } else if self.hourTextfield.text! == "" {
                 self.makeAlertNoDismiss(title: "Missing information", message: "Please enter what time you are making the run")
             } else if self.hourTextfield.text! == "" {
@@ -369,7 +380,7 @@ func locationCheck() {
         
   if distanceInMetersFloat > 7750 {
             
-            let alertPurchaseLocation = UIAlertController(title: "Reset Dorm Location?", message: "You are posting this run from a new location. Would you like to reset your dorm location to your current location?", preferredStyle: UIAlertControllerStyle.alert)
+            let alertPurchaseLocation = UIAlertController(title: "Reset Home Location?", message: "You are posting this run from a new location. Would you like to reset your home location to your current location?", preferredStyle: UIAlertControllerStyle.alert)
             
             alertPurchaseLocation.addAction(UIAlertAction(title: "No", style: .default, handler: { (action) in
                 
@@ -410,6 +421,7 @@ func locationCheck() {
         self.timeRun = self.hourTextfield.text! as String + ":" + self.minuteTextfield.text! as String + " " + self.PMButtonText.currentTitle!
         
         let key = self.databaseRef.child("runs").childByAutoId().key
+        self.saveKey = key
         
         let timeRunPath = "/runs/\(key)/timeRun"
         let timeRunValue = self.timeRun
@@ -420,13 +432,18 @@ func locationCheck() {
         let descriptionPath = "/runs/\(key)/notesField"
         let descriptionLabelValue = self.notesField.text! as String
         
+        let tokenPath = "/runs/\(key)/tokensOffered"
+        let tokensLabelValue = self.tokensOffered
+        print(self.tokensOffered)
+        
         let longitudePath = "/runs/\(key)/runnerLongitude"
         //let longitudeValue = self.requesterLongitude! as CLLocationDegrees
         let longitudeValue = (myLocation?.coordinate.longitude)! as CLLocationDegrees
         
         //hacky way to get post run users with less than 5 ppl in building to have request seen by everyone
+        /*
         print((self.myBuildingMates.count))
-        if (self.myBuildingMates.count) < 40 {
+        if (self.myBuildingMates.count) < 20 {
             self.buildingNamePath = "/runs/\(key)/buildingName"
             self.buildingNamePathValue = "NA"
         } else {
@@ -435,6 +452,16 @@ func locationCheck() {
             self.buildingNamePathValue = myBuilding!
             
         }
+        */
+        
+        
+        
+        self.buildingNamePath = "/runs/\(key)/buildingName"
+        self.buildingNamePathValue = myBuilding!
+        
+        let dormLockPath = "/runs/\(key)/isDormOnly"
+        let dormLockValue = self.isDormOnly
+        
         
         
         let latitudePath = "/runs/\(key)/runnerLatitude"
@@ -466,11 +493,14 @@ func locationCheck() {
         let profilePicReferencePath = "/runs/\(key)/profilePicReference"
         let profilePicReferenceValue = myProfilePicRef
         
-        let childUpdatesRun:Dictionary<String, Any> = [timeRunPath: timeRunValue, runToPath: runToValue,descriptionPath: descriptionLabelValue, self.buildingNamePath!: self.buildingNamePathValue!,latitudePath: latitudeValue, longitudePath: longitudeValue,runnerNamePath: runnerNameValue,isCompletePath: isCompleteValue, runKeyPath: keyValue, runnerUIDPath: runnerUIDValue,runnerCellPath: runnerCellValue, profilePicReferencePath: profilePicReferenceValue, runnerNotifPath: runnerNotifValue,requestCountPath: requestCountValue]
+        let childUpdatesRun:Dictionary<String, Any> = [timeRunPath: timeRunValue, runToPath: runToValue,descriptionPath: descriptionLabelValue, self.buildingNamePath!: self.buildingNamePathValue!,latitudePath: latitudeValue, longitudePath: longitudeValue,runnerNamePath: runnerNameValue,isCompletePath: isCompleteValue, runKeyPath: keyValue, runnerUIDPath: runnerUIDValue,runnerCellPath: runnerCellValue, profilePicReferencePath: profilePicReferenceValue, runnerNotifPath: runnerNotifValue,requestCountPath: requestCountValue,tokenPath: tokensLabelValue,dormLockPath: dormLockValue
+        ]
+            
         
-        
+        print(childUpdatesRun)
         self.databaseRef.updateChildValues(childUpdatesRun)
         
+// Notification
         
         if let nameToSend = userFullName {
             
@@ -478,9 +508,9 @@ func locationCheck() {
             
         }
         
-         if self.myBuildingMates.count > 9 {
+         if self.myBuildingMates.count > 20 {
             
-             for mateID in 0..<self.pplNearMe.count {
+             for mateID in 0..<self.myBuildingMates.count {
             
             OneSignal.postNotification(["contents": ["en": "\(myName!) is going on a run to \(self.runLocationTextField.text!)!"], "include_player_ids": [self.myBuildingMates[mateID]],"ios_sound": "nil", "data": ["type": "run"]])
             
@@ -496,13 +526,93 @@ func locationCheck() {
             }
         }
         
+        //Add phone number and update the run with phone number if not yet given
+        if myCellNumber == "0"{
+            
+          self.cellPhoneUpdate()
+            
+        } else {
         
-        self.makeAlert(title: "Run Posted", message: "Thank you for posting this run! When you are finished with your run, please tap \"Run Complete\" and this run will no longer be available for request")
+          self.makeAlert(title: "Run Posted", message: "Thank you for posting this run! When you are finished with your run, please tap \"Run Complete\" and this run will no longer be available for request")
+            
+        }
     }
     
     
+    func didTapOneToken(_ sender: UITapGestureRecognizer) {
+        
+        // $1 and $2 offer
+        
+        if self.tokensOffered == 2 {
+            self.oneTokenImage.image = UIImage(named: "1DollBlue.png")
+            self.twoTokenImage.image = UIImage(named: "2DollGray.png")
+            self.tokensOffered = 1
+        }
+        
+    }
+    
+    func didTapTwoToken(_ sender: UITapGestureRecognizer) {
+        
+        // $1 and $2 offer
+        
+        if self.tokensOffered == 1 {
+            self.twoTokenImage.image = UIImage(named: "2DollBlue.png")
+            self.oneTokenImage.image = UIImage(named: "1DollGray.png")
+            self.tokensOffered = 2
+        }
     
     
+    }
+    
+    
+    func cellPhoneUpdate() {
+        
+        
+        var phoneNumberTextField: UITextField?
+        
+        let alertController = UIAlertController(
+            title: "Please Add Phone Number",
+            message: "Phone# are not publicly shown - it is only available when needed to pay through Venmo",
+            preferredStyle: UIAlertControllerStyle.alert)
+        
+        let cancelAction = UIAlertAction(
+        title: "Cancel", style: UIAlertActionStyle.default) {
+            (action) -> Void in
+        }
+        
+        let completeAction = UIAlertAction(
+        title: "Complete", style: UIAlertActionStyle.default) {
+            (action) -> Void in
+            if let phoneNumber = phoneNumberTextField?.text {
+                
+                self.enteredPhoneNumber = phoneNumber
+                if self.enteredPhoneNumber == "" {
+                    self.enteredPhoneNumber = "0"
+                }
+            }
+            self.databaseRef.child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("cellPhoneNumber").setValue(self.enteredPhoneNumber)
+            self.databaseRef.child("runs").child(self.saveKey!).child("runnerCell").setValue(self.enteredPhoneNumber)
+            
+            myCellNumber = self.enteredPhoneNumber
+            
+             self.makeAlert(title: "Run Posted", message: "Thank you for posting this run! When you are finished with your run, please tap \"Run Complete\" and this run will no longer be available for request")
+            
+        }
+        alertController.addTextField {
+            (txtUsername) -> Void in
+            txtUsername.keyboardType = .decimalPad
+            phoneNumberTextField = txtUsername
+            phoneNumberTextField!.placeholder = "ex: 4135691234"
+        }
+        
+        alertController.addAction(cancelAction)
+        alertController.addAction(completeAction)
+        
+        self.present(alertController, animated: true, completion: nil)
+        
+        
+        
+    }
     
 
 }

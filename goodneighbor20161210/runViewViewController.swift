@@ -168,9 +168,11 @@ class runViewViewController: UIViewController,UITableViewDelegate,UITableViewDat
             let snapshot = snapshot.value as! NSDictionary
             
             let runnerUID = snapshot["runnerUID"] as? String
-            let runCompleted = snapshot["isComplete"] as? Bool
-            let runnerBuilding = snapshot["buildingName"] as? String
             
+            let runCompleted = snapshot["isComplete"] as? Bool
+            let isDormOnly = snapshot["isDormOnly"] as? Bool
+            
+            let runnerBuilding = snapshot["buildingName"] as? String
             let runnerLongitude = snapshot["runnerLongitude"] as? CLLocationDegrees
             let runnerLatitude = snapshot["runnerLatitude"] as? CLLocationDegrees
             let userLocation = CLLocation(latitude: runnerLatitude!, longitude: runnerLongitude!)
@@ -197,18 +199,28 @@ class runViewViewController: UIViewController,UITableViewDelegate,UITableViewDat
             //General runs, those that are not already complete and not sent by you
             // HERE ADDED cHANGE so ONLY CAN SEE building nAMES
             
-            print(myRadius)
+            
             if distanceMilesFloat < myRadius! {
-                if(runnerUID != globalLoggedInUserId && runCompleted != true) && (runnerBuilding == "NA" || (runnerBuilding != "NA" && runnerBuilding == myBuilding)){
+                
+                //Filter out dorm only requests
+                if(runnerUID != globalLoggedInUserId && runCompleted != true) && (isDormOnly == false || (isDormOnly == true && runnerBuilding == myBuilding))  {
+                
+             //   if(runnerUID != globalLoggedInUserId && runCompleted != true) && (runnerBuilding == "NA" || (runnerBuilding != "NA" && runnerBuilding == myBuilding)) {
                     
                     self.communityRuns.append(runDict)
                     //print(self.communityRuns)
                     self.communityRuns.sort{ Double($0?["distanceFromUser"] as! String)! < Double($1?["distanceFromUser"] as! String)! }
                     
-                    }
-                }
+                    //}
+                    
+                
+            }
+            
+            }
+            
             self.sectionData = [1:self.myRuns,2:self.myAcceptedRequest, 3: self.myPendingRequest, 4: self.communityRuns]
             self.table.reloadData()
+            
             }
         
     //Pull request data
@@ -308,11 +320,15 @@ class runViewViewController: UIViewController,UITableViewDelegate,UITableViewDat
             
             cell.runLabel.text = self.sectionData[indexPath.section]![indexPath.row]?["runTo"] as? String
             
+            //HERE trying to load in background
+            
+            
             if let image = self.sectionData[indexPath.section]![indexPath.row]?["profilePicReference"] as? String {
                 
                 let url = URL(string: image)
                 
                 cell.profilePic!.sd_setImage(with: url, placeholderImage: UIImage(named:"saveImage2.png")!)
+                
                 
             }
             
@@ -351,7 +367,11 @@ class runViewViewController: UIViewController,UITableViewDelegate,UITableViewDat
             
             cell.nameLabel.text = self.sectionData[indexPath.section]![indexPath.row]?["itemName"] as? String
             
-            cell.itemLabel.text = "Will pay \(self.sectionData[indexPath.section]![indexPath.row]?["price"] as! String) +$\(self.sectionData[indexPath.section]![indexPath.row]?["tokensOffered"] as! Int + 1) fee"
+            //High Offer
+            //cell.itemLabel.text = "Will pay \(self.sectionData[indexPath.section]![indexPath.row]?["price"] as! String) +$\(self.sectionData[indexPath.section]![indexPath.row]?["tokensOffered"] as! Int + 1) fee"
+            
+            //Low Offer
+            cell.itemLabel.text = "Will pay \(self.sectionData[indexPath.section]![indexPath.row]?["price"] as! String) +$\(self.sectionData[indexPath.section]![indexPath.row]?["tokensOffered"] as! Int + 0) fee"
             
             let payType:String = (self.sectionData[indexPath.section]![indexPath.row]?["paymentType"] as? String)!
             
@@ -375,22 +395,33 @@ class runViewViewController: UIViewController,UITableViewDelegate,UITableViewDat
             cell.coinImage.tag = indexPath.row
             
             if tokenCountHelp == 1 {
-                cell.coinImage.image = UIImage(named: "2DollBlue.png")
+                
+                //High Offer
+                // cell.coinImage.image = UIImage(named: "2DollBlue.png")
+                
+                //Low Offer
+                cell.coinImage.image = UIImage(named: "1DollBlue.png")
+                
                 cell.coinImage.addGestureRecognizer(oneTokenTap)
             }
             if tokenCountHelp == 2 {
-                cell.coinImage.image = UIImage(named: "3DollBlue.png")
+                //High Offer
+                //cell.coinImage.image = UIImage(named: "3DollBlue.png")
+                
+                //Low Offer
+                 cell.coinImage.image = UIImage(named: "2DollBlue.png")
+                
                 cell.coinImage.addGestureRecognizer(twoTokenTap)
             }
             
-            DispatchQueue.main.async{
+            
                 if let image = self.sectionData[indexPath.section]![indexPath.row]?["profilePicReference"] as? String {
                     
                     let url = URL(string: image)
                     
-                    cell.profilePic!.sd_setImage(with: url, placeholderImage: UIImage(named:"saveImage2.png")!)
+                        cell.profilePic!.sd_setImage(with: url, placeholderImage: UIImage(named:"saveImage2.png")!)
                     
-                }}
+                }
             
             cell.profilePic.layer.cornerRadius = 27.5
             cell.profilePic.layer.masksToBounds = true
@@ -427,7 +458,12 @@ class runViewViewController: UIViewController,UITableViewDelegate,UITableViewDat
             if purchasePriceString == "NA" {
                 
                 cell.purchaseCompleteButton.setTitle("Purchase Complete", for: [])
-                cell.itemLabel.text = "Will pay \(self.sectionData[indexPath.section]![indexPath.row]?["price"] as! String) +$\(self.sectionData[indexPath.section]![indexPath.row]?["tokensOffered"] as! Int + 1) fee"
+                
+                //High Offer
+                //cell.itemLabel.text = "Will pay \(self.sectionData[indexPath.section]![indexPath.row]?["price"] as! String) +$\(self.sectionData[indexPath.section]![indexPath.row]?["tokensOffered"] as! Int + 1) fee"
+                
+                //Low Offer
+                cell.itemLabel.text = "Will pay \(self.sectionData[indexPath.section]![indexPath.row]?["price"] as! String) +$\(self.sectionData[indexPath.section]![indexPath.row]?["tokensOffered"] as! Int + 0) fee"
                 
             } else {
             
@@ -496,22 +532,34 @@ class runViewViewController: UIViewController,UITableViewDelegate,UITableViewDat
             cell.coinImage.tag = indexPath.row
             
             if tokenCountHelp == 1 {
-                cell.coinImage.image = UIImage(named: "2DollBlue.png")
+                
+                // High Offer
+                //cell.coinImage.image = UIImage(named: "2DollBlue.png")
+                
+                // Low Offer
+                cell.coinImage.image = UIImage(named: "1DollBlue.png")
                 cell.coinImage.addGestureRecognizer(oneTokenTap)
             }
             if tokenCountHelp == 2 {
-                cell.coinImage.image = UIImage(named: "3DollBlue.png")
+                
+                // High Offer
+                //cell.coinImage.image = UIImage(named: "3DollBlue.png")
+                
+                // Low Offer
+                cell.coinImage.image = UIImage(named: "2DollBlue.png")
+                
+                
                 cell.coinImage.addGestureRecognizer(twoTokenTap)
             }
             
-            DispatchQueue.main.async{
+    
                 if let image = self.sectionData[indexPath.section]![indexPath.row]?["profilePicReference"] as? String {
                     
                     let url = URL(string: image)
                     
                     cell.profilePic!.sd_setImage(with: url, placeholderImage: UIImage(named:"saveImage2.png")!)
                     
-                }}
+                }
             
             cell.profilePic.layer.cornerRadius = 27.5
             cell.profilePic.layer.masksToBounds = true
@@ -543,7 +591,8 @@ class runViewViewController: UIViewController,UITableViewDelegate,UITableViewDat
             let cell:currentRunsCell = tableView.dequeueReusableCell(withIdentifier: "currentRunsCell", for: indexPath) as! currentRunsCell
             
             let buildingCheck = self.sectionData[indexPath.section]![indexPath.row]?["buildingName"] as? String
-            
+            let tokensOffered = self.sectionData[indexPath.section]![indexPath.row]?["tokensOffered"] as? Int
+            print(tokensOffered)
             let requestCount = self.sectionData[indexPath.section]![indexPath.row]?["requestCount"] as? Int
             
             if buildingCheck != "N/A" && buildingCheck != "NA" {
@@ -558,12 +607,13 @@ class runViewViewController: UIViewController,UITableViewDelegate,UITableViewDat
             
             cell.runnerLocationLabel.text = String("Run will end at \(self.sectionData[indexPath.section]![indexPath.row]?["timeRun"] as! String)")
             
-            cell.runLabel.text = self.sectionData[indexPath.section]![indexPath.row]?["runTo"] as? String
+            cell.runLabel.text = "\(self.sectionData[indexPath.section]![indexPath.row]?["runTo"] as! String) - $\(tokensOffered!) fee"
             
            //Taking out the number of requests to the run to say tap to make a request
            // cell.requestCountLabel.text = "\(requestCount!) requests to this run" HERE
              cell.requestCountLabel.text = "Tap to request an item from \(self.sectionData[indexPath.section]![indexPath.row]?["runTo"] as! String)!"
-            
+         
+        
             if let image = self.sectionData[indexPath.section]![indexPath.row]?["profilePicReference"] as? String {
                 
                 let url = URL(string: image)
@@ -571,6 +621,8 @@ class runViewViewController: UIViewController,UITableViewDelegate,UITableViewDat
                 cell.profilePic!.sd_setImage(with: url, placeholderImage: UIImage(named:"saveImage2.png")!)
                 
             }
+            
+            
         
         cell.profilePic.layer.cornerRadius = 27.5
         cell.profilePic.layer.masksToBounds = true
@@ -720,7 +772,7 @@ class runViewViewController: UIViewController,UITableViewDelegate,UITableViewDat
         if !isVenmo {
             
             let messageHeader = "\(loggedInUserName!) has purchased \(itemName) for \(purchasePrice)"
-            let textMessage = "Please have \(purchasePrice) cash ready to pay when \(requesterName) arrives!"
+            let textMessage = "Please have \(purchasePrice) + the delivery fee ready when \(requesterName) arrives!"
             
             let itemRef = databaseRef.child("messages").childByAutoId()
             
@@ -740,7 +792,7 @@ class runViewViewController: UIViewController,UITableViewDelegate,UITableViewDat
         } else {
             
             let messageHeader = "\(loggedInUserName!) has purchased \(itemName) for \(purchasePrice)"
-            let textMessage = "Please venmo \(requesterName) \(purchasePrice) when they arrive!"
+            let textMessage = "Please venmo \(loggedInUserName!) \(purchasePrice) + the delivery fee when they arrive!"
             
             let itemRef = databaseRef.child("messages").childByAutoId()
             
@@ -776,7 +828,8 @@ class runViewViewController: UIViewController,UITableViewDelegate,UITableViewDat
         OneSignal.postNotification(["headings" : ["en": messageHeader],
                                     "contents" : ["en": textMessage],
                                     "include_player_ids": [notifID],
-                                    "ios_sound": "nil", "data": ["type": "request"]])
+                                 //   "ios_sound": "nil",
+                                    "data": ["type": "request"]])
         
     }
 
@@ -1010,6 +1063,21 @@ class runViewViewController: UIViewController,UITableViewDelegate,UITableViewDat
             }
             channelVc.requestKey = self.requestKey
         }
+        
+        if segue.identifier == "runNotifsSegue" {
+            
+            let secondViewController = segue.destination as! enableNotifsView
+            
+            if myLocation?.coordinate.latitude == 0.000000 {
+                
+                secondViewController.isLocation = true
+                
+            }
+            
+            
+        }
+        
+        
     }
     
     func didTapVenmoImage(_ sender: UITapGestureRecognizer) {
@@ -1028,25 +1096,25 @@ class runViewViewController: UIViewController,UITableViewDelegate,UITableViewDat
     
     func didTapOneCoin(_ sender: UITapGestureRecognizer) {
         
-        makeAlert(title: "Two Dollar For Delivery", message: "For making this delivery, you will receive a two dollar delivery fee, as well as being fully compensated for the price of the purchase")
+        makeAlert(title: "One Dollar For Delivery", message: "For making this delivery, you will receive a one dollar delivery fee, as well as being fully compensated for the price of the purchase")
         
     }
     
     func didTapOneCoinMyRequest(_ sender: UITapGestureRecognizer) {
         
-        makeAlert(title: "Two Dollar For Delivery", message:  "When this delivery is complete, please venmo two dollars to the deliverer as a service fee, as well as compensating them for the price of the purchase")
+        makeAlert(title: "One Dollar For Delivery", message:  "When this delivery is complete, please venmo one dollar to the deliverer as a service fee, as well as compensating them for the price of the purchase")
         
     }
     
     func didTapTwoCoinMyRequest(_ sender: UITapGestureRecognizer) {
         
-        makeAlert(title: "Three Dollars For Delivery", message: "When this delivery is complete, please venmo three dollars to the deliverer as a service fee, as well as compensating them for the price of the purchase")
+        makeAlert(title: "Two Dollars For Delivery", message: "When this delivery is complete, please venmo two dollars to the deliverer as a service fee, as well as compensating them for the price of the purchase")
         
     }
     
     func didTapTwoCoin(_ sender: UITapGestureRecognizer) {
         
-        makeAlert(title: "Three Dollars For Delivery", message: "For making this delivery, you will receive three dollars, as well as being fully compensated for the price of the purchase")
+        makeAlert(title: "Two Dollars For Delivery", message: "For making this delivery, you will receive two dollars, as well as being fully compensated for the price of the purchase")
         
     }
 
@@ -1124,10 +1192,33 @@ class runViewViewController: UIViewController,UITableViewDelegate,UITableViewDat
     self.present(alertPurchaseComplete, animated: true, completion: nil)
 }
     override func viewDidAppear(_ animated: Bool) {
+        
          globalLoggedInUserId = FIRAuth.auth()?.currentUser?.uid
        
             //myBuildingMates - Store people to send to that are in your building and have an ID and are not you
-                    self.table.reloadData()
+        self.table.reloadData()
+        
+        
+        let notificationType = UIApplication.shared.currentUserNotificationSettings!.types
+        if notificationType.rawValue == 0 && (forceNotifCount < 1 || forceNotifCount > 3)
+            
+            
+        {
+            
+            self.performSegue(withIdentifier: "runNotifsSegue", sender: nil)
+        }
+        
+        if myLocation?.coordinate.latitude == 0.000000 && (forceNotifCount < 1 || forceNotifCount > 3) {
+            
+            self.performSegue(withIdentifier: "runNotifsSegue", sender: nil)
+            
+        }
+        
+        
+        
+        
+        
+        
     }
  
 

@@ -97,7 +97,6 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         if isX {
             let pinTop = NSLayoutConstraint(item: self.titleLabel, attribute: .top, relatedBy: .equal,
                                             toItem: view, attribute: .top, multiplier: 4.0, constant: 38)
@@ -113,12 +112,30 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         //Run Request
         
         if self.isRun {
+            
             itemNameLabel.text = "Item from \(self.selectedRun?["runTo"] as! String)"
             self.descriptionText = "Provide \(self.selectedRun?["runnerName"] as! String) detailed information about your request for their run to  \(self.selectedRun?["runTo"] as! String)"
             self.runkey = self.selectedRun?["runKey"] as! String
             self.runnerNotifID = self.selectedRun?["runnerNotif"] as! String
             self.whoSeesText = "Request will only be visible to \(self.selectedRun?["runnerName"] as! String)"
+            
+            //Disable option to change fee
+            self.oneTokenImage.isUserInteractionEnabled = false
+            self.twoTokenImage.isUserInteractionEnabled = false
+            
+            self.twoTokenImage.isHidden = true
+            
+            self.tokensOfferedLabel.text = "Service fee for delivery"
+            
+            if self.tokensOffered == 2 {
+                //self.twoTokenImage.image = UIImage(named: "2DollBlue.png")
+                self.oneTokenImage.image = UIImage(named: "2DollBlue.png")
+            }
+            
+            
+            
         } else {
+            
             self.descriptionText = "Example: Please pick up a six pack of diet coke, but regular coke is fine if there's no diet. I live in Lisner Dorm. Call me with any questions."
             self.whoSeesText = "Visible to neighbors in \(myBuilding!)"
             
@@ -307,7 +324,7 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         if notificationType.rawValue == 0 {
             
             
-            self.notifAlert(title: "Please turn on notifications", message: "Please turn on notifications in order to redeem a coupon code")
+            self.notifAlert(title: "Please turn on notifications", message: "Please turn on notifications in order to make a request")
             
         } else {
         
@@ -484,20 +501,41 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
 
     func didTapOneToken(_ sender: UITapGestureRecognizer) {
         
+        // $1 and $2 offer
+        
+         if self.tokensOffered == 2 {
+         self.oneTokenImage.image = UIImage(named: "1DollBlue.png")
+         self.twoTokenImage.image = UIImage(named: "2DollGray.png")
+         self.tokensOffered = 1
+         }
+        
+        
+        // $2 and $3 offer
+        /*
         if self.tokensOffered == 2 {
             self.oneTokenImage.image = UIImage(named: "2DollBlue.png")
             self.twoTokenImage.image = UIImage(named: "3DollGray.png")
             self.tokensOffered = 1
-        }
+        }*/
 }
     
     func didTapTwoToken(_ sender: UITapGestureRecognizer) {
+      
+    // $1 and $2 offer
         
+        if self.tokensOffered == 1 {
+            self.twoTokenImage.image = UIImage(named: "2DollBlue.png")
+            self.oneTokenImage.image = UIImage(named: "1DollGray.png")
+            self.tokensOffered = 2
+        }
+        
+ // $2 and $3 offer
+ /*
         if self.tokensOffered == 1 {
             self.twoTokenImage.image = UIImage(named: "3DollBlue.png")
             self.oneTokenImage.image = UIImage(named: "2DollGray.png")
             self.tokensOffered = 2
-        }
+        }*/
 }
     
     func didTapVenmoImage(_ sender: UITapGestureRecognizer) {
@@ -781,7 +819,9 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
         
         if self.isRun {
             
-            OneSignal.postNotification(["contents": ["en": "\(requesterNameValue) has posted a request to your run!"], "include_player_ids": [self.runnerNotifID!],"ios_sound": "nil", "data": ["type": "run"]])
+            OneSignal.postNotification(["contents": ["en": "\(requesterNameValue) has posted a request to your run!"], "include_player_ids": [self.runnerNotifID!]
+               // ,"ios_sound": "nil"
+                , "data": ["type": "run"]])
             
         } else {
             

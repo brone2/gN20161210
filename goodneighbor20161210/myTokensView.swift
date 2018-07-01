@@ -228,7 +228,50 @@ class myTokensView: UIViewController {
             
         }
         
+        // building Check1!!!!!
+        self.databaseRef.child("building").observe(.childAdded) { (snapshot3: FIRDataSnapshot) in
+            
+            let key = snapshot3.key
+            
+            
+            let snapshot3 = snapshot3.value as! NSDictionary
+       
+            print(key)
+            print(snapshot3)
+            
+           
+            
+        }
         
+        
+        self.databaseRef.child("users").observe(.childAdded) { (snapshot3: FIRDataSnapshot) in
+            
+            let key = snapshot3.key
+            
+            
+            let snapshot3 = snapshot3.value as! NSDictionary
+            print(key)
+            print(snapshot3["name"] as! String)
+            if let userState = snapshot3["city"] as? String {
+                if userState == "Santa Clara " {
+                    print(snapshot3["fullName"] as! String)
+                    print(key)
+                }
+            }
+            
+            //For user count check of ambassadors
+            if let userBuilding = snapshot3["notifID"] as? String{
+                if userBuilding == "c550e596-c3de-47b6-a3fb-6dd2c83d3ac8" {
+                    print(snapshot3["name"] as? String)
+                    print(snapshot3["fullName"] as? String)
+                }
+                if userBuilding == "9cc6d454-21ca-4a29-b606-54239942acbf" {
+                    print(snapshot3["name"] as? String)
+                    print(snapshot3["fullName"] as? String)
+                }
+            }
+            
+        }
         
         
         self.databaseRef.child("users").observe(.childAdded) { (snapshot3: FIRDataSnapshot) in

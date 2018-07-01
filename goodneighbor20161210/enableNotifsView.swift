@@ -76,7 +76,8 @@ class enableNotifsView: UIViewController, CLLocationManagerDelegate {
         
         let notificationType = UIApplication.shared.currentUserNotificationSettings!.types
         
-        if notificationType.rawValue != 0 {
+        if notificationType.rawValue != 0 && !isLocation {
+            print(isLocation)
             timer.invalidate()
            self.dismiss(animated: true, completion: nil)
         }

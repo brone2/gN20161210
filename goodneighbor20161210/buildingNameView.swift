@@ -55,7 +55,9 @@ class buildingNameView: UIViewController, UITableViewDelegate,UITableViewDataSou
                 //General shopping list requests, those that are not already accepted and not sent by you
                 
                     self.buildingsNearMe.append(requestDict)
-                    self.buildingsNearMe.sort{($0?["buildingName"] as! String) < ($1?["buildingName"] as! String) }
+                //Order alphabetically
+                //    self.buildingsNearMe.sort{($0?["buildingName"] as! String) < ($1?["buildingName"] as! String) }
+                self.buildingsNearMe.sort{($0?["distanceFromUser"] as! String) < ($1?["distanceFromUser"] as! String) }
                 
                 
                 self.table.reloadData()

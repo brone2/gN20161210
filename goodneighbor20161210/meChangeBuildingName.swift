@@ -50,7 +50,7 @@ class meChangeBuildingName: UIViewController, UITableViewDelegate,UITableViewDat
                 requestDict["distanceFromUser"] = distanceMilesFloatString
                 
                 self.buildingsNearMe.append(requestDict)
-                self.buildingsNearMe.sort{($0?["buildingName"] as! String) < ($1?["buildingName"] as! String) }
+                self.buildingsNearMe.sort{($0?["distanceFromUser"] as! String) < ($1?["distanceFromUser"] as! String) }
                 print(requestDict)
                 
                 self.table.reloadData()

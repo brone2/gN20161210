@@ -113,9 +113,11 @@ class chatView: JSQMessagesViewController {
         
         //Send Push Notif to requester
         if self.isRun && isRequesterViewing {
-        OneSignal.postNotification(["contents" : ["en": "\(loggedInUserName!): \(text!)"],"include_player_ids": [self.otherUserNotifId],"ios_sound": "nil", "data": ["type": "run"]])
+        OneSignal.postNotification(["contents" : ["en": "\(loggedInUserName!): \(text!)"],"include_player_ids": [self.otherUserNotifId],//"ios_sound": "nil",
+                                    "data": ["type": "run"]])
         } else {
-            OneSignal.postNotification(["contents" : ["en": "\(loggedInUserName!): \(text!)"],"include_player_ids": [self.otherUserNotifId],"ios_sound": "nil", "data": ["type": "request"]])
+            OneSignal.postNotification(["contents" : ["en": "\(loggedInUserName!): \(text!)"],"include_player_ids": [self.otherUserNotifId],//"ios_sound": "nil",
+                "data": ["type": "request"]])
         }
         
         

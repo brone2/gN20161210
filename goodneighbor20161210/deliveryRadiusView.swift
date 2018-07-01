@@ -57,6 +57,7 @@ class deliveryRadiusView: UIViewController {
             self.loggedInUserData = snapshot.value as? NSDictionary
             
             loggedInUserName = self.loggedInUserData?["name"] as! String
+            myName = self.loggedInUserData?["name"] as! String
             myProfilePicRef = self.loggedInUserData?["profilePicReference"] as! String
             myCellNumber = self.loggedInUserData?["cellPhoneNumber"] as! String
             currentTokenCount = self.loggedInUserData?["tokenCount"] as! Int
@@ -72,8 +73,8 @@ class deliveryRadiusView: UIViewController {
         
             self.activityIndicator.stopAnimating()
             
-            if isVerySmallScreen == true || isSmallScreen == true {
-                self.performSegue(withIdentifier: "goRadiusHome", sender: nil)
+            if isVerySmallScreen == true || isSmallScreen == true || isX == true {
+                self.performSegue(withIdentifier: "radToRun", sender: nil)
             } else {
                 
             self.performSegue(withIdentifier: "goToExpIntro", sender: nil)

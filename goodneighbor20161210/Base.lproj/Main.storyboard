@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BCI-OW-ePe">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BCI-OW-ePe">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -831,7 +831,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="48e-Qx-QAy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4050" y="3107"/>
+            <point key="canvasLocation" x="-3826" y="2676"/>
         </scene>
         <!--Explanation Request-->
         <scene sceneID="Oe4-z0-WGg">
@@ -1307,6 +1307,7 @@
                         <subviews>
                             <imageView userInteractionEnabled="NO" alpha="0.0" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="allBlue.jpeg" translatesAutoresizingMaskIntoConstraints="NO" id="VO8-IW-fun">
                                 <rect key="frame" x="-1" y="0.0" width="377" height="52"/>
+                                <color key="tintColor" red="0.15658671280231701" green="0.56031829119999998" blue="0.22333640179205475" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="52" identifier="titleBgHeight" id="lMO-Lb-tXi"/>
                                 </constraints>
@@ -1335,7 +1336,7 @@
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pay $2-$3 fee per delivery" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="shT-Iy-v7I">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pay $1-$2 fee per delivery" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="shT-Iy-v7I">
                                                             <rect key="frame" x="52" y="33" width="249" height="18"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="249" id="A3H-nF-KkP"/>
@@ -1784,7 +1785,7 @@
                                         </connections>
                                     </tableView>
                                 </subviews>
-                                <color key="backgroundColor" red="0.062745098039215685" green="0.49411764705882355" blue="0.81176470588235294" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.011764705882352941" green="0.58039215686274503" blue="0.85490196078431369" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstItem="KZ1-p4-UTQ" firstAttribute="top" secondItem="Oku-1X-njG" secondAttribute="top" constant="2" id="ARo-d7-yWZ"/>
                                     <constraint firstAttribute="bottom" secondItem="KZ1-p4-UTQ" secondAttribute="bottom" id="Aq2-KC-9IS"/>
@@ -1863,7 +1864,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" red="0.10185384005308151" green="0.53144055604934692" blue="0.81805950403213501" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.011764705882352941" green="0.58039215686274503" blue="0.85490196078431369" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="5fE-w7-hI3" firstAttribute="centerX" secondItem="7uC-hr-Dwe" secondAttribute="centerX" id="0hy-Fa-vrU"/>
                             <constraint firstItem="5fE-w7-hI3" firstAttribute="top" secondItem="7uC-hr-Dwe" secondAttribute="top" constant="17" identifier="titleTopConstraint" id="8dN-G7-vUz"/>
@@ -2374,7 +2375,7 @@
                         <subviews>
                             <imageView userInteractionEnabled="NO" alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="allBlue.jpeg" translatesAutoresizingMaskIntoConstraints="NO" id="DRL-Nl-lP3">
                                 <rect key="frame" x="-1" y="0.0" width="377" height="52"/>
-                                <color key="backgroundColor" red="0.010277858003973961" green="0.57913112640380859" blue="0.85573011636734009" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.011764705882352941" green="0.58039215686274503" blue="0.85490196078431369" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="52" id="sPY-z3-RN0"/>
                                 </constraints>
@@ -2411,7 +2412,7 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Earn $2-$3 per delivery" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k3U-H6-XLy">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Earn $1-$2 per delivery" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k3U-H6-XLy">
                                                     <rect key="frame" x="52" y="33" width="174" height="18"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="18" id="Vze-L1-eKO"/>
@@ -2922,11 +2923,12 @@
                         <segue destination="BdS-8c-FJX" kind="presentation" identifier="runToDetailAccept" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="IsY-JY-HId"/>
                         <segue destination="OYP-Nh-TRb" kind="show" identifier="runToChat" id="xcN-fz-D9N"/>
                         <segue destination="wSw-Ug-Y8s" kind="presentation" identifier="myRunsPopUp" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="1bw-xD-M9X"/>
+                        <segue destination="jZk-QJ-LbW" kind="presentation" identifier="runNotifsSegue" id="8fW-em-wAb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DIU-OS-1Br" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4964" y="3598"/>
+            <point key="canvasLocation" x="-4646" y="-815"/>
         </scene>
         <!--Post Run View-->
         <scene sceneID="TO4-sP-poD">
@@ -2995,7 +2997,7 @@
                                         </connections>
                                     </textField>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="CNc-Iq-9Xt">
-                                        <rect key="frame" x="16" y="211" width="262" height="128"/>
+                                        <rect key="frame" x="16" y="211" width="262" height="93"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -3053,6 +3055,21 @@
                                             <action selector="didTapBack:" destination="18k-to-AuG" eventType="touchUpInside" id="lvA-6E-zp5"/>
                                         </connections>
                                     </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Delivery Fee:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BDE-G0-HYo">
+                                        <rect key="frame" x="21" y="331" width="107" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="2DollBlue.png" translatesAutoresizingMaskIntoConstraints="NO" id="0kX-XP-vn6">
+                                        <rect key="frame" x="201" y="325" width="35" height="35"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
+                                    <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="1DollGray.png" translatesAutoresizingMaskIntoConstraints="NO" id="Ggl-ex-REs">
+                                        <rect key="frame" x="136" y="325" width="35" height="35"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" red="0.92156862745098034" green="0.92156862745098034" blue="0.94509803921568625" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -3093,15 +3110,17 @@
                         <outlet property="hourTextfield" destination="da5-TM-10X" id="6uP-iQ-mlS"/>
                         <outlet property="minuteTextfield" destination="bTy-uG-wdl" id="9HL-Ld-HQf"/>
                         <outlet property="notesField" destination="CNc-Iq-9Xt" id="tfL-tE-Gty"/>
+                        <outlet property="oneTokenImage" destination="Ggl-ex-REs" id="ZpX-4C-aJY"/>
                         <outlet property="postButton" destination="D6B-CO-aDb" id="r1Y-yU-BpI"/>
                         <outlet property="runLocationTextField" destination="DuJ-Mp-Oxo" id="aTX-hI-qRV"/>
                         <outlet property="toolbarBottomConstraint" destination="0Xw-vI-8Um" id="7oj-Hx-RDD"/>
+                        <outlet property="twoTokenImage" destination="0kX-XP-vn6" id="bdV-nr-gcW"/>
                         <segue destination="ve5-72-cUD" kind="presentation" identifier="runEnterPhoneSegue" id="SCY-SH-HdE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jw4-zt-MEF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5530" y="-1162"/>
+            <point key="canvasLocation" x="7253.6000000000004" y="1906.5967016491757"/>
         </scene>
         <!--runDetail-->
         <scene sceneID="26r-fY-jUg">
@@ -3327,14 +3346,14 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="3DollGray.png" translatesAutoresizingMaskIntoConstraints="NO" id="tK4-SB-cbS">
+                            <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="2DollGray.png" translatesAutoresizingMaskIntoConstraints="NO" id="tK4-SB-cbS">
                                 <rect key="frame" x="289" y="408" width="35" height="35"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="35" id="2lT-o4-4iQ"/>
                                     <constraint firstAttribute="height" constant="35" id="6DM-Qn-wlP"/>
                                 </constraints>
                             </imageView>
-                            <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="2DollBlue.png" translatesAutoresizingMaskIntoConstraints="NO" id="qJv-W9-o8F">
+                            <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="1DollBlue.png" translatesAutoresizingMaskIntoConstraints="NO" id="qJv-W9-o8F">
                                 <rect key="frame" x="226" y="408" width="35" height="35"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="35" id="WFx-Iu-9O5"/>
@@ -3520,9 +3539,9 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kcd-ZM-xM7">
-                                <rect key="frame" x="-2" y="0.0" width="65" height="52"/>
+                                <rect key="frame" x="-2" y="0.0" width="65" height="58"/>
+                                <color key="backgroundColor" red="0.0" green="0.56031829119999998" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="52" id="TRp-5c-9ct"/>
                                     <constraint firstAttribute="width" constant="65" id="nIp-8f-b6k"/>
                                 </constraints>
                                 <connections>
@@ -3570,6 +3589,7 @@
                             <constraint firstItem="ZCx-rc-hMP" firstAttribute="top" secondItem="sOb-Iv-iHQ" secondAttribute="bottom" constant="28.5" id="ezN-hL-KRI"/>
                             <constraint firstItem="YBA-bq-1QA" firstAttribute="top" secondItem="ZYm-1g-2Eb" secondAttribute="bottom" id="fdV-Tr-gaN"/>
                             <constraint firstAttribute="trailingMargin" secondItem="tK4-SB-cbS" secondAttribute="trailing" constant="35" id="g8D-QS-XaZ"/>
+                            <constraint firstItem="GNL-V7-17o" firstAttribute="top" secondItem="Kcd-ZM-xM7" secondAttribute="bottom" constant="8" id="gDj-Xs-3sr"/>
                             <constraint firstItem="Xke-eg-cIm" firstAttribute="leading" secondItem="swz-DH-8Ql" secondAttribute="trailing" id="hUZ-ez-oZM"/>
                             <constraint firstItem="sOb-Iv-iHQ" firstAttribute="top" secondItem="pGW-rP-gqh" secondAttribute="bottom" constant="3.5" id="k5M-QM-cZY"/>
                             <constraint firstItem="d7o-Rh-o7M" firstAttribute="leading" secondItem="kDk-GI-eLw" secondAttribute="trailing" constant="9" id="kwD-Rh-34l"/>
@@ -3622,7 +3642,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aH2-Rg-IHp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-522.39999999999998" y="1222.9385307346329"/>
+            <point key="canvasLocation" x="-2996" y="-814"/>
         </scene>
         <!--Submit Phone Number-->
         <scene sceneID="JDh-fo-Jol">
@@ -3789,7 +3809,7 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You and your friend recieve one free token! " textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S4P-ZF-c74">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recieve a free token! " textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S4P-ZF-c74">
                                         <rect key="frame" x="35" y="331" width="233" height="41"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="41" id="LVD-SQ-hPg"/>
@@ -5472,11 +5492,12 @@
                         <outlet property="slider" destination="mfe-A6-6UD" id="UIz-kl-Wfh"/>
                         <segue destination="tt0-94-eDa" kind="show" identifier="goRadiusHome" id="XaY-MG-wUe"/>
                         <segue destination="4HZ-au-z6e" kind="show" identifier="goToExpIntro" id="O77-zA-6IZ"/>
+                        <segue destination="tla-7k-tgN" kind="show" identifier="radToRun" id="sWE-yZ-KtX"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="581-Eo-PQU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4054" y="-143"/>
+            <point key="canvasLocation" x="6396" y="-510"/>
         </scene>
         <!--Begin Intro-->
         <scene sceneID="FpR-2R-EQX">
@@ -5574,11 +5595,13 @@
     </scenes>
     <resources>
         <image name="1CoinFilled.png" width="400" height="400"/>
+        <image name="1DollBlue.png" width="30" height="30"/>
+        <image name="1DollGray.png" width="30" height="30"/>
         <image name="1FullToken.png" width="37" height="38"/>
         <image name="1handshakeIcon.png" width="200" height="200"/>
         <image name="2DollBlue.png" width="30" height="30"/>
+        <image name="2DollGray.png" width="30" height="30"/>
         <image name="2handshakeIcon.png" width="200" height="160"/>
-        <image name="3DollGray.png" width="30" height="30"/>
         <image name="Screen Shot 2017-02-14 at 8.18.16 PM.png" width="102" height="156"/>
         <image name="allBlue.jpeg" width="2000" height="277"/>
         <image name="appIcon2.png" width="127" height="124"/>
@@ -5609,19 +5632,20 @@
         <segue reference="i3w-Ip-Vic"/>
         <segue reference="n7l-GL-iGm"/>
         <segue reference="K6i-NI-E6a"/>
-        <segue reference="1xF-HO-JCX"/>
+        <segue reference="nam-uk-Etg"/>
         <segue reference="MTh-8f-L75"/>
-        <segue reference="HYy-gC-uE8"/>
-        <segue reference="56T-b9-ndk"/>
-        <segue reference="kNt-4L-Ped"/>
+        <segue reference="Cn8-dy-pnr"/>
+        <segue reference="kpT-oL-oia"/>
+        <segue reference="vOb-Jo-SBj"/>
         <segue reference="clp-Ou-bJp"/>
         <segue reference="IsY-JY-HId"/>
-        <segue reference="C1D-ix-lmp"/>
+        <segue reference="Z1Z-zx-pp9"/>
+        <segue reference="8fW-em-wAb"/>
         <segue reference="PEq-TB-AQ2"/>
-        <segue reference="xbu-NH-Hvt"/>
-        <segue reference="9TB-sV-3pl"/>
+        <segue reference="3RZ-eE-01M"/>
+        <segue reference="NhQ-d3-Xpj"/>
         <segue reference="Ddf-Qa-mo1"/>
-        <segue reference="wX0-Ki-UHa"/>
+        <segue reference="Y8j-My-CJT"/>
         <segue reference="uqZ-ZM-jJi"/>
         <segue reference="hec-q6-Yco"/>
         <segue reference="hTh-rO-ESU"/>

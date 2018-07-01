@@ -38,7 +38,7 @@ class locationViewController: UIViewController, CLLocationManagerDelegate, MKMap
         
         locationManager.startUpdatingLocation()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(6), execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3), execute: {
             
             let alert = UIAlertController(title: "Delivery Location Set", message: "Thank you! Your delivery location is set to your current location. You can change this later in the Me tab", preferredStyle: UIAlertControllerStyle.alert)
             

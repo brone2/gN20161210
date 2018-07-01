@@ -77,13 +77,15 @@ class facebookLoginController: UIViewController, FBSDKLoginButtonDelegate {
                 DispatchQueue.main.async{
                     
                     //Get all the facebook user data!!!
-                    FBSDKGraphRequest(graphPath: "/me", parameters: ["fields": "id, name, first_name, gender, picture.type(large)"]).start(completionHandler: { (connection, result, err) in
+                    FBSDKGraphRequest(graphPath: "/me", parameters: ["fields": "id, name, first_name, picture.type(large)"]).start(completionHandler: { (connection, result, err) in
                         let dict = result as! NSDictionary
                         let pict = dict["picture"] as! NSDictionary
                         let data = pict["data"] as! NSDictionary
                         self.url = data["url"] as? String
                         let fullName = dict["name"] as! String
-                        let gender = dict["gender"] as! String
+                        let gender = "N/A"
+                        
+                        print(dict)
                         
                         userFullName = fullName
                         myBuilding = "N/A"
@@ -101,7 +103,7 @@ class facebookLoginController: UIViewController, FBSDKLoginButtonDelegate {
                         
                         let userUId = (FIRAuth.auth()?.currentUser?.uid)!
                         
-                        let childUpdatesFbook = ["/users/\(userUId)/name":dict["first_name"]!,"/users/\(userUId)/fullName":dict["name"]!,"/users/\(userUId)/gender":dict["gender"]!,"/users/\(userUId)/buildingName":"N/A","/users/\(userUId)/cellPhoneNumber":"0","/users/\(userUId)/deliveryCount":0, "/users/\(userUId)/recieveCount":0,"/users/\(userUId)/referralCount":0, "/users/\(userUId)/tokenCount":8,"/users/\(userUId)/profilePicReference":self.url!, "/users/\(userUId)/longitude":longitude, "/users/\(userUId)/latitude":latitude, "/users/\(userUId)/deliveryRadius":deliveryRadius, "/users/\(userUId)/referralCode":userReferralCode!] as [String : Any]
+                        let childUpdatesFbook = ["/users/\(userUId)/name":dict["first_name"]!,"/users/\(userUId)/fullName":dict["name"]!,"/users/\(userUId)/gender":"\(gender)","/users/\(userUId)/buildingName":"N/A","/users/\(userUId)/cellPhoneNumber":"0","/users/\(userUId)/deliveryCount":0, "/users/\(userUId)/recieveCount":0,"/users/\(userUId)/referralCount":0, "/users/\(userUId)/tokenCount":8,"/users/\(userUId)/profilePicReference":self.url!, "/users/\(userUId)/longitude":longitude, "/users/\(userUId)/latitude":latitude, "/users/\(userUId)/deliveryRadius":deliveryRadius, "/users/\(userUId)/referralCode":userReferralCode!] as [String : Any]
                         
                         //Update
                         self.databaseRef.updateChildValues(childUpdatesFbook)
