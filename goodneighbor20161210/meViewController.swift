@@ -127,8 +127,8 @@ class meViewController: UIViewController {
             let tempRecieve = snapshot?["recieveCount"] as? Int
             self.recieveCount = Int(tempRecieve!)
             
-            self.viewPastRequestButton.setTitle("View past requests (\(self.recieveCount))", for: .normal)
-            self.viewPastDeliveriesButton.setTitle("View past deliveries (\(self.deliveryCount))", for: .normal)
+            self.viewPastRequestButton.setTitle("My past requests (\(self.recieveCount))", for: .normal)
+            self.viewPastDeliveriesButton.setTitle("My past deliveries (\(self.deliveryCount))", for: .normal)
         }
         
     //now pulling from completedRequest

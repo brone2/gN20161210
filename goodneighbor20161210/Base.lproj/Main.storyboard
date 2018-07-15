@@ -146,10 +146,10 @@
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jnn-D9-Zmm" customClass="customButton" customModule="goodneighbor20161210" customModuleProvider="target">
-                                <rect key="frame" x="78.5" y="307" width="217" height="26"/>
+                                <rect key="frame" x="56" y="307" width="262" height="26"/>
                                 <color key="backgroundColor" red="1" green="0.90196078431372551" blue="0.24705882352941178" alpha="0.0" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="11"/>
-                                <state key="normal" title="Don't have facebook? Log in with email">
+                                <state key="normal" title="Don't have facebook? Create account manually">
                                     <color key="titleColor" red="0.058823529411764705" green="0.49019607843137253" blue="0.81960784313725488" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <userDefinedRuntimeAttributes>
@@ -3091,13 +3091,22 @@
                                     </barButtonItem>
                                 </items>
                             </toolbar>
+                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VlF-tx-fKk">
+                                <rect key="frame" x="0.0" y="451" width="375" height="216"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="216" identifier="pickerHeightConstraint" id="dgX-gq-oW2"/>
+                                </constraints>
+                            </pickerView>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.57647058823529407" blue="0.85490196078431369" alpha="0.84690193965517246" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="Y4X-6n-pW2" firstAttribute="top" secondItem="fJg-lO-S4M" secondAttribute="bottom" id="0Xw-vI-8Um"/>
+                            <constraint firstItem="Y4X-6n-pW2" firstAttribute="top" secondItem="VlF-tx-fKk" secondAttribute="bottom" id="4Om-9S-q53"/>
                             <constraint firstItem="igq-j3-oWe" firstAttribute="centerX" secondItem="6Kf-p1-hDe" secondAttribute="centerX" id="aHG-ls-nm9"/>
                             <constraint firstAttribute="trailing" secondItem="fJg-lO-S4M" secondAttribute="trailing" id="fOf-xp-laU"/>
+                            <constraint firstAttribute="trailing" secondItem="VlF-tx-fKk" secondAttribute="trailing" id="fcJ-89-LaP"/>
                             <constraint firstItem="fJg-lO-S4M" firstAttribute="leading" secondItem="6Kf-p1-hDe" secondAttribute="leading" id="jaK-10-L17"/>
+                            <constraint firstItem="VlF-tx-fKk" firstAttribute="leading" secondItem="6Kf-p1-hDe" secondAttribute="leading" id="mvg-wq-tem"/>
                             <constraint firstItem="igq-j3-oWe" firstAttribute="top" secondItem="MSg-dF-cxL" secondAttribute="bottom" constant="59" id="uRB-gg-9mJ"/>
                         </constraints>
                     </view>
@@ -3111,6 +3120,7 @@
                         <outlet property="minuteTextfield" destination="bTy-uG-wdl" id="9HL-Ld-HQf"/>
                         <outlet property="notesField" destination="CNc-Iq-9Xt" id="tfL-tE-Gty"/>
                         <outlet property="oneTokenImage" destination="Ggl-ex-REs" id="ZpX-4C-aJY"/>
+                        <outlet property="picker" destination="VlF-tx-fKk" id="pVP-zl-8tv"/>
                         <outlet property="postButton" destination="D6B-CO-aDb" id="r1Y-yU-BpI"/>
                         <outlet property="runLocationTextField" destination="DuJ-Mp-Oxo" id="aTX-hI-qRV"/>
                         <outlet property="toolbarBottomConstraint" destination="0Xw-vI-8Um" id="7oj-Hx-RDD"/>
@@ -4240,7 +4250,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vgH-RJ-gtY">
                                         <rect key="frame" x="18" y="6" width="184" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" title="View past deliveries (0)"/>
+                                        <state key="normal" title="My past deliveries (0)"/>
                                         <connections>
                                             <action selector="didTapPastDeliveries:" destination="Eev-yu-jSf" eventType="touchUpInside" id="Khk-cz-n5V"/>
                                         </connections>
@@ -4257,7 +4267,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Lf-2Q-fPK">
                                         <rect key="frame" x="18" y="6" width="178" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" title="View past requests (0)"/>
+                                        <state key="normal" title="My past requests (0)"/>
                                         <connections>
                                             <action selector="didTapPastRequests:" destination="Eev-yu-jSf" eventType="touchUpInside" id="VBS-yg-FhI"/>
                                         </connections>
@@ -5627,20 +5637,20 @@
         <image name="venmo-icon_grey.png" width="360" height="361"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="xcN-fz-D9N"/>
+        <segue reference="zm8-am-GPR"/>
         <segue reference="3Gq-Kg-BQY"/>
         <segue reference="i3w-Ip-Vic"/>
         <segue reference="n7l-GL-iGm"/>
-        <segue reference="K6i-NI-E6a"/>
-        <segue reference="nam-uk-Etg"/>
+        <segue reference="9gD-sH-e4F"/>
+        <segue reference="Uy6-Ur-myb"/>
         <segue reference="MTh-8f-L75"/>
         <segue reference="SCY-SH-HdE"/>
         <segue reference="kpT-oL-oia"/>
-        <segue reference="vOb-Jo-SBj"/>
-        <segue reference="clp-Ou-bJp"/>
-        <segue reference="IsY-JY-HId"/>
-        <segue reference="Z1Z-zx-pp9"/>
-        <segue reference="8fW-em-wAb"/>
+        <segue reference="31V-Cu-2i1"/>
+        <segue reference="Nvh-XF-V7z"/>
+        <segue reference="f7M-n8-LD4"/>
+        <segue reference="5ag-bU-vFb"/>
+        <segue reference="d0j-rx-W0F"/>
         <segue reference="PEq-TB-AQ2"/>
         <segue reference="3RZ-eE-01M"/>
         <segue reference="NhQ-d3-Xpj"/>

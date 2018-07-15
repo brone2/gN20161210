@@ -14,15 +14,20 @@ import FirebaseStorage
 import CoreLocation
 import OneSignal
 
-class postRunView: UIViewController, UITextViewDelegate, UITextFieldDelegate, CLLocationManagerDelegate {
+class postRunView: UIViewController, UITextViewDelegate, UITextFieldDelegate, CLLocationManagerDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
 //20 people to a dorm to be dorm only
+    
+    @IBOutlet var picker: UIPickerView!
+    
     
     @IBOutlet var runLocationTextField: UITextField!
     @IBOutlet var hourTextfield: UITextField!
     @IBOutlet var minuteTextfield: UITextField!
     @IBOutlet var PMButtonText: UIButton!
     @IBOutlet var notesField: UITextView!
+    
+    var firstTouchTime:Bool = true
     
     var locationManager = CLLocationManager()
     var userLocation: CLLocation?
@@ -33,6 +38,10 @@ class postRunView: UIViewController, UITextViewDelegate, UITextFieldDelegate, CL
     var isDormOnly = false
     
     var saveKey: String?
+    
+    var countriesArray: [String] = ["1","2","3","4","5","6","7","8","9","10","11","12"]
+    var stateNumbersArray: [String] =  ["00","15","30","45"]
+    var stateArray: [String] =  ["AM","PM"]
     
     @IBOutlet var oneTokenImage: UIImageView!
     @IBOutlet var twoTokenImage: UIImageView!
@@ -142,6 +151,45 @@ class postRunView: UIViewController, UITextViewDelegate, UITextFieldDelegate, CL
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        
+        //Picker stuff
+        self.picker.isHidden = true
+        
+        //pickerConstraint
+        
+        if (!isLargeScreen && !isX) {
+            
+            for constraint in picker.constraints {
+                if constraint.identifier == "pickerHeightConstraint" {
+                    constraint.constant = 160
+                }
+                
+            }
+            
+            
+        }
+        
+        
+        
+        
+        
+        let tapTerm:UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapTextView(_:)))
+        let tapTerm2:UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapTextView(_:)))
+        hourTextfield.addGestureRecognizer(tapTerm)
+        minuteTextfield.addGestureRecognizer(tapTerm2)
+        
+        
+        picker.delegate = self
+        picker.dataSource = self
+        
+        picker.selectRow(2, inComponent: 0, animated: true)
+        picker.selectRow(2, inComponent: 1, animated: true)
+        picker.selectRow(1, inComponent: 2, animated: true)
+        
+        
+        //end picker stuff
+        
         self.runLocationTextField.autocorrectionType = .no
         self.notesField.autocorrectionType = .no
         
@@ -227,7 +275,7 @@ class postRunView: UIViewController, UITextViewDelegate, UITextFieldDelegate, CL
 
     
     func textViewDidBeginEditing(_ textView: UITextView) {
-        
+        self.picker.isHidden = true
         if(notesField.textColor == UIColor.lightGray){
             self.notesField.text = ""
             self.notesField.textColor = UIColor.black
@@ -613,6 +661,69 @@ func locationCheck() {
         
         
     }
+    
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 3
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        if component == 0 {
+            return countriesArray.count
+        } else if component == 1 {
+            return stateNumbersArray.count
+        } else {
+            return stateArray.count
+        }
+    }
+    
+    //MARK:- UIPickerViewDelegates methods
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        
+        if component == 0 {
+            return countriesArray[row]
+        } else if component == 1 {
+            return stateNumbersArray[row]
+        } else {
+            return stateArray[row]
+        }
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        
+        let countrySelected = countriesArray[pickerView.selectedRow(inComponent: 0)]
+        let stateNumberSelected = stateNumbersArray[pickerView.selectedRow(inComponent: 1)]
+        let stateelected = stateArray[pickerView.selectedRow(inComponent: 2)]
+        hourTextfield.text = "\(countrySelected)"
+        minuteTextfield.text = "\(stateNumberSelected)"
+        self.PMButtonText.setTitle("\(stateelected)", for: [])
+        
+    }
+    
+
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        self.picker.isHidden = true
+    }
+    
+    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+          self.picker.isHidden = true
+    }
+    
+    @objc func tapTextView(_ sender:UITapGestureRecognizer) {
+        self.picker.isHidden = false
+        hideKeyboard()
+        if firstTouchTime {
+                self.hourTextfield.text = "3"
+                self.minuteTextfield.text = "30"
+            
+        }
+        
+        self.firstTouchTime = false
+        
+    }
+    
     
 
 }
