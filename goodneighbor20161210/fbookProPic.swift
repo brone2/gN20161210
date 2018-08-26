@@ -60,7 +60,7 @@ class fbookProPic: UIViewController, FBSDKLoginButtonDelegate  {
                 DispatchQueue.main.async{
                     
                     //Get all the facebook user data!!!
-                    FBSDKGraphRequest(graphPath: "/me", parameters: ["fields": "id, name, first_name, gender, picture.type(large)"]).start(completionHandler: { (connection, result, err) in
+                    FBSDKGraphRequest(graphPath: "/me", parameters: ["fields": "id, name, first_name, picture.type(large)"]).start(completionHandler: { (connection, result, err) in
                         let dict = result as! NSDictionary
                         let pict = dict["picture"] as! NSDictionary
                         let data = pict["data"] as! NSDictionary
