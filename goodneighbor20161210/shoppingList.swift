@@ -1688,7 +1688,10 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
         
         //let cellCopiedAlert = UIAlertController(title: "Deliverer cell # copied", message: "\(accepterName)'s cell number has been copied. Please paste this into venmo to pay them for the delivery. If you see a 0, then this person has not entered their cell # and you will need to ask their venmo username. ", preferredStyle: UIAlertControllerStyle.alert)
         
-        let cellCopiedAlert = UIAlertController(title: "Venmo Payment Directions", message: "1. Open Venmo. \n2. To paste in \(accepterName)'s cell#, press and hold until the \"Paste\" option appears. Then press \"Paste\"\n3. Pay $\(totalPrice)", preferredStyle: UIAlertControllerStyle.alert)
+     //   let cellCopiedAlert = UIAlertController(title: "Paste Phone# in Venmo", message: "1. Open Venmo. \n2. To paste in \(accepterName)'s cell#, press and hold until the \"Paste\" option appears. Then press \"Paste\"\n3. Pay $\(totalPrice)", preferredStyle: UIAlertControllerStyle.alert)
+        
+        let cellCopiedAlert = UIAlertController(title: "Paste Phone# in Venmo", message: "To paste \(accepterName)'s cell#, press and hold until the \"Paste\" option appears. Then press \"Paste\"", preferredStyle: UIAlertControllerStyle.alert)
+        
         
         cellCopiedAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
             

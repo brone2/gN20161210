@@ -609,6 +609,15 @@ class runViewViewController: UIViewController,UITableViewDelegate,UITableViewDat
             
             cell.runLabel.text = "\(self.sectionData[indexPath.section]![indexPath.row]?["runTo"] as! String) - $\(tokensOffered!) fee"
             
+            if  (self.sectionData[indexPath.section]![indexPath.row]?["isEvent"]) != nil {
+        
+                cell.runLabel.text = "\(self.sectionData[indexPath.section]![indexPath.row]?["runTo"] as! String) - $0 fee"
+                
+            } else {
+                
+                cell.runLabel.text = "\(self.sectionData[indexPath.section]![indexPath.row]?["runTo"] as! String) - $\(tokensOffered!) fee"
+                
+            }
            //Taking out the number of requests to the run to say tap to make a request
            // cell.requestCountLabel.text = "\(requestCount!) requests to this run" HERE
              cell.requestCountLabel.text = "Tap to request an item from \(self.sectionData[indexPath.section]![indexPath.row]?["runTo"] as! String)!"

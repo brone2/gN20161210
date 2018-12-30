@@ -134,7 +134,7 @@ class postRunView: UIViewController, UITextViewDelegate, UITextFieldDelegate, CL
                     self.myBuildingMates.append(userNotifID!)
                     
                     //  if (self.myBuildingMates.count) > 20 {
-                    if (self.myBuildingMates.count) > 20 {
+                    if (self.myBuildingMates.count) > 70 {
                         
                         self.isDormOnly = true
                         

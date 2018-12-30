@@ -36,11 +36,14 @@ class couponMaintenanceView: UIViewController {
     var myBuildingMates = [String]()
     var notifMates = [String]()
     
+    var mitMates = [String]()
+    var mitNotifID: String?
     
     override func viewDidAppear(_ animated: Bool) {
         let nowTime = (UInt64(NSDate().timeIntervalSince1970 * 1000.0))
-        print(nowTime)
         
+       
+    
         self.databaseRef.child("users").observe(.childAdded) { (snapshot3: FIRDataSnapshot) in
             
             let snapshot3 = snapshot3.value as! NSDictionary
@@ -54,9 +57,9 @@ class couponMaintenanceView: UIViewController {
                         
                         if let userNotifID = snapshot3["notifID"] as? String  {
                         
-                        self.notifMates.append(userNotifID)
+                      /*  self.notifMates.append(userNotifID)
                         print(self.notifMates)
-                        print((self.notifMates.count))
+                        print((self.notifMates.count))*/
                         }
                         
                         /*
@@ -315,8 +318,72 @@ class couponMaintenanceView: UIViewController {
             }
             
         }
+            
+            
+     // Send notif to MIT people
+            
+        else if self.couponText == "mit" {
+            
+            
+            self.databaseRef.child("users").observe(.childAdded) { (snapshot6: FIRDataSnapshot) in
+                
+                let snapshot6 = snapshot6.value as! NSDictionary
+                
+                if let userName = snapshot6["name"] {
+                    
+                    if let city = snapshot6["buildingName"] as? String {
+                        
+                        if city == "Masseh Hall" {
+                          
+                            
+                            if let userNotifID = snapshot6["notifID"] as? String  {
+                                
+                                // Have a filter for letters in name to get around 30 people
+                                //(self.couponText)?.contains("#"))!
+                                
+                            if snapshot6["deliveryCount"] as! Int == 0 {
+                            
+                                //sept. 23 filtering these out not to send, 33 do not fit criteria
+                                if ((snapshot6["name"] as! String).contains("Al")) || ((snapshot6["name"] as! String).contains("z")) || ((snapshot6["name"] as! String).contains("e"))
+                               
+                                {
+                                
+                            } else {
+                                
+                                    //SENDING MIT NOTIF
+                                
+                         
+                                
+                        //here are the notif id we are sending to!!!!
+                                    if ((snapshot6["name"] as! String).contains("u"))  || ((snapshot6["name"] as! String).contains("i")) {
+                                self.mitNotifID = snapshot6["notifID"] as! String
+                                    
+                                    print("this is an id!")
+                                    print(self.mitNotifID!)
+                                    self.mitMates.append(userNotifID)
+                                    print((self.mitMates.count))
+                                    
+                                    
+                        //Send the notif!
+                      /*  OneSignal.postNotification(["headings" : ["en": "Post a Run Today and Earn 5 free Tokens!"],
+                                                        "contents" : ["en": "Post your first run today and become 5 tokens closer to recieving a free gift card :)"],
+                                                        "include_player_ids": [self.mitNotifID!],
+                                         "ios_sound": "nil"])*/
+ 
+ }
+                               
+                                }
+                                }
+                            }
+                            
+                            
+                        }
+                    }
+            
+                    }
 
-        
+            }}
+            
         else if self.couponText == "beenCompleted" {
             
             //7 days 606503000 ticks http://www.currenttimestamp.com/

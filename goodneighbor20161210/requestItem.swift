@@ -125,7 +125,16 @@ class requestItem: UIViewController,UINavigationControllerDelegate,UIImagePicker
             
             self.twoTokenImage.isHidden = true
             
+            if  (self.selectedRun?["isEvent"]) != nil {
+                
+            self.oneTokenImage.isHidden = true
+            self.tokensOfferedLabel.text = "No Service fee"
+                
+            } else {
+            
             self.tokensOfferedLabel.text = "Service fee for delivery"
+            
+            }
             
             if self.tokensOffered == 2 {
                 //self.twoTokenImage.image = UIImage(named: "2DollBlue.png")

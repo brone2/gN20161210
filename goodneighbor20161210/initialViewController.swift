@@ -69,8 +69,16 @@ class initialViewController: UIViewController {
         let screenHeight = screenSize.height
         print(screenHeight)
         
-        if UIDevice().userInterfaceIdiom == .phone && UIScreen.main.nativeBounds.height == 2436 {
+        if UIDevice().userInterfaceIdiom == .phone && UIScreen.main.nativeBounds.height == 2436
+      // || UIApplication.shared.delegate?.window??.safeAreaInsets.top ?? 0 > 24
+        {
             isX = true
+        }
+        
+        if #available(iOS 11.0, tvOS 11.0, *) {
+            if UIApplication.shared.delegate?.window??.safeAreaInsets.top ?? 0 > 24 {
+                isX = true
+            }
         }
         
         if screenHeight < 490.0     {
