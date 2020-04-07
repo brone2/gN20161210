@@ -261,8 +261,7 @@ class shoppingList: UIViewController, UITableViewDelegate,UITableViewDataSource,
                         self.shoppingListCurrentRequests.append(requestDict)
                         self.shoppingListCurrentRequests.sort{ Double($0?["distanceFromUser"] as! String)! < Double($1?["distanceFromUser"] as! String)! }
                     
-                    }
-                    
+                    }  
                     
                 }
                 }

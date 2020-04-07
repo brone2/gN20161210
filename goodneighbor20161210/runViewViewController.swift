@@ -197,7 +197,7 @@ class runViewViewController: UIViewController,UITableViewDelegate,UITableViewDat
             }
             
             //General runs, those that are not already complete and not sent by you
-            // HERE ADDED cHANGE so ONLY CAN SEE building nAMES
+            // HERE ADDED CHANGE so ONLY CAN SEE building nAMES
             
             
             if distanceMilesFloat < myRadius! {

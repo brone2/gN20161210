@@ -22,6 +22,7 @@ import FirebaseStorage
 
 class pastActivityCompleted: UIViewController, UITableViewDelegate,UITableViewDataSource {
 
+    @IBOutlet var grayBackgroundView: UIView!
     @IBOutlet var table: UITableView!
     @IBOutlet var navBar: UINavigationBar!
     
@@ -40,7 +41,25 @@ class pastActivityCompleted: UIViewController, UITableViewDelegate,UITableViewDa
         ]
         
         UINavigationBar.appearance().titleTextAttributes = attrs
-        
+       
+        if #available(iOS 11.0, *) {
+       //     self.additionalSafeAreaInsets.top = 20
+       //     self.additionalSafeAreaInsets.top = (self.navigationController?.navigationBar.frame.size.height)!
+            print("lets see")
+        }
+       
+     
+         
+if isX {
+ 
+        for constraint in self.view.constraints {
+            if constraint.identifier == "titleTopConstraint" {
+            constraint.constant = 35
+         }
+ 
+        }
+ 
+ }
         
     }
     
@@ -81,7 +100,8 @@ class pastActivityCompleted: UIViewController, UITableViewDelegate,UITableViewDa
                     
                     let url = URL(string: image)
                     
-                    cell.profilePic!.sd_setImage(with: url, placeholderImage: UIImage(named:"saveImage2.png")!)  
+                   // cell.profilePic!.sd_setImage(with: url, placeholderImage: UIImage(named:"saveImage2.png")!)
+                    cell.profilePic!.sd_setImage(with: url, placeholderImage: UIImage(named:"1handshakeIcon.png")!)
                 }}
             
             cell.profilePic.layer.cornerRadius = 27.5
@@ -101,7 +121,9 @@ class pastActivityCompleted: UIViewController, UITableViewDelegate,UITableViewDa
                     
                     let url = URL(string: image)
                     
-                    cell.profilePic!.sd_setImage(with: url, placeholderImage: UIImage(named:"saveImage2.png")!)
+                    //cell.profilePic!.sd_setImage(with: url, placeholderImage: UIImage(named:"saveImage2.png")!)
+                    cell.profilePic!.sd_setImage(with: url, placeholderImage: UIImage(named:"1handshakeIcon.png")!)
+                    
                 }}
             
             cell.profilePic.layer.cornerRadius = 27.5

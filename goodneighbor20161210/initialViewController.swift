@@ -75,7 +75,7 @@ class initialViewController: UIViewController {
             isX = true
         }
         
-        if #available(iOS 11.0, tvOS 11.0, *) {
+        if #available(iOS 11.0, *) {
             if UIApplication.shared.delegate?.window??.safeAreaInsets.top ?? 0 > 24 {
                 isX = true
             }
@@ -106,7 +106,7 @@ class initialViewController: UIViewController {
     
     func startTimer() {
         time += 1
-        if time == 2 {
+        if time == 1 {
             //timer.invalidate()
             self.checkUser()
         }
@@ -138,7 +138,6 @@ class initialViewController: UIViewController {
                         let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
                     
                         self.loggedInUserId = FIRAuth.auth()?.currentUser?.uid
-                    
                     
                         globalLoggedInUserId = FIRAuth.auth()?.currentUser?.uid
                         
@@ -314,14 +313,5 @@ class initialViewController: UIViewController {
     }
 
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+ 
 }
